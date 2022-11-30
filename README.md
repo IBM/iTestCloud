@@ -1,77 +1,48 @@
-<!-- This should be the location of the title of the repository, normally the short name -->
-# repo-template
+# iTestCloud
+The iTestCloud is a framework providing building blocks for developing robust automated UI tests for any web application with ease. It is based on the open source Selenium and JUnit projects. This framework is compatible with all major web technologies such as React and browsers such as FireFox, Chrome, Internet Explorer, Safari ...etc. It can be utilized on all major platforms such as Windows, Linux, Unix, OS X, Android, Mac OS X, ...etc. The test scenarios developed with this framework can be executed in a number of ways such as Jenkins, Travis, Eclipse, command-line, ...etc.  This framework contains approximately 30K lines of code and growing. Over 1700 fully automated tests have been developed for validating a wide range of contexts and features of the Cloud Pak for Data (CPD) project. The framework code is thoroughly documented with inline and JavaDoc comments. 
 
-<!-- Build Status, is a great thing to have at the top of your repository, it shows that you take your CI/CD as first class citizens -->
-<!-- [![Build Status](https://travis-ci.org/jjasghar/ibm-cloud-cli.svg?branch=master)](https://travis-ci.org/jjasghar/ibm-cloud-cli) -->
+## Architecture
+The following is the architectural diagram of the iTestCloud framework.
 
-<!-- Not always needed, but a scope helps the user understand in a short sentance like below, why this repo exists -->
-## Scope
+<img src="images/architecture.png" alt="iTestCloud Architecture" height="300"/>
 
-The purpose of this project is to provide a template for new open source repositories.
+## Source Code and Project Locations
+1. The iTestCloud framework is developed and distributed via the IBM GitHub Enterprise in the [iTestCloud Organization](https://github.ibm.com/iTestCloud). 
+2. The [iTestCloud Planning Repository](https://github.ibm.com/iTestCloud/Planning) is replied on to track the development, defects as well as enhancements requests.
 
-<!-- A more detailed Usage or detailed explaination of the repository here -->
-## Usage
+## Educational Materials
+1. [iTestCloud Workshop](http://w3.tap.ibm.com/medialibrary/media_view?id=400769)
+2. [iTestCloud Slide Presentation](artifacts/iTestCloud.pptx)
+3. [iTestCloud README](https://github.ibm.com/iTestCloud/Planning/blob/master/README.md)
 
-This repository contains some example best practices for open source repositories:
+## Configuration and Setup
+Please complete the following steps to setup and configure your system for developing automated UI tests using the iTestCloud framework.
 
-* [LICENSE](LICENSE)
-* [README.md](README.md)
-* [CONTRIBUTING.md](CONTRIBUTING.md)
-* [MAINTAINERS.md](MAINTAINERS.md)
-<!-- A Changelog allows you to track major changes and things that happen, https://github.com/github-changelog-generator/github-changelog-generator can help automate the process -->
-* [CHANGELOG.md](CHANGELOG.md)
+1. [Eclipse Setup](docs/eclipse_setup.md)
+2. [Browser Setup](docs/browser_setup.md)
+3. [Jenkins Slave\Agent Setup](docs/jenkins_slave_setup.md) (optional)
 
-> These are optional
+## Test Scenario Development
+The following document describes how to develop a new test scenario with the iTestCloud framework: [Test Scenario Development](docs/scenario_development.md)
 
-<!-- The following are OPTIONAL, but strongly suggested to have in your repository. -->
-* [dco.yml](.github/dco.yml) - This enables DCO bot for you, please take a look https://github.com/probot/dco for more details.
-* [travis.yml](.travis.yml) - This is a example `.travis.yml`, please take a look https://docs.travis-ci.com/user/tutorial/ for more details.
+## Test Scenario Execution
+A personal account can be used when executing tests against the CPDaaS.
 
-These may be copied into a new or existing project to make it easier for developers not on a project team to collaborate.
+1. [Using a personal account for test execution](docs/test_run_setup.md)
 
-<!-- A notes section is useful for anything that isn't covered in the Usage or Scope. Like what we have below. -->
-## Notes
+A test scenario developed with the iTestCloud Framework can be executed in a number of ways. The following are some of them.
 
-**NOTE: While this boilerplate project uses the Apache 2.0 license, when
-establishing a new repo using this template, please use the
-license that was approved for your project.**
+1. [From Eclipse](docs/eclipse_execution.md)
+2. [From Command Line](docs/cmdln_execution.md)
+3. [From Jenkins](docs/jenkins_execution.md)
 
-**NOTE: This repository has been configured with the [DCO bot](https://github.com/probot/dco).
-When you set up a new repository that uses the Apache license, you should
-use the DCO to manage contributions. The DCO bot will help enforce that.
-Please contact one of the IBM GH Org stewards.**
+## Test Scenarios
+The following test scenarios have been developed with the iTestCloud Framework by a number of teams and individuals.
 
-<!-- Questions can be useful but optional, this gives you a place to say, "This is how to contact this project maintainers or create PRs -->
-If you have any questions or issues you can create a new [issue here][issues].
+1. [DSX and WDP Regression Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.regression)
+2. [Documentation Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.documentation)
+3. [Streams Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.streams)
+4. [Data Set Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.exchange)
+5. [Catalog Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.catalog)
 
-Pull requests are very welcome! Make sure your patches are well tested.
-Ideally create a topic branch for every separate change you make. For
-example:
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-## License
-
-All source files must include a Copyright and License header. The SPDX license header is 
-preferred because it can be easily scanned.
-
-If you would like to see the detailed LICENSE click [here](LICENSE).
-
-```text
-#
-# Copyright 2020- IBM Inc. All rights reserved
-# SPDX-License-Identifier: Apache2.0
-#
-```
-## Authors
-
-Optionally, you may include a list of authors, though this is redundant with the built-in
-GitHub list of contributors.
-
-- Author: New OpenSource IBMer <new-opensource-ibmer@ibm.com>
-
-[issues]: https://github.com/IBM/repo-template/issues/new
+The above mentioned scenarios have a vast [Test Coverage](docs/test_scenarios.md) on the Data Science Experience and Data Hub.
