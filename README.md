@@ -7,13 +7,12 @@ The following is the architectural diagram of the iTestCloud framework.
 <img src="images/architecture.png" alt="iTestCloud Architecture" height="300"/>
 
 ## Source Code and Project Locations
-1. The iTestCloud framework is developed and distributed via the IBM GitHub Enterprise in the [iTestCloud Organization](https://github.ibm.com/iTestCloud). 
-2. The [iTestCloud Planning Repository](https://github.ibm.com/iTestCloud/Planning) is replied on to track the development, defects as well as enhancements requests.
+1. The iTestCloud framework is developed and distributed via the the [iTestCloud repository](https://github.com/IBM/iTestCloud). 
+2. The [iTestCloud Repository](https://github.com/IBM/iTestCloud) is relied on to track the development, defects as well as enhancements requests.
 
 ## Educational Materials
-1. [iTestCloud Workshop](http://w3.tap.ibm.com/medialibrary/media_view?id=400769)
 2. [iTestCloud Slide Presentation](artifacts/iTestCloud.pptx)
-3. [iTestCloud README](https://github.ibm.com/iTestCloud/Planning/blob/master/README.md)
+3. [iTestCloud README](https://github.com/IBM/iTestCloud/blob/master/README.md)
 
 ## Configuration and Setup
 Please complete the following steps to setup and configure your system for developing automated UI tests using the iTestCloud framework.
@@ -35,14 +34,3 @@ A test scenario developed with the iTestCloud Framework can be executed in a num
 1. [From Eclipse](docs/eclipse_execution.md)
 2. [From Command Line](docs/cmdln_execution.md)
 3. [From Jenkins](docs/jenkins_execution.md)
-
-## Test Scenarios
-The following test scenarios have been developed with the iTestCloud Framework by a number of teams and individuals.
-
-1. [DSX and WDP Regression Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.regression)
-2. [Documentation Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.documentation)
-3. [Streams Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.streams)
-4. [Data Set Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.exchange)
-5. [Catalog Scenario](https://github.ibm.com/iTestCloud/com.ibm.itest.cloud.apsportal.catalog)
-
-The above mentioned scenarios have a vast [Test Coverage](docs/test_scenarios.md) on the Data Science Experience and Data Hub.
