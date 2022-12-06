@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.core.annotations;
+package com.ibm.itest.cloud.common.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,12 +19,12 @@ import java.lang.annotation.RetentionPolicy;
 import com.ibm.itest.cloud.common.tests.scenario.ScenarioData;
 
 /**
- * Annotation to identify whether a step or test related to the FireFox borwser.
+ * Annotation to identify whether a step or test related to the Google Chrome borwser.
  * <p>
- * Such a step or test will be run if the parameter <b>runFireFoxTests</b> is set to true,
+ * Such a step or test will be run if the parameter <b>runGoogleChromeTests</b> is set to true,
  * and will not be run if the parameter is set to false (see {@link ScenarioData}).
  * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FireFoxTest {
+public @interface GoogleChromeTest {
 }

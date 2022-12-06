@@ -18,7 +18,7 @@ import java.lang.reflect.Modifier;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.core.factories.Factory;
+import com.ibm.itest.cloud.common.factories.Factory;
 
 /**
  * Factory to create instances of {@link AbstractWindow}.

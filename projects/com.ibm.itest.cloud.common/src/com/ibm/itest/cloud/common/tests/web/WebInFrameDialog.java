@@ -115,15 +115,12 @@ public WebBrowserElement open(final WebBrowserElement openElement) {
 }
 
 /**
- * {@inheritDoc}
- * <p>
  * Select the frame before waiting for the element.
  * </p>
  * @throws ScenarioFailedError If the frame argument is true as the frame is
  * already known.
  */
-@Override
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout, final boolean frame) {
+public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout, final boolean frame) {
 	if (frame) {
 		throw new ScenarioFailedError("Should not find element in frames in framed dialog.");
 	}
@@ -132,6 +129,6 @@ protected WebBrowserElement waitForElement(final WebBrowserElement parentElement
 	selectFrame();
 
 	// Wait for the element
-	return super.waitForElement(parentElement, locator, timeout, frame);
+	return waitForElement(parentElement, locator, timeout);
 }
 }

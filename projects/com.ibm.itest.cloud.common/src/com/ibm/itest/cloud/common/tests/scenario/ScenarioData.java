@@ -18,7 +18,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParamet
 
 import java.io.File;
 
-import com.ibm.itest.cloud.common.core.config.IUser;
+import com.ibm.itest.cloud.common.config.IUser;
 
 /**
  * Manage scenario general data.

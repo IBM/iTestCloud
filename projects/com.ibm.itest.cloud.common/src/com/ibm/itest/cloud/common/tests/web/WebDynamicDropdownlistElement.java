@@ -15,7 +15,7 @@ package com.ibm.itest.cloud.common.tests.web;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.core.elements.ExpandableElement;
+import com.ibm.itest.cloud.common.pages.elements.ExpandableElement;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 
 /**

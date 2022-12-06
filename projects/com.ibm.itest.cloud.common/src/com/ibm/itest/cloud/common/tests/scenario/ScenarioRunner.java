@@ -28,8 +28,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 
-import com.ibm.itest.cloud.common.core.annotations.FireFoxTest;
-import com.ibm.itest.cloud.common.core.annotations.GoogleChromeTest;
+import com.ibm.itest.cloud.common.annotations.FireFoxTest;
+import com.ibm.itest.cloud.common.annotations.GoogleChromeTest;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.utils.DependsOn;
 import com.ibm.itest.cloud.common.tests.utils.NotRerunnable;

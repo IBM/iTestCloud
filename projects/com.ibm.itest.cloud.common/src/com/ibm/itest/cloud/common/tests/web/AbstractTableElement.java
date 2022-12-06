@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.*;
 
-import com.ibm.itest.cloud.common.core.elements.TableElement;
+import com.ibm.itest.cloud.common.pages.elements.TableElement;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion;
 
@@ -291,13 +291,13 @@ public String getSortedColumn() {
  * <p>
  * By default a column is sorted if its header element has the <code>aria-sort</code>
  * attribute equals to one of the attribute value of
- * {@link com.ibm.itest.cloud.common.core.elements.TableElement.SortMode} enumeration.
+ * {@link com.ibm.itest.cloud.common.pages.elements.TableElement.SortMode} enumeration.
  * </p><p>
  * Subclass might want to override this behavior if the sorting flag is specifically
  * managed in the corresponding table element.
  * </p>
  * @param hElement The header element to get sorting mode
- * @return The sorting mode as a {@link com.ibm.itest.cloud.common.core.elements.TableElement.SortMode}
+ * @return The sorting mode as a {@link com.ibm.itest.cloud.common.pages.elements.TableElement.SortMode}
  * value or <code>null</code>
  * if the column is not sortable
  */

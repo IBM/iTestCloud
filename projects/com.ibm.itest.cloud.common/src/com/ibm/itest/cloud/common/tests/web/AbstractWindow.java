@@ -17,7 +17,7 @@ import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMAN
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.core.elements.Window;
+import com.ibm.itest.cloud.common.pages.elements.Window;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;

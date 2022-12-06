@@ -33,10 +33,10 @@ import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
-import com.ibm.itest.cloud.common.core.config.IConfig;
-import com.ibm.itest.cloud.common.core.config.IUser;
-import com.ibm.itest.cloud.common.core.nls.NlsMessages;
-import com.ibm.itest.cloud.common.core.pages.IWebPage;
+import com.ibm.itest.cloud.common.config.IConfig;
+import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.nls.NlsMessages;
+import com.ibm.itest.cloud.common.pages.IWebPage;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager;
@@ -3040,7 +3040,7 @@ public WebBrowserElement waitForElement(final By locator, final boolean displaye
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final By locator, final boolean displayed, final boolean single) {
+public WebBrowserElement waitForElement(final By locator, final boolean displayed, final boolean single) {
 	return this.browser.waitForElement(null, locator, true/*fail*/, timeout(), displayed, single);
 }
 
@@ -3067,7 +3067,7 @@ protected WebBrowserElement waitForElement(final By locator, final boolean displ
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final By locator, final boolean fail, final int time_out) {
+public WebBrowserElement waitForElement(final By locator, final boolean fail, final int time_out) {
 	return this.browser.waitForElement(null, locator, fail, time_out, true /* displayed */, true /* single */);
 }
 
@@ -3088,7 +3088,7 @@ protected WebBrowserElement waitForElement(final By locator, final boolean fail,
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final By locator, final boolean fail, final int time_out, final boolean displayed) {
+public WebBrowserElement waitForElement(final By locator, final boolean fail, final int time_out, final boolean displayed) {
 	return this.browser.waitForElement(null, locator, fail, time_out, displayed, true/*single element expected*/);
 }
 
@@ -3108,7 +3108,7 @@ protected WebBrowserElement waitForElement(final By locator, final boolean fail,
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final By locator, final boolean fail, final int time_out, final boolean displayed, final boolean single) {
+public WebBrowserElement waitForElement(final By locator, final boolean fail, final int time_out, final boolean displayed, final boolean single) {
 	return this.browser.waitForElement(null, locator, fail, time_out, displayed, single);
 }
 
@@ -3135,7 +3135,7 @@ protected WebBrowserElement waitForElement(final By locator, final boolean fail,
  *
  * @see #waitForElement(By, By, boolean, int)
  */
-protected WebBrowserElement waitForElement(final By parentLocator, final By locator) {
+public WebBrowserElement waitForElement(final By parentLocator, final By locator) {
 	return waitForElement(parentLocator, locator, true/*fail*/, timeout());
 }
 
@@ -3189,7 +3189,7 @@ public WebBrowserElement waitForElement(final By parentLocator, final By locator
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator) {
+public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator) {
 	return this.browser.waitForElement(parentElement, locator, true/* fail */, timeout(), true/* visible */, true/* single */);
 }
 
@@ -3217,7 +3217,7 @@ protected WebBrowserElement waitForElement(final WebBrowserElement parentElement
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final boolean displayed) {
+public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final boolean displayed) {
 	return this.browser.waitForElement(parentElement, locator, true/* fail */, timeout(), displayed, true/* single */);
 }
 
@@ -3243,7 +3243,7 @@ protected WebBrowserElement waitForElement(final WebBrowserElement parentElement
  *
  * @see WebBrowser#waitForElement(WebBrowserElement, By, boolean, int, boolean, boolean)
  */
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final boolean fail, final int time_out) {
+public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final boolean fail, final int time_out) {
 	return this.browser.waitForElement(parentElement, locator, fail, time_out, true/*displayed*/, true/*single element expected*/);
 }
 
@@ -3266,7 +3266,7 @@ protected WebBrowserElement waitForElement(final WebBrowserElement parentElement
  *
  * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
  */
-protected List<WebBrowserElement> waitForElements(final By locator) {
+public List<WebBrowserElement> waitForElements(final By locator) {
 	return this.browser.waitForElements(null, locator, true/*fail*/, timeout(), true/*visible*/);
 }
 
@@ -3287,7 +3287,7 @@ protected List<WebBrowserElement> waitForElements(final By locator) {
  *
  * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
  */
-protected List<WebBrowserElement> waitForElements(final By locator, final boolean fail) {
+public List<WebBrowserElement> waitForElements(final By locator, final boolean fail) {
 	return this.browser.waitForElements(null, locator, fail, timeout(), true/*visible*/);
 }
 
@@ -3309,7 +3309,7 @@ protected List<WebBrowserElement> waitForElements(final By locator, final boolea
  *
  * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
  */
-protected List<WebBrowserElement> waitForElements(final By locator, final boolean fail, final int time_out) {
+public List<WebBrowserElement> waitForElements(final By locator, final boolean fail, final int time_out) {
 	return this.browser.waitForElements(null, locator, fail, time_out, true/*visible*/);
 }
 
@@ -3328,7 +3328,7 @@ protected List<WebBrowserElement> waitForElements(final By locator, final boolea
  *
  * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
  */
-protected List<WebBrowserElement> waitForElements(final By locator, final int time_out) {
+public List<WebBrowserElement> waitForElements(final By locator, final int time_out) {
 	return this.browser.waitForElements(null, locator, true/*fail*/, time_out, true/*visible*/);
 }
 
@@ -3349,7 +3349,7 @@ protected List<WebBrowserElement> waitForElements(final By locator, final int ti
  *
  * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
  */
-protected List<WebBrowserElement> waitForElements(final By locator, final int time_out, final boolean displayed) {
+public List<WebBrowserElement> waitForElements(final By locator, final int time_out, final boolean displayed) {
 	return this.browser.waitForElements(null, locator, true/*fail*/, time_out, displayed);
 }
 
@@ -3369,7 +3369,7 @@ protected List<WebBrowserElement> waitForElements(final By locator, final int ti
  *
  * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
  */
-protected List<WebBrowserElement> waitForElements(final WebBrowserElement parentElement, final By locator) {
+public List<WebBrowserElement> waitForElements(final WebBrowserElement parentElement, final By locator) {
 	return this.browser.waitForElements(parentElement, locator, true/*fail*/, timeout(), true/*visible*/);
 }
 
@@ -3444,7 +3444,7 @@ protected void waitForLoadingPageEnd() {
  * @see WebBrowser#waitForMultipleElements(WebBrowserElement, By[], boolean, int)
  * to have more details on how the returned array is filled with found elements
  */
-protected WebBrowserElement[] waitForMultipleElements(final boolean fail, final int time_out, final By... findBys) {
+public WebBrowserElement[] waitForMultipleElements(final boolean fail, final int time_out, final By... findBys) {
 	return this.browser.waitForMultipleElements(null, findBys, fail, time_out);
 }
 
@@ -3463,7 +3463,7 @@ protected WebBrowserElement[] waitForMultipleElements(final boolean fail, final 
  * @see WebBrowser#waitForMultipleElements(WebBrowserElement, By[], boolean, int)
  * to have more details on how the returned array is filled with found elements
  */
-protected WebBrowserElement[] waitForMultipleElements(final By... findBys) {
+public WebBrowserElement[] waitForMultipleElements(final By... findBys) {
 	return this.browser.waitForMultipleElements(null, findBys, true/*fail*/, timeout());
 }
 
@@ -3485,7 +3485,7 @@ protected WebBrowserElement[] waitForMultipleElements(final By... findBys) {
  * @see WebBrowser#waitForMultipleElements(WebBrowserElement, By[], boolean, int)
  * to have more details on how the returned array is filled with found elements
  */
-protected WebBrowserElement[] waitForMultipleElements(final WebBrowserElement parentElement, final By... findBys) {
+public WebBrowserElement[] waitForMultipleElements(final WebBrowserElement parentElement, final By... findBys) {
 	return this.browser.waitForMultipleElements(parentElement, findBys, true/*fail*/, timeout());
 }
 
@@ -3538,7 +3538,7 @@ public String waitForText(final WebBrowserElement element, final boolean fail, f
  *
  * @see WebBrowser#waitForText(WebBrowserElement, boolean, int, String...)
  */
-protected WebBrowserElement waitForTextPresent(final ComparisonPattern pattern, final String... texts) {
+public WebBrowserElement waitForTextPresent(final ComparisonPattern pattern, final String... texts) {
 	return this.browser.waitForTextPresent(null, true/*fail*/, timeout(), true/*displayed*/, false/*multiple*/, pattern, texts);
 }
 

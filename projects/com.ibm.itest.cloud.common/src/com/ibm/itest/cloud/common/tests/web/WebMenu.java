@@ -77,20 +77,14 @@ public class WebMenu extends AbstractWindow {
 	protected WebBrowserElement openElement;
 
 	final private boolean useRightClick;
-	final private boolean useFrame;
 
 public WebMenu(final WebPage page, final By findBy) {
 	this(page, findBy, false);
 }
 
 public WebMenu(final WebPage page, final By findBy, final boolean useRightClick) {
-	this(page, findBy, useRightClick, false);
-}
-
-public WebMenu(final WebPage page, final By findBy, final boolean useRightClick, final boolean useFrame) {
 	super(page, findBy);
 	this.useRightClick = useRightClick;
-	this.useFrame = useFrame;
 }
 
 /**
@@ -256,9 +250,7 @@ protected void displayItemElement(final String itemLabel, final WebBrowserElemen
  * @return The list of elements as a {@link List} of {@link WebElement}.
  */
 protected List<WebElement> findElements(final By locator, final boolean recovery) {
-	return this.useFrame
-		? this.browser.findElements(locator, recovery)
-		: this.element.findElements(locator, recovery);
+	return this.element.findElements(locator, recovery);
 }
 
 /**
@@ -501,12 +493,6 @@ public WebBrowserElement open(final WebBrowserElement webElement) {
 	// Store the menu web element
 	this.element = menuElement;
 
-	// Set and select frame if necessary
-	if (this.useFrame) {
-		setFrame(new WebElementFrame(this.browser, menuElement));
-		selectFrame();
-	}
-
 	// Wait for the end of the load of the menu items
 	waitForLoadingEnd();
 
@@ -517,15 +503,6 @@ public WebBrowserElement open(final WebBrowserElement webElement) {
 
 	// Return the menu element
 	return this.element;
-}
-
-private void setFrame(final WebElementFrame frame) {
-	if (this.frames[2] != null) {
-		throw new ScenarioFailedError("Cannot set frame although one is already selected.");
-	}
-	this.frames = new WebBrowserFrame[3];
-	this.frames[0] = this.browser.getCurrentFrame();
-	this.frames[1] = frame;
 }
 
 /**
@@ -555,10 +532,8 @@ protected void setPerfManagerRegressionType(final RegressionType regressionType,
  * </p>
  */
 @Override
-protected WebBrowserElement waitForElement(final By locator, final int timeout) {
-	return this.useFrame
-		? this.browser.waitForElement(locator, timeout)
-		: this.element.waitForElement(locator, timeout);
+public WebBrowserElement waitForElement(final By locator, final int timeout) {
+	return this.element.waitForElement(locator, timeout);
 }
 
 
@@ -569,7 +544,7 @@ protected WebBrowserElement waitForElement(final By locator, final int timeout) 
  * </p>
  */
 @Override
-protected List<WebBrowserElement> waitForElements(final By locator) {
+public List<WebBrowserElement> waitForElements(final By locator) {
 	return waitForElements(locator, timeout(), /*displayed:*/true);
 }
 
@@ -581,10 +556,8 @@ protected List<WebBrowserElement> waitForElements(final By locator) {
  * </p>
  */
 @Override
-protected List<WebBrowserElement> waitForElements(final By locator, final int timeout, final boolean displayed) {
-	return this.useFrame
-		? this.browser.waitForElements(null, locator, /*fail:*/true, timeout, displayed)
-		: this.element.waitForElements(locator, timeout, displayed);
+public List<WebBrowserElement> waitForElements(final By locator, final int timeout, final boolean displayed) {
+	return this.element.waitForElements(locator, timeout, displayed);
 }
 
 /**
@@ -642,9 +615,6 @@ public void waitForLoadingEnd() {
 		// Try to reopen the menu if the timeout has not been reached
 		testTimeout();
 		debugPrintln("Menu "+this.element+" had no item, try to reopen it...");
-		if (this.useFrame) {
-			switchToBrowserFrame();
-		}
 		open(this.openElement);
 		return;
 	}

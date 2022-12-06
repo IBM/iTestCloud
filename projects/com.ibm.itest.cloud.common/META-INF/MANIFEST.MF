@@ -8,12 +8,12 @@ Bundle-Vendor: IBM
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.google.gson,
  com.ibm.automation.framework.security,
- com.ibm.itest.cloud.common.core.annotations,
- com.ibm.itest.cloud.common.core.config;version="1.0.0";uses:="com.ibm.itest.cloud.common.tests.web,com.ibm.itest.cloud.common.tests.topology",
- com.ibm.itest.cloud.common.core.elements;version="1.0.0",
- com.ibm.itest.cloud.common.core.factories;version="1.0.0",
- com.ibm.itest.cloud.common.core.nls;version="1.0.0",
- com.ibm.itest.cloud.common.core.pages;version="1.0.0",
+ com.ibm.itest.cloud.common.annotations,
+ com.ibm.itest.cloud.common.config;version="1.0.0";uses:="com.ibm.itest.cloud.common.tests.web,com.ibm.itest.cloud.common.tests.topology",
+ com.ibm.itest.cloud.common.factories;version="1.0.0",
+ com.ibm.itest.cloud.common.nls;version="1.0.0",
+ com.ibm.itest.cloud.common.pages;version="1.0.0",
+ com.ibm.itest.cloud.common.pages.elements;version="1.0.0",
  com.ibm.itest.cloud.common.tests.config;version="1.0.0",
  com.ibm.itest.cloud.common.tests.performance;version="1.0.0";uses:="com.ibm.itest.cloud.common.tests.web",
  com.ibm.itest.cloud.common.tests.scenario;version="1.0.0";

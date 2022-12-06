@@ -35,7 +35,7 @@ import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
-import com.ibm.itest.cloud.common.core.config.IUser;
+import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator.Position;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager;

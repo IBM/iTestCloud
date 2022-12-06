@@ -102,12 +102,12 @@ public WebElementWrapper(final WebPage page) {
 public WebElementWrapper(final WebPage page, final By findBy) {
 	super(page);
 	//waitForElement() in this class can't filter out the hidden element, use the one in super class instead
-	this.element = super.waitForElement(findBy, true, openTimeout());
+	this.element = page.waitForElement(findBy, true, openTimeout());
 }
 
 public WebElementWrapper(final WebPage page, final By findBy, final WebBrowserFrame frame) {
 	super(page, frame);
-	this.element = super.waitForElement(findBy, true, openTimeout());
+	this.element = page.waitForElement(findBy, true, openTimeout());
 }
 
 public WebElementWrapper(final WebPage page, final WebBrowserElement element) {
@@ -330,7 +330,7 @@ public WebBrowserElement getElement() {
  *
  * @return The parent element of <code>null</code> if there's no parent.
  */
-protected WebElementWrapper getParent() {
+public WebElementWrapper getParent() {
 	return this.parent;
 }
 
@@ -339,7 +339,7 @@ protected WebElementWrapper getParent() {
  *
  * @return The parent element of <code>null</code> if there's no parent.
  */
-protected WebBrowserElement getParentElement() {
+public WebBrowserElement getParentElement() {
 	if (this.parent == null) {
 		return null;
 	}
@@ -367,6 +367,41 @@ public boolean isDisplayed(final boolean recovery) {
 }
 
 /**
+ * @see WebPage#waitForElement(By)
+ */
+public WebBrowserElement waitForElement(final By locator) {
+	return waitForElement(locator, true /*displayed*/);
+}
+
+/**
+ * @see WebPage#waitForElement(By, boolean)
+ */
+public WebBrowserElement waitForElement(final By locator, final boolean displayed) {
+	return waitForElement(locator, true /*fail*/, timeout(), displayed);
+}
+
+/**
+ * @see WebPage#waitForElement(By, boolean, int)
+ */
+public WebBrowserElement waitForElement(final By locator, final boolean fail, final int timeout) {
+	return waitForElement(locator, fail, timeout, true /*displayed*/);
+}
+
+/**
+ * @see WebPage#waitForElement(By, boolean, int, boolean)
+ */
+public WebBrowserElement waitForElement(final By locator, final boolean fail, final int timeout, final boolean displayed) {
+	return waitForElement(locator, fail, timeout, displayed, true /*single*/);
+}
+
+/**
+ * @see WebPage#waitForElement(By, boolean, int, boolean, boolean)
+ */
+public WebBrowserElement waitForElement(final By locator, final boolean fail, final int timeout, final boolean displayed, final boolean single) {
+	return this.browser.waitForElement(this.element, locator, fail, timeout, displayed, single);
+}
+
+/**
  * Wait until having found an element searched using the given mechanism.
  * <p>
  * The element is searched in the entire document and with no frame.
@@ -380,30 +415,8 @@ public boolean isDisplayed(final boolean recovery) {
  * waiting for an element. Hence, {@link WebPageElement} waitForElement*
  * methods could be used instead.
  */
-protected WebBrowserElement waitForElement(final By locator, final int timeout) {
-	return waitForElement(null, locator, timeout, false/*no frame*/);
-}
-
-/**
- * Wait until having found an element searched using the given mechanism.
- * <p>
- * The element is searched in the entire document. If the element has to be
- * searched in a frame and it's found, then the matching frame is selected after
- * the method execution. That may impact further element researches...
- * </p>
- * @param locator The locator to use for the search
- * @param timeout Time to wait until giving up if the element is not found
- * @param frame Tells whether the element should be searched in a frame or
- * not.
- * @return The found web element as a {@link WebBrowserElement}.
- * @throws ScenarioFailedError If the element is not found before the given
- * timeout is reached.
- * TODO Try to get rid off this method by selecting the frame explicitly before
- * waiting for an element. Hence, {@link WebPageElement} waitForElement*
- * methods could be used instead.
- */
-protected WebBrowserElement waitForElement(final By locator, final int timeout, final boolean frame) {
-	return waitForElement(null, locator, timeout, frame);
+public WebBrowserElement waitForElement(final By locator, final int timeout) {
+	return waitForElement(locator, true /*fail*/, timeout);
 }
 
 /**
@@ -431,8 +444,8 @@ protected WebBrowserElement waitForElement(final By locator, final int timeout, 
  * waiting for an element. Hence, {@link WebPageElement} waitForElement*
  * methods could be used instead.
  */
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator) {
-	return waitForElement(parentElement, locator, timeout(), false/*no frame*/);
+public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator) {
+	return waitForElement(parentElement, locator, timeout());
 }
 
 /**
@@ -451,63 +464,117 @@ protected WebBrowserElement waitForElement(final WebBrowserElement parentElement
  * waiting for an element. Hence, {@link WebPageElement} waitForElement*
  * methods could be used instead.
  */
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout) {
-	return waitForElement(parentElement, locator, timeout, false);
+public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout) {
+	return this.browser.waitForElement(parentElement, locator, true /*fail*/, timeout);
 }
 
 /**
- * Wait until having found an element searched using the given mechanism.
- * <p>
- * If the element has to be searched in a frame and it's found, then the matching
- * frame is selected after the method execution. That may impact further element
- * researches...
- * </p>
- * @param parentElement The element from which the search has to be started.
- * If <code>null</code>, then search in the entire page.
- * @param locator The locator to use for the search
- * @param timeout Time to wait until giving up if the element is not found
- * @param frame Tells whether the element should be searched in a frame or
- * not.
- * @return The found web element as a {@link WebBrowserElement}.
- * @throws ScenarioFailedError If the element is not found before the given
- * timeout is reached.
- * TODO Try to get rid off this method by selecting the frame explicitly before
- * waiting for an element. Hence, {@link WebPageElement} waitForElement*
- * methods could be used instead.
+ * @see WebPage#waitForElements(By)
  */
-protected WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout, final boolean frame) {
-	return this.browser.waitForElement(parentElement, locator, false /*fail*/, timeout);
-
-//	// Get the search context
-//	SearchContext searchContext = parentElement == null ? (this.element == null ? this.browser : this.element) : parentElement;
-//
-//	// Try to find the element
-//	final boolean findInFrame = parentElement == null && frame;
-//	WebBrowserElement foundElement = findInFrame
-//		? this.browser.findElementInFrames(locator)
-//		: (WebBrowserElement) searchContext.findElement(locator);
-//
-//	// Wait until the element is found or timeout reached
-//	long maxTime = System.currentTimeMillis() + timeout * 1000;
-//	while (foundElement == null) {
-//		if (System.currentTimeMillis() > maxTime) { // Timeout
-//			throw new WaitElementTimeoutError("Cannot get the expected element "+locator);
-//		}
-//		sleep(1);
-//		foundElement = findInFrame
-//			? this.browser.findElementInFrames(locator)
-//			: (WebBrowserElement) searchContext.findElement(locator);
-//	}
-//
-//	// Return the found element
-//	return foundElement;
+public List<WebBrowserElement> waitForElements(final By locator) {
+	return waitForElements(locator, true /*fail*/);
 }
+
+/**
+ * @see WebPage#waitForElements(By, boolean)
+ */
+public List<WebBrowserElement> waitForElements(final By locator, final boolean fail) {
+	return waitForElements(locator, fail, timeout());
+}
+
+/**
+ * @see WebPage#waitForElements(By, int)
+ */
+public List<WebBrowserElement> waitForElements(final By locator, final boolean fail, final int timeout) {
+	return waitForElements(locator, fail, timeout, true /*displayed*/);
+}
+
+/**
+ * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
+ */
+public List<WebBrowserElement> waitForElements(final By locator, final boolean fail, final int timeout, final boolean displayed) {
+	return this.browser.waitForElements(this.element, locator, fail, timeout, displayed);
+}
+
+/**
+ * @see WebPage#waitForElements(By, int)
+ */
+public List<WebBrowserElement> waitForElements(final By locator, final int timeout) {
+	return waitForElements(locator, true /*fail*/, timeout);
+}
+
+/**
+ * @see WebPage#waitForElements(By, int, boolean)
+ */
+public List<WebBrowserElement> waitForElements(final By locator, final int timeout, final boolean fail) {
+	return waitForElements(locator, fail, timeout);
+}
+
+///**
+// * Wait until having found an element searched using the given mechanism.
+// * <p>
+// * The element is searched in the entire document. If the element has to be
+// * searched in a frame and it's found, then the matching frame is selected after
+// * the method execution. That may impact further element researches...
+// * </p>
+// * @param locator The locator to use for the search
+// * @param timeout Time to wait until giving up if the element is not found
+// * @param frame Tells whether the element should be searched in a frame or
+// * not.
+// * @return The found web element as a {@link WebBrowserElement}.
+// * @throws ScenarioFailedError If the element is not found before the given
+// * timeout is reached.
+// * TODO Try to get rid off this method by selecting the frame explicitly before
+// * waiting for an element. Hence, {@link WebPageElement} waitForElement*
+// * methods could be used instead.
+// */
+//public WebBrowserElement waitForElement(final By locator, final int timeout, final boolean frame) {
+//	return waitForElement(this.element, locator, timeout, frame);
+//}
 
 /**
  * Wait for loading of the wrapped element to complete.
  */
 public void waitForLoadingEnd() {
 	waitWhileBusy();
+}
+
+/**
+ * @see WebPage#waitForMultipleElements(boolean, int, By...)
+ */
+public WebBrowserElement[] waitForMultipleElements(final boolean fail, final int timeout, final By... locators) {
+	return this.browser.waitForMultipleElements(this.element, locators, fail, timeout);
+}
+
+///**
+// * Wait until having found an element searched using the given mechanism.
+// * <p>
+// * If the element has to be searched in a frame and it's found, then the matching
+// * frame is selected after the method execution. That may impact further element
+// * researches...
+// * </p>
+// * @param parentElement The element from which the search has to be started.
+// * If <code>null</code>, then search in the entire page.
+// * @param locator The locator to use for the search
+// * @param timeout Time to wait until giving up if the element is not found
+// * @param frame Tells whether the element should be searched in a frame or
+// * not.
+// * @return The found web element as a {@link WebBrowserElement}.
+// * @throws ScenarioFailedError If the element is not found before the given
+// * timeout is reached.
+// * TODO Try to get rid off this method by selecting the frame explicitly before
+// * waiting for an element. Hence, {@link WebPageElement} waitForElement*
+// * methods could be used instead.
+// */
+//public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout, final boolean frame) {
+//	return this.browser.waitForElement(parentElement, locator, true /*fail*/, timeout);
+//}
+
+/**
+ * @see WebPage#waitForMultipleElements(By...)
+ */
+public WebBrowserElement[] waitForMultipleElements(final By... locators) {
+	return waitForMultipleElements(true /*fail*/, timeout(), locators);
 }
 
 /**
@@ -549,7 +616,7 @@ public void waitWhileBusy(final int busyTimeout) {
  * @throws ScenarioFailedError If the wrapped element is still displayed after
  * the {@link Config#closeDialogTimeout()}.
  */
-protected void waitWhileDisplayed(final int seconds) throws ScenarioFailedError {
+public void waitWhileDisplayed(final int seconds) throws ScenarioFailedError {
 	if (this.element != null) {
 		try {
 			this.element.waitWhileDisplayed(seconds);

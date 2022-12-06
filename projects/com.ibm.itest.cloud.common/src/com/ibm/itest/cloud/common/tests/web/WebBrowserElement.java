@@ -28,7 +28,7 @@ import org.openqa.selenium.interactions.Coordinates;
 import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
-import com.ibm.itest.cloud.common.core.config.IUser;
+import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.tests.config.Timeouts;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;

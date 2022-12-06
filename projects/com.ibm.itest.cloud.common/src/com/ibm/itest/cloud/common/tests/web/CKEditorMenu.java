@@ -28,7 +28,7 @@ import org.openqa.selenium.By;
 public class CKEditorMenu extends WebMenu {
 
 public CKEditorMenu(final WebPage page) {
-	super(page, By.xpath("//iframe[contains(@class,'cke_panel_frame')]"), false, true);
+	super(page, By.xpath("//iframe[contains(@class,'cke_panel_frame')]"), false);
 }
 
 @Override

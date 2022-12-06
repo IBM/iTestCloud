@@ -20,7 +20,7 @@ import static com.ibm.itest.cloud.common.tests.utils.ByUtils.isRelativeLocator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
-import com.ibm.itest.cloud.common.core.elements.ExpandableElement;
+import com.ibm.itest.cloud.common.pages.elements.ExpandableElement;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 

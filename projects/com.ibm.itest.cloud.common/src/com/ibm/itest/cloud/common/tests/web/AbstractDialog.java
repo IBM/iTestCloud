@@ -721,7 +721,7 @@ public void waitForLoadingEnd() {
  * </p>
  */
 @Override
-protected void waitWhileDisplayed(final int seconds) throws ScenarioFailedError {
+public void waitWhileDisplayed(final int seconds) throws ScenarioFailedError {
 	if (this.element == null) {
 		setElement();
 	}

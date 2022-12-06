@@ -19,7 +19,7 @@ import static com.ibm.itest.cloud.common.tests.utils.EncryptionUtils.getSecretKe
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base64;
 
-import com.ibm.itest.cloud.common.core.config.IUser;
+import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.utils.EncryptionUtils;
 

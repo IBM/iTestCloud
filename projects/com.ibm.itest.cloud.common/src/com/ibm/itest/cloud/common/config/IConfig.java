@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.core.config;
+package com.ibm.itest.cloud.common.config;
 
 import com.ibm.itest.cloud.common.tests.topology.Topology;
 import com.ibm.itest.cloud.common.tests.web.WebBrowser;
