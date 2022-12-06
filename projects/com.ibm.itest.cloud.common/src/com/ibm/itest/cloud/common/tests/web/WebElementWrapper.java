@@ -367,35 +367,86 @@ public boolean isDisplayed(final boolean recovery) {
 }
 
 /**
- * @see WebPage#waitForElement(By)
+ * Wait until have found the element using given locator.
+ * <p>
+ * The desired element is searched in the wrapped element and with no frame.
+ * </p>
+ * @param locator The locator to find the element in the wrapped element.
+ * @return The web element as {@link WebBrowserElement}.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and asked to fail.
+ * @throws MultipleVisibleElementsError if several elements are found.
  */
 public WebBrowserElement waitForElement(final By locator) {
 	return waitForElement(locator, true /*displayed*/);
 }
 
 /**
- * @see WebPage#waitForElement(By, boolean)
+ * Wait until have found the element using given locator.
+ * <p>
+ * The desired element is searched in the wrapped element and with no frame.
+ * </p>
+ * @param locator The locator to find the element in the wrapped element.
+ * @param displayed When <code>true</code> then only displayed element can be returned.
+ * When <code>false</code> then the returned element can be either displayed or hidden.
+ * @return The web element as {@link WebBrowserElement}.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and asked to fail.
+ * @throws MultipleVisibleElementsError if several elements are found.
  */
 public WebBrowserElement waitForElement(final By locator, final boolean displayed) {
 	return waitForElement(locator, true /*fail*/, timeout(), displayed);
 }
 
 /**
- * @see WebPage#waitForElement(By, boolean, int)
+ * Wait until have found the element using given locator.
+ * <p>
+ * The desired element is searched in the wrapped element and with no frame.
+ * </p>
+ * @param locator The locator to find the element in the wrapped element.
+ * @param fail Specify whether to fail if none of the locators is find before timeout.
+ * @param timeout The time to wait before giving up the research.
+ * @return The web element as {@link WebBrowserElement} or <code>null</code>
+ * if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and asked to fail.
+ * @throws MultipleVisibleElementsError if several elements are found.
  */
 public WebBrowserElement waitForElement(final By locator, final boolean fail, final int timeout) {
 	return waitForElement(locator, fail, timeout, true /*displayed*/);
 }
 
 /**
- * @see WebPage#waitForElement(By, boolean, int, boolean)
+ * Wait until have found the element using given locator.
+ * <p>
+ * The desired element is searched in the wrapped element and with no frame.
+ * </p>
+ * @param locator The locator to find the element in the wrapped element.
+ * @param fail Specify whether to fail if none of the locators is find before timeout.
+ * @param timeout The time to wait before giving up the research.
+ * @param displayed When <code>true</code> then only displayed element can be returned.
+ * When <code>false</code> then the returned element can be either displayed or hidden.
+ * @return The web element as {@link WebBrowserElement} or <code>null</code>
+ * if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and asked to fail.
+ * @throws MultipleVisibleElementsError if several elements are found.
  */
 public WebBrowserElement waitForElement(final By locator, final boolean fail, final int timeout, final boolean displayed) {
 	return waitForElement(locator, fail, timeout, displayed, true /*single*/);
 }
 
 /**
- * @see WebPage#waitForElement(By, boolean, int, boolean, boolean)
+ * Wait until have found the element using given locator.
+ * <p>
+ * The desired element is searched in the wrapped element and with no frame.
+ * </p>
+ * @param locator The locator to find the element in the wrapped element.
+ * @param fail Specify whether to fail if none of the locators is find before timeout.
+ * @param timeout The time to wait before giving up the research.
+ * @param displayed When <code>true</code> then only displayed element can be returned.
+ * When <code>false</code> then the returned element can be either displayed or hidden.
+ * @param single Specify whether a single element is expected.
+ * @return The web element as {@link WebBrowserElement} or <code>null</code>
+ * if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and asked to fail.
+ * @throws MultipleVisibleElementsError if several elements are found and only single one was expected.
  */
 public WebBrowserElement waitForElement(final By locator, final boolean fail, final int timeout, final boolean displayed, final boolean single) {
 	return this.browser.waitForElement(this.element, locator, fail, timeout, displayed, single);
@@ -404,7 +455,7 @@ public WebBrowserElement waitForElement(final By locator, final boolean fail, fi
 /**
  * Wait until having found an element searched using the given mechanism.
  * <p>
- * The element is searched in the entire document and with no frame.
+ * The desired element is searched in the wrapped element and with no frame.
  * </p>
  * @param locator The locator to use for the search
  * @param timeout Time to wait until giving up if the element is not found
@@ -434,7 +485,7 @@ public WebBrowserElement waitForElement(final By locator, final int timeout) {
  * </ul>
  * </p>
  * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
+ * if <code>null</code>, then search in the wrapped element.
  * @param locator The locator to find the element in the current page.
  * @return The web element as {@link WebBrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
@@ -454,7 +505,7 @@ public WebBrowserElement waitForElement(final WebBrowserElement parentElement, f
  * The element is searched with no frame.
  * </p>
  * @param parentElement The element from which the search has to be started.
- * If <code>null</code>, then search in the entire page.
+ * if <code>null</code>, then search in the wrapped element.
  * @param locator The locator to use for the search
  * @param timeout Time to wait until giving up if the element is not found
  * @return The found web element as a {@link WebBrowserElement}.
@@ -465,46 +516,101 @@ public WebBrowserElement waitForElement(final WebBrowserElement parentElement, f
  * methods could be used instead.
  */
 public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout) {
-	return this.browser.waitForElement(parentElement, locator, true /*fail*/, timeout);
+	return this.browser.waitForElement(parentElement != null ? parentElement : this.element, locator, true /*fail*/, timeout);
 }
 
 /**
- * @see WebPage#waitForElements(By)
+ * Wait until have found one or several elements using given locator.
+ * <p>
+ * Only fail if specified and after having waited the given timeout.
+ * </p>
+ * @param locator Locator to find the element in the current page.
+ * @return A {@link List} of web element as {@link WebBrowserElement}.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and
+ * asked to fail.
  */
 public List<WebBrowserElement> waitForElements(final By locator) {
 	return waitForElements(locator, true /*fail*/);
 }
 
 /**
- * @see WebPage#waitForElements(By, boolean)
+ * Wait until have found one or several elements using given locator.
+ * <p>
+ * Only fail if specified and after having waited the given timeout.
+ * </p>
+ * @param locator Locator to find the element in the current page.
+ * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @return A {@link List} of web element as {@link WebBrowserElement}. Might
+ * be empty if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and
+ * asked to fail.
  */
 public List<WebBrowserElement> waitForElements(final By locator, final boolean fail) {
 	return waitForElements(locator, fail, timeout());
 }
 
 /**
- * @see WebPage#waitForElements(By, int)
+ * Wait until have found one or several elements using given locator.
+ * <p>
+ * Only fail if specified and after having waited the given timeout.
+ * </p>
+ * @param locator Locator to find the element in the current page.
+ * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param timeout The time to wait before giving up the research
+ * @return A {@link List} of web element as {@link WebBrowserElement}. Might
+ * be empty if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and
+ * asked to fail.
  */
 public List<WebBrowserElement> waitForElements(final By locator, final boolean fail, final int timeout) {
 	return waitForElements(locator, fail, timeout, true /*displayed*/);
 }
 
 /**
- * @see WebBrowser#waitForElements(WebBrowserElement, By, boolean, int, boolean)
+ * Wait until have found one or several elements using given locator.
+ * <p>
+ * Only fail if specified and after having waited the given timeout.
+ * </p>
+ * @param locator Locator to find the element in the current page.
+ * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param timeout The time to wait before giving up the research
+ * @param displayed When <code>true</code> then only displayed element can be returned.
+ * When <code>false</code> then the returned element can be either displayed or hidden.
+ * @return A {@link List} of web element as {@link WebBrowserElement}. Might
+ * be empty if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and
+ * asked to fail.
  */
 public List<WebBrowserElement> waitForElements(final By locator, final boolean fail, final int timeout, final boolean displayed) {
 	return this.browser.waitForElements(this.element, locator, fail, timeout, displayed);
 }
 
 /**
- * @see WebPage#waitForElements(By, int)
+ * Wait until have found one or several elements using given locator.
+ * <p>
+ * Only fail if specified and after having waited the given timeout.
+ * </p>
+ * @param locator Locator to find the element in the current page.
+ * @param timeout The time to wait before giving up the research
+ * @return A {@link List} of web element as {@link WebBrowserElement}.
+ * @throws WaitElementTimeoutError if no element was found before the timeout.
  */
 public List<WebBrowserElement> waitForElements(final By locator, final int timeout) {
 	return waitForElements(locator, true /*fail*/, timeout);
 }
 
 /**
- * @see WebPage#waitForElements(By, int, boolean)
+ * Wait until have found one or several elements using given locator.
+ * <p>
+ * Only fail if specified and after having waited the given timeout.
+ * </p>
+ * @param locator Locator to find the element in the current page.
+ * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param timeout The time to wait before giving up the research
+ * @return A {@link List} of web element as {@link WebBrowserElement}. Might
+ * be empty if no element was found before the timeout and asked not to fail.
+ * @throws WaitElementTimeoutError if no element was found before the timeout and
+ * asked to fail.
  */
 public List<WebBrowserElement> waitForElements(final By locator, final int timeout, final boolean fail) {
 	return waitForElements(locator, fail, timeout);
@@ -540,7 +646,25 @@ public void waitForLoadingEnd() {
 }
 
 /**
- * @see WebPage#waitForMultipleElements(boolean, int, By...)
+ * Wait until at least one element is found using each of the given locator.
+ * <p>
+ * That method stores each found element using the given locators in the
+ * the returned array, hence it may have more than one non-null slot.
+ * </p><p>
+ * Note that the method stop to search as soon as at least one element is found.
+ * Hence, when several elements are found and returned in the array, that means
+ * they have been found in the same loop. The timeout is only reached when
+ * <b>no</b> element is found...
+ * </p><p>
+ * Note also that only displayed elements are returned.
+ * </p>
+ * @param locators List of locators to use to find the elements in the current page.
+ * @param fail Specify whether to fail if none of the locators is find before timeout
+ * @param timeout The time to wait before giving up the research
+ * @return An array with one non-null slot per element found before timeout
+ * occurs or <code>null</code> if none was found and it has been asked not to fail.
+ * @throws WaitElementTimeoutError if no element is found before the timeout occurs
+ * and it has been asked to fail.
  */
 public WebBrowserElement[] waitForMultipleElements(final boolean fail, final int timeout, final By... locators) {
 	return this.browser.waitForMultipleElements(this.element, locators, fail, timeout);
@@ -571,7 +695,21 @@ public WebBrowserElement[] waitForMultipleElements(final boolean fail, final int
 //}
 
 /**
- * @see WebPage#waitForMultipleElements(By...)
+ * Wait until at least one element is found using each of the given locator.
+ * <p>
+ * That method stores each found element using the given locators in the
+ * the returned array, hence it may have more than one non-null slot.
+ * </p><p>
+ * Note that the method stop to search as soon as at least one element is found.
+ * Hence, when several elements are found and returned in the array, that means
+ * they have been found in the same loop. The timeout is only reached when
+ * <b>no</b> element is found...
+ * </p><p>
+ * Note also that only displayed elements are returned.
+ * </p>
+ * @param locators List of locators to use to find the elements in the current page.
+ * @return An array with one non-null slot per element found before timeout occurs.
+ * @throws WaitElementTimeoutError if no element is found before the timeout occurs.
  */
 public WebBrowserElement[] waitForMultipleElements(final By... locators) {
 	return waitForMultipleElements(true /*fail*/, timeout(), locators);
