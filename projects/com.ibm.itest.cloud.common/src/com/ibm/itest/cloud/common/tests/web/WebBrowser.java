@@ -3453,26 +3453,6 @@ public WebBrowserElement waitForTextPresent(final WebBrowserElement parentElemen
 
 }
 
-protected void waitInitialPageLoading(final int seconds) {
-	// First wait for initial loading message to appear
-	long timeout = 5000 + System.currentTimeMillis(); // 5 seconds
-	while (findElement(By.id("net-jazz-ajax-InitialLoadMessage"), false/*can fail*/) == null) {
-		if (System.currentTimeMillis() > timeout) {
-			// message never appeared, give up
-			return;
-		}
-	}
-
-	// Second, wait for initial loading message to vanish
-	timeout = seconds * 1000 + System.currentTimeMillis();
-	while (findElement(By.id("net-jazz-ajax-InitialLoadMessage"), false/*can fail*/) != null) {
-		if (System.currentTimeMillis() > timeout) {
-			// message never vanish, throw exception
-			throw new ScenarioFailedError("Initial page loading never finish.");
-		}
-	}
-}
-
 /**
  *  Wait while an element with a given locator is displayed in the page.
  *

@@ -313,7 +313,7 @@ abstract protected Class<P> getTitlePageClass();
  * @return The browser URL as a {@link String}.
  */
 protected String waitForBrowserUrl() {
-	this.browser.waitInitialPageLoading(openTimeout());
+//	this.browser.waitInitialPageLoading(openTimeout());
 	String pageUrl = this.browser.getCurrentUrl();
 	if (DEBUG) debugPrintln("		  -> browser URL: '"+pageUrl+"'");
 	return pageUrl;
