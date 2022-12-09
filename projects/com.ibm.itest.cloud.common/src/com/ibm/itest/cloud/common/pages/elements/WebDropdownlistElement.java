@@ -24,10 +24,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.interactions.Action;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * This class represents a generic dropdown list element and manages all its common actions.

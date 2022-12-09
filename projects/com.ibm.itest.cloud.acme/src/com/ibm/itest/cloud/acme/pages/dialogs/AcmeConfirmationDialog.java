@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.acme.pages.dialogs;
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * This class represents a generic confirmation dialog and manages all its common actions.

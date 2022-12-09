@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.scenario.errors.IncorrectTitleError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * This class wraps a titled web element and add some actions and functionalities

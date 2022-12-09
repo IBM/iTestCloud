@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.acme.pages.dialogs;
 
 import java.util.regex.Pattern;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * This class defines and manages a generic delete dialog.

@@ -16,8 +16,8 @@ package com.ibm.itest.cloud.common.tests.config;
 import static com.ibm.itest.cloud.common.tests.config.Timeouts.*;
 
 import com.ibm.itest.cloud.common.config.IConfig;
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

@@ -16,8 +16,8 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * This class represents and manages a node (item) of the main menu element of a web page

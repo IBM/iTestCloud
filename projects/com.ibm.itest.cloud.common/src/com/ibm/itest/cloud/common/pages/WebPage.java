@@ -11,14 +11,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages;
 
+import static com.ibm.itest.cloud.common.pages.WebPage.ClickType.CLICK;
 import static com.ibm.itest.cloud.common.tests.config.Timeouts.DELAY_AFTER_CLICK_LINK_TIMEOUT;
 import static com.ibm.itest.cloud.common.tests.config.Timeouts.DELAY_BEFORE_CLICK_LINK_TIMEOUT;
 import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.tests.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.tests.web.WebPage.ClickType.CLICK;
 import static java.util.regex.Pattern.DOTALL;
 
 import java.io.File;
@@ -36,7 +36,6 @@ import org.openqa.selenium.interactions.Action;
 import com.ibm.itest.cloud.common.config.IConfig;
 import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.nls.NlsMessages;
-import com.ibm.itest.cloud.common.pages.IWebPage;
 import com.ibm.itest.cloud.common.pages.elements.*;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.config.User;
@@ -47,6 +46,7 @@ import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
 import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
 import com.ibm.itest.cloud.common.tests.utils.FileUtil;
+import com.ibm.itest.cloud.common.tests.web.WebPageWorkaround;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

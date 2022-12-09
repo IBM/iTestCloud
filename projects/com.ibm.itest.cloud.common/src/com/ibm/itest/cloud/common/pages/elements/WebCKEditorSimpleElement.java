@@ -16,8 +16,8 @@ package com.ibm.itest.cloud.common.pages.elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * Class to handle a CKEditor simple element.

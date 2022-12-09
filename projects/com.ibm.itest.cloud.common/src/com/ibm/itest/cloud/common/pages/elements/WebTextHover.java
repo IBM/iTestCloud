@@ -17,9 +17,9 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
 
 import org.openqa.selenium.*;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractWindow;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * Abstract class for any window opened as a rich hover in a browser page.

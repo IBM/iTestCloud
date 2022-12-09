@@ -15,7 +15,7 @@ package com.ibm.itest.cloud.acme.pages.elements;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.tests.web.WebPage;
+import com.ibm.itest.cloud.common.pages.WebPage;
 
 /**
  * This class defines and manages the <b>Profile</b> menu element.

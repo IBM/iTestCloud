@@ -20,11 +20,11 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
 import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.WebPage.ClickType;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
-import com.ibm.itest.cloud.common.tests.web.WebPage.ClickType;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

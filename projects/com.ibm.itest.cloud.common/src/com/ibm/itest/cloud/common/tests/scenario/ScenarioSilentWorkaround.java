@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.tests.scenario;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * Manage a workaround applied when running a scenario.

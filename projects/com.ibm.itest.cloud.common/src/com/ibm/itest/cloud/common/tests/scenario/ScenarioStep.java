@@ -20,9 +20,9 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.common.pages.elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
-import com.ibm.itest.cloud.common.tests.web.WebPage;
+import com.ibm.itest.cloud.common.pages.WebPage;
 
 /**
  * Abstract class for any window opened as a rich hover in a browser page.

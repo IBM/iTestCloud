@@ -18,10 +18,10 @@ import static com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion.E
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 
 /**

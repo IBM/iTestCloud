@@ -19,8 +19,8 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrint
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * This class represents and manages the main menu element of a web page

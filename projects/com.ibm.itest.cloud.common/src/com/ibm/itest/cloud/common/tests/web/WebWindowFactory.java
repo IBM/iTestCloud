@@ -19,6 +19,7 @@ import java.lang.reflect.Modifier;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.factories.Factory;
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractWindow;
 
 /**

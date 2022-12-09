@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.tests.web.WebPage;
+import com.ibm.itest.cloud.common.pages.WebPage;
 
 /**
  * This class represents a generic tab and manages all its common actions.

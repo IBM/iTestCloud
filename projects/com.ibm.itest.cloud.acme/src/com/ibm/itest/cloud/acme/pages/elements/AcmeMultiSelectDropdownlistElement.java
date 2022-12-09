@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;

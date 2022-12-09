@@ -17,6 +17,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
 
 import java.util.*;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;

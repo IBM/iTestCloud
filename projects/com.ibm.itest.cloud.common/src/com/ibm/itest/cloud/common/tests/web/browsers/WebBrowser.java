@@ -36,6 +36,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator.Position;

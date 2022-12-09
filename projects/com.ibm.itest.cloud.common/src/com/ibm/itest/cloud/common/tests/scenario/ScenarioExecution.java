@@ -29,13 +29,13 @@ import org.junit.runners.model.Statement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
 import com.ibm.itest.cloud.common.tests.utils.*;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

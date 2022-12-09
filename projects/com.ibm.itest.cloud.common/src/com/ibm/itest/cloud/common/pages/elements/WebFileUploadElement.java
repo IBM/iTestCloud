@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
+import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * Manage a basic file upload field consisting of nothing but a file input element.
