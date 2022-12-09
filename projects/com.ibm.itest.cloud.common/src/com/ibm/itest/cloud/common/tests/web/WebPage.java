@@ -2462,7 +2462,7 @@ public <RH extends WebTextHover> RH richHoverOverLink(final WebBrowserElement li
  * @return The selected element as {@link WebBrowserElement}.
  * @throws ScenarioFailedError if no item matches the expected selection.
  */
-protected WebBrowserElement select(final By findBy, final String selection) {
+public WebBrowserElement select(final By findBy, final String selection) {
 	return select(findBy, Pattern.compile(Pattern.quote(selection)));
 }
 
@@ -2478,7 +2478,7 @@ protected WebBrowserElement select(final By findBy, final String selection) {
  * @return The selected element as {@link WebBrowserElement}.
  * @throws ScenarioFailedError if no item matches the expected selection.
  */
-protected WebBrowserElement select(final By findBy, final Pattern pattern) {
+public WebBrowserElement select(final By findBy, final Pattern pattern) {
 	WebBrowserElement listElement = waitForElement(findBy);
 	return select(listElement, pattern);
 }
@@ -2494,7 +2494,7 @@ protected WebBrowserElement select(final By findBy, final Pattern pattern) {
  * @return The selected element as {@link WebBrowserElement}.
  * @throws ScenarioFailedError if no item matches the expected selection.
  */
-protected WebBrowserElement select(final WebBrowserElement listElement, final Pattern pattern) {
+public WebBrowserElement select(final WebBrowserElement listElement, final Pattern pattern) {
 	WebBrowserElement[] selectedElements = this.browser.select(listElement, By.xpath(".//option"), pattern);
 	return selectedElements[0];
 }
@@ -2510,7 +2510,7 @@ protected WebBrowserElement select(final WebBrowserElement listElement, final Pa
  * @return The selected element as {@link WebBrowserElement}.
  * @throws ScenarioFailedError if no item matches the expected selection.
  */
-protected WebBrowserElement select(final WebBrowserElement listElement, final String selection) {
+public WebBrowserElement select(final WebBrowserElement listElement, final String selection) {
 	return select(listElement, Pattern.compile(Pattern.quote(selection)));
 }
 
@@ -2697,7 +2697,7 @@ public String toString() {
  * @see WebBrowser#typePassword(WebBrowserElement, int, IUser)
  * @since 6.0
  */
-protected void typePassword(final WebBrowserElement element, final IUser user) {
+public void typePassword(final WebBrowserElement element, final IUser user) {
 	this.browser.typePassword(element, timeout(), user);
 }
 
@@ -2729,7 +2729,7 @@ protected void typePassword(final WebBrowserElement element, final IUser user) {
  * @see #waitForElement(By, By)
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected WebBrowserElement typeText(final By parentBy, final By findBy, final String text) {
+public WebBrowserElement typeText(final By parentBy, final By findBy, final String text) {
 	WebBrowserElement element = waitForElement(parentBy, findBy);
 	this.browser.typeText(element, text, Keys.TAB, true/*clear*/, timeout());
 	return element;
@@ -2763,7 +2763,7 @@ protected WebBrowserElement typeText(final By parentBy, final By findBy, final S
  * @see #waitForElement(By, By)
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected WebBrowserElement typeText(final By parentBy, final By findBy, final String text, final boolean clear) {
+public WebBrowserElement typeText(final By parentBy, final By findBy, final String text, final boolean clear) {
 	WebBrowserElement element = waitForElement(parentBy, findBy);
 	this.browser.typeText(element, text, Keys.TAB, clear, timeout());
 	return element;
@@ -2794,7 +2794,7 @@ protected WebBrowserElement typeText(final By parentBy, final By findBy, final S
  * @see #waitForElement(By)
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected WebBrowserElement typeText(final By findBy, final String text) {
+public WebBrowserElement typeText(final By findBy, final String text) {
 	WebBrowserElement element = waitForElement(findBy);
 	this.browser.typeText(element, text, Keys.TAB, true/*clear*/, timeout());
 	return element;
@@ -2825,7 +2825,7 @@ protected WebBrowserElement typeText(final By findBy, final String text) {
  * @see #waitForElement(By)
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected WebBrowserElement typeText(final By findBy, final String text, final boolean clear) {
+public WebBrowserElement typeText(final By findBy, final String text, final boolean clear) {
 	WebBrowserElement element = waitForElement(findBy);
 	this.browser.typeText(element, text, Keys.TAB, clear, timeout());
 	return element;
@@ -2855,7 +2855,7 @@ protected WebBrowserElement typeText(final By findBy, final String text, final b
  * @see #waitForElement(By)
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected WebBrowserElement typeText(final By findBy, final String text, final Keys key) {
+public WebBrowserElement typeText(final By findBy, final String text, final Keys key) {
 	WebBrowserElement element = waitForElement(findBy);
 	this.browser.typeText(element, text, key, true/*clear*/, timeout());
 	return element;
@@ -2888,7 +2888,7 @@ protected WebBrowserElement typeText(final By findBy, final String text, final K
  * @see #waitForElement(WebBrowserElement, By)
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected WebBrowserElement typeText(final WebBrowserElement parentElement, final By findBy, final String text) {
+public WebBrowserElement typeText(final WebBrowserElement parentElement, final By findBy, final String text) {
 	WebBrowserElement element = waitForElement(parentElement, findBy);
 	this.browser.typeText(element, text, Keys.TAB, true/*clear*/, timeout());
 	return element;
@@ -2913,7 +2913,7 @@ protected WebBrowserElement typeText(final WebBrowserElement parentElement, fina
  *
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected void typeText(final WebBrowserElement inputElement, final String text) {
+public void typeText(final WebBrowserElement inputElement, final String text) {
 	this.browser.typeText(inputElement, text, Keys.TAB, true/*clear*/, timeout());
 }
 
@@ -2939,7 +2939,7 @@ protected void typeText(final WebBrowserElement inputElement, final String text)
  *
  * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
  */
-protected void typeText(final WebBrowserElement inputElement, final String text, final Keys key) {
+public void typeText(final WebBrowserElement inputElement, final String text, final Keys key) {
 	this.browser.typeText(inputElement, text, key, true/*clear*/, timeout());
 }
 

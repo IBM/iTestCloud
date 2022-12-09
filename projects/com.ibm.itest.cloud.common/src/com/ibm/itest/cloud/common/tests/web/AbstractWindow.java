@@ -122,16 +122,10 @@ protected void close(final boolean validate) {
 	// Wait for the window to vanish
 	waitWhileDisplayed(closeTimeout());
 
-//	// Go back to browser frame used before opening the window
-//	switchToBrowserFrame();
-
 	// Add performance result
 	if (PERFORMANCE_ENABLED) {
 		this.page.addPerfResult(RegressionType.Server, this.page.getTitle());
 	}
-
-	// Last pause to be sure the window will be over
-//	pause(500);
 }
 
 /**
@@ -162,9 +156,9 @@ protected abstract String getCloseButton(boolean validate);
 
 @Override
 public boolean isCloseable() {
-
 	// Get web element for close button
-	WebBrowserElement closeButtonElement = deepFindElement(getCloseButton(true/*validate*/));
+	WebBrowserElement closeButtonElement =
+		this.element.waitForElement(By.xpath(getCloseButton(true/*validate*/)), tinyTimeout());
 
 	// If button is found then return whether it's enabled or not
 	if (closeButtonElement != null) {

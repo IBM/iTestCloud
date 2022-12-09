@@ -34,18 +34,6 @@ public WebInFrameDialog(final WebPage page, final By findBy, final WebBrowserFra
 /**
  * {@inheritDoc}
  * <p>
- * Select the frame before clicking on the button.
- * </p>
- */
-@Override
-protected void clickButton(final String xpath) {
-	selectFrame();
-	super.clickButton(xpath);
-}
-
-/**
- * {@inheritDoc}
- * <p>
  * Select the frame before performing the close action.
  * </p>
  */
@@ -53,30 +41,6 @@ protected void clickButton(final String xpath) {
 protected void closeAction(final boolean cancel) {
 	selectFrame();
 	super.closeAction(cancel);
-}
-
-/**
- * {@inheritDoc}
- * <p>
- * Select the frame before looking for the element.
- * </p>
- */
-@Override
-protected WebBrowserElement findElement(final By by, final boolean recovery) {
-	selectFrame();
-	return super.findElement(by, recovery);
-}
-
-/**
- * {@inheritDoc}
- * <p>
- * Select the frame before looking for the element.
- * </p>
- */
-@Override
-protected WebBrowserElement findElement(final String xpath, final boolean recovery) {
-	selectFrame();
-	return findElement(By.xpath(xpath), recovery);
 }
 
 /**

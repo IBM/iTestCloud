@@ -1951,10 +1951,8 @@ public String toString() {
  * timeout.
  * @throws ScenarioFailedError If there are several found elements as only
  * one is expected.
- * @since 6.0.0
  */
 public WebBrowserElement waitForElement(final By locator) {
-
 	// Select the frame again if necessary
 	if (this.frame != this.browser.frame) {
 		this.browser.selectFrame(this.frame, false/*store*/);

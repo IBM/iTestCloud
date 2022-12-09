@@ -574,7 +574,7 @@ protected WebBrowserElement waitForItemElement(final String itemLabel, final boo
 	By itemBy = By.xpath(getItemXpath(itemLabel));
 
 	// Get item element
-	WebBrowserElement itemElement = findElement(itemBy, displayed, false/*no recovery*/);
+	WebBrowserElement itemElement = this.element.waitForElement(itemBy, displayed);
 
 	// Try to workaround when item has not be found
 	if (itemElement == null) {
@@ -583,7 +583,7 @@ protected WebBrowserElement waitForItemElement(final String itemLabel, final boo
 		long timeout = seconds * 1000 + System.currentTimeMillis();
 		while (itemElement == null) {
 			if (System.currentTimeMillis() > timeout) break;
-			itemElement = findElement(itemBy, displayed, false/*no recovery*/);
+			itemElement = this.element.waitForElement(itemBy, displayed);
 		}
 	}
 

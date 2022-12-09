@@ -13,14 +13,16 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.tests.web;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.LINE_SEPARATOR;
-
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
 
+import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
+import com.ibm.itest.cloud.common.tests.web.WebPage.ClickType;
 
 /**
  * This class wraps a web element and add some actions and functionalities
@@ -30,30 +32,13 @@ import com.ibm.itest.cloud.common.tests.scenario.errors.*;
  * There's still no public action or functionalities at this level, only common
  * operations for subclasses usage:
  * <ul>
- * <li>{@link #clickButton(String)}: Click on the button found using the given xpath.</li>
- * <li>{@link #clickButton(String, int)}: Click on the button found using the given xpath.</li>
- * <li>{@link #findElement(By, boolean)}: Find an element using the given search
- * mechanism relatively to the wrapped element.</li>
- * <li>{@link #findElement(String, boolean)}: Find an element using the given
- * xpath relatively to the wrapped element.</li>
  * <li>{@link #waitWhileDisplayed(int)}: Wait until the current window is closed.</li>
  * <li>{@link #waitForElement(By)}: Wait until having found an element
  * searched using the given mechanism.</li>
  * </ul>
  * </p>
  */
-abstract public class WebElementWrapper extends WebPageElement {
-
-	/**
-	 * Locator for title element.
-	 * <p>
-	 * Design Backward compatibility with 4.0.0.1 version
-	 * </p>
-	 */
-	protected static final By[] TITLE_POSSIBLE_BYS = new By[] {
-		By.xpath(".//*[@dojoattachpoint='_headerPrimary']"),
-		By.xpath(".//*[@dojoattachpoint='_primaryHeaderText']"),
-	};
+public abstract class WebElementWrapper extends WebPageElement {
 
 	/**
 	 * The wrapped web element.
@@ -125,165 +110,43 @@ public WebElementWrapper(final WebPage page, final WebBrowserFrame frame) {
 }
 
 /**
- * Click on the button found using the given xpath.
+ * Click on the button found relatively to the wrapped web element.
  * <p>
- * TODO Remove the {@link #findElementInFrames(By)} call
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * <li>there's no verification that the button turns to enable after having clicked
+ * on it</li>
  * </p>
- * @param xpath The Xpath to find the button
- * @see #findElement(String, boolean)
+ * @param buttonBy The mechanism to find the button in the current page
+ * @return The web element (as a {@link WebBrowserElement}) found in the page
+ *
+ * @see #waitForElement(WebBrowserElement, By)
  * @see WebBrowser#clickButton(WebBrowserElement, int, boolean)
  */
-protected void clickButton(final String xpath) {
-	clickButton(xpath, timeout());
+public WebBrowserElement clickButton(final By buttonBy) {
+	return this.page.clickButton(this.element, buttonBy);
 }
 
 /**
- * Click on the button found using the given xpath.
+ * Click on the button found relatively to the given parent web element.
  * <p>
- * TODO Remove the {@link #findElementInFrames(By)} call
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * <li>there's no verification that the button turns to enable after having clicked
+ * on it</li>
  * </p>
- * @param xpath The Xpath to find the button
- * @param timeout Timeout while waiting for the button to become enabled
- * @see #findElement(String, boolean)
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param buttonBy The mechanism to find the button in the current page
+ * @return The web element (as a {@link WebBrowserElement}) found in the page
+ *
+ * @see #waitForElement(WebBrowserElement, By)
  * @see WebBrowser#clickButton(WebBrowserElement, int, boolean)
  */
-protected void clickButton(final String xpath, final int timeout) {
-
-	// Get button element
-	WebBrowserElement buttonElement = deepFindElement(xpath);
-
-	// Throw an error if the button is unavailable.
-	if(buttonElement == null) {
-		throw new WaitElementTimeoutError("Button '" + xpath + "' could not be found");
-	}
-
-	// Click on button
-	this.browser.clickButton(buttonElement, timeout, false /*validate*/);
-}
-
-/**
- * Perform a deep search to find the element from the given xpath.
- * <p>
- * Initially searching for the web element by using {@link #findElement(By, boolean)}.
- * If it's not found using this method, then try to look for the element in possible
- * frames of the wrapped element.
- * </p>
- * @param xpath The xpath of the web element to find
- * @return The web element as a {@link WebBrowserElement} or <code>null</code>
- * if it has not been found.
- */
-protected WebBrowserElement deepFindElement(final String xpath) {
-
-	// Look for the element using regular method
-	WebBrowserElement buttonElement = findElement(xpath, false/*no recovery*/);
-
-	// If not found , then try to find it in another frame
-	if (buttonElement == null) {
-		buttonElement = findElementInFrames(By.xpath(xpath));
-	}
-
-	// Return the found element
-	return buttonElement;
-}
-
-/**
- * Find an element using the given mechanism relatively to the wrapped element.
- * <p>
- * Note that if a frame is selected, then the element is searched relatively to
- * this frame instead.
- * </p>
- * @param by The mechanism to find the window's element
- * @param recovery Tells whether recovery is allowed when searching the element.
- * @return The found element as a {@link WebBrowserElement} or <code>null</code>
- * if the element was not found and recovery was not allowed.
- * @throws NoSuchElementException If the element is not found at the given
- * xpath and recovery was allowed.
- * @see WebBrowser#findElement(By)
- */
-protected WebBrowserElement findElement(final By by, final boolean recovery) {
-	return findElement(by, true/*displayed*/, recovery);
-}
-
-/**
- * Find an element using the given mechanism relatively to the wrapped element.
- * <p>
- * Note that if a frame is selected, then the element is searched relatively to
- * this frame instead.
- * </p>
- * @param by The mechanism to find the window's element
- * @param displayed When <code>true</code> then only displayed element can be returned.
- * When <code>false</code> then the returned element can be either displayed or hidden.
- * @param recovery Tells whether recovery is allowed when searching the element.
- * @return The found element as a {@link WebBrowserElement} or <code>null</code>
- * if the element was not found and recovery was not allowed.
- * @throws NoSuchElementException If the element is not found at the given
- * xpath and recovery was allowed.
- * @see WebBrowser#findElement(By)
- */
-protected WebBrowserElement findElement(final By by, final boolean displayed, final boolean recovery) {
-
-	// Find elements
-	List<WebElement> elements;
-	if (this.frames[2] != null) {
-		elements = this.browser.findElements(by, displayed, recovery);
-	} else if (this.element == null) {
-		elements = this.browser.findElements(by, displayed, recovery);
-	} else {
-		elements = this.element.findElements(by, displayed, recovery);
-	}
-
-	// Nothing was found, check frame
-	if (elements == null || elements.size() == 0) {
-		if (this.frames[2] == null && this.frames[1] != null) {
-			selectFrame();
-			elements = this.browser.findElements(by, displayed, recovery);
-		}
-		if (elements == null || elements.size() == 0) return null;
-	}
-
-	// Check element uniqueness
-	if (elements.size() > 1) {
-		if (this.element.isDisplayed(false/*recovery*/)) {
-			throw new ScenarioFailedError("Unexpected multiple elements found." + LINE_SEPARATOR
-					+ "			-> " + by + LINE_SEPARATOR
-					+ "			-> # found: " + elements.size());
-		}
-		return null;
-	}
-
-	// Return the found element
-	return (WebBrowserElement) elements.get(0);
-}
-
-/**
- * Find an element using the given xpath relatively to the wrapped element.
- * <p>
- * Note that if a frame is selected, then the element is searched relatively to
- * this frame instead.
- * </p>
- * @param xpath The xpath to find the window's element
- * @param recovery Tells whether recovery is allowed when searching the element.
- * @return The found element as a {@link WebBrowserElement} or <code>null</code>
- * if the element was not found and recovery was not allowed.
- * @throws NoSuchElementException If the element is not found at the given
- * xpath and recovery was allowed.
- * @see #findElement(By, boolean)
- */
-protected WebBrowserElement findElement(final String xpath, final boolean recovery) {
-
-	// Use given path if there's an active frame
-	if (this.frames[2] != null) {
-		return findElement(By.xpath(xpath), recovery);
-	}
-
-	// Make xpath relative
-	String relativeXpath = xpath;
-	if (relativeXpath.startsWith("/")) {
-		relativeXpath = "." + xpath;
-	}
-
-	// Find element using xpath mechanism
-	return findElement(By.xpath(relativeXpath), recovery);
+public WebBrowserElement clickButton(final WebBrowserElement parentElement, final By buttonBy) {
+	return this.page.clickButton((parentElement != null) ? parentElement : this.element, buttonBy);
 }
 
 /**
@@ -364,6 +227,269 @@ public String getText() {
  */
 public boolean isDisplayed(final boolean recovery) {
 	return this.element.isDisplayed(recovery);
+}
+
+/**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkBy The link locator on which to click.
+ * @param findBy The locator of the element opened after clicking on the link element.
+ * @param elementClass The class associated with the opened element.
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link WebElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends WebElementWrapper> P openElementUsingLink(final By linkBy, final By findBy, final Class<P> elementClass, final String... elementData) {
+	return getPage().openElementUsingLink(this.element.waitForElement(linkBy), findBy, elementClass, elementData);
+}
+
+/**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkBy The link locator on which to click.
+ * @param elementClass The class associated with the opened element.
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link WebElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends WebElementWrapper> P openElementUsingLink(final By linkBy, final Class<P> elementClass, final String... elementData) {
+	return getPage().openElementUsingLink(this.element.waitForElement(linkBy), elementClass, elementData);
+}
+
+/**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkElement The link on which to click.
+ * @param findBy The locator of the element opened after clicking on the link element.
+ * @param elementClass The class associated with the opened element.
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link WebElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends WebElementWrapper> P openElementUsingLink(final WebBrowserElement linkElement, final By findBy, final Class<P> elementClass, final String... elementData) {
+	return getPage().openElementUsingLink(linkElement, findBy, elementClass, elementData);
+}
+
+/**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkElement The link on which to click.
+ * @param elementClass The class associated with the opened element.
+ * @param clickType The type of click to make on the link element to open the new element as {@link ClickType}
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link WebElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends WebElementWrapper> P openElementUsingLink(final WebBrowserElement linkElement, final Class<P> elementClass, final ClickType clickType, final String... elementData) {
+	return getPage().openElementUsingLink(linkElement, elementClass, clickType, elementData);
+}
+
+/**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkElement The link on which to click.
+ * @param elementClass The class associated with the opened element.
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link WebElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends WebElementWrapper> P openElementUsingLink(final WebBrowserElement linkElement, final Class<P> elementClass, final String... elementData) {
+	return getPage().openElementUsingLink(linkElement, elementClass, elementData);
+}
+
+/**
+ * Retrieve the existing page for the browser current URL. Create it if it's the first
+ * time the page is requested.
+ *
+ * @param pageClass The class associated with the page to open
+ * @param data Additional CLM information to be stored in the page
+ * @return The instance of the class associate with the page.
+ */
+public <P extends WebPage> P openPageUsingBrowser(final Class<P> pageClass, final String... data) {
+	return getPage().openPageUsingBrowser(pageClass, data);
+}
+
+/**
+ * Click on the given link assuming that it will open the given page.
+ *
+ * @param linkElement The link on which to click
+ * @param openedPageClass The class associated with the opened page
+ * @param postLinkClickAction The action to perform after clicking the link as {@link Action}.
+ * @param pageData Provide additional information to store in the page when opening it
+ * @return The web page (as a subclass of {@link WebPage}) opened after
+ * @see WebPage#openPageUsingLink(WebBrowserElement, Class, String...)
+ */
+public <P extends WebPage> P openPageUsingLink(final WebBrowserElement linkElement, final Class<P> openedPageClass, final Action postLinkClickAction, final String... pageData) {
+	return getPage().openPageUsingLink(linkElement, openedPageClass, postLinkClickAction, pageData);
+}
+
+/**
+ * Click on the given link assuming that it will open the given page.
+ *
+ * @param linkElement The link on which to click
+ * @param openedPageClass The class associated with the opened page
+ * @param pageData Provide additional information to store in the page when opening it
+ * @return The web page (as a subclass of {@link WebPage}) opened after
+ * @see WebPage#openPageUsingLink(WebBrowserElement, Class, String...)
+ */
+public <P extends WebPage> P openPageUsingLink(final WebBrowserElement linkElement, final Class<P> openedPageClass, final String... pageData) {
+	return getPage().openPageUsingLink(linkElement, openedPageClass, pageData);
+}
+
+/**
+ * Select the given item in the given list element found.
+ * <p>
+ * The items of the selection list are supposed to be found using
+ * <code>by.xpath("./option")</code> search mechanism.
+ * </p>
+ * @param locator The locator of the list element in which perform the selection.
+ * @param pattern A pattern matching the item to select in the list, assuming that text matches
+ * @return The selected element as {@link WebBrowserElement}.
+ * @throws ScenarioFailedError if no item matches the expected selection.
+ */
+public WebBrowserElement select(final By locator, final Pattern pattern) {
+	return this.page.select(this.element.waitForElement(locator), pattern);
+}
+
+/**
+ * Select the given item in the given list element found.
+ * <p>
+ * The items of the selection list are supposed to be found using
+ * <code>by.xpath("./option")</code> search mechanism.
+ * </p>
+ * @param locator The locator of the list element in which perform the selection.
+ * @param selection The item to select in the list, assuming that text matches
+ * @return The selected element as {@link WebBrowserElement}.
+ * @throws ScenarioFailedError if no item matches the expected selection.
+ */
+public WebBrowserElement select(final By locator, final String selection) {
+	return this.page.select(this.element.waitForElement(locator), selection);
+}
+
+/**
+ * Select the given item in the given list element found.
+ * <p>
+ * The items of the selection list are supposed to be found using
+ * <code>by.xpath("./option")</code> search mechanism.
+ * </p>
+ * @param listElement The list element in which perform the selection.
+ * @param pattern A pattern matching the item to select in the list, assuming that text matches
+ * @return The selected element as {@link WebBrowserElement}.
+ * @throws ScenarioFailedError if no item matches the expected selection.
+ */
+public WebBrowserElement select(final WebBrowserElement listElement, final Pattern pattern) {
+	return this.page.select((listElement != null) ? listElement : this.element, pattern);
+}
+
+/**
+ * Select the given item in the given list element found.
+ * <p>
+ * The items of the selection list are supposed to be found using
+ * <code>by.xpath("./option")</code> search mechanism.
+ * </p>
+ * @param listElement The list element in which perform the selection.
+ * @param selection The item to select in the list, assuming that text matches
+ * @return The selected element as {@link WebBrowserElement}.
+ * @throws ScenarioFailedError if no item matches the expected selection.
+ */
+public WebBrowserElement select(final WebBrowserElement listElement, final String selection) {
+	return this.page.select((listElement != null) ? listElement : this.element, selection);
+}
+
+/**
+ * @see WebPage#typePassword(WebBrowserElement, IUser)
+ */
+public void typePassword(final WebBrowserElement inputElement, final IUser user) {
+	this.page.typePassword(inputElement, user);
+}
+
+/**
+ * Type a text into an input web element found inside the wrapped web element
+ * using the given mechanism.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the input field is not found before {@link #timeout()} seconds</li>
+ * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
+ * seconds</li>
+ * <li>the input element will be cleared prior entering the given text</li>
+ * </ul>
+ * </p><p>
+ * Note also that a {@link Keys#TAB} is hit after having entered the text in the
+ * input field in order to trigger the 'keyEvent' and makes the javascript associated
+ * with the filed working properly.
+ * </p>
+ * @param locator The mechanism to find the input web element in the current
+ * page
+ * @param text The text to type in the input element
+ * @return The text web element (as a {@link WebBrowserElement}) found
+ * in the page
+ *
+ * @see #waitForElement(WebBrowserElement, By)
+ * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
+ */
+public WebBrowserElement typeText(final By locator, final String text) {
+	return this.page.typeText(this.element, locator, text);
+}
+
+/**
+ * Type a text into an input web element found inside the wrapped web element
+ * using the given mechanism.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the input field is not found before {@link #timeout()} seconds</li>
+ * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
+ * seconds</li>
+ * <li>the input element will be cleared prior entering the given text</li>
+ * </ul>
+ * </p><p>
+ * Note also that a {@link Keys#TAB} is hit after having entered the text in the
+ * input field in order to trigger the 'keyEvent' and makes the javascript associated
+ * with the filed working properly.
+ * </p>
+ * @param locator The mechanism to find the input web element in the current
+ * page
+ * @param text The text to type in the input element
+ * @param key The key to hit after having entered the text in the input field.
+ * If <code>null</code> is provided as the value of this parameter, a key will not
+ * be hit after having entered the text in the input field.
+ * @return The text web element (as a {@link WebBrowserElement}) found
+ * in the page
+ *
+ * @see #waitForElement(WebBrowserElement, By)
+ * @see WebBrowser#typeText(WebBrowserElement, String, Keys, boolean, int)
+ */
+public WebBrowserElement typeText(final By locator, final String text, final Keys key) {
+	WebBrowserElement inputElement = this.element.waitForElement(locator);
+	this.page.typeText(inputElement, text, key);
+	return inputElement;
+}
+
+/**
+ * @see WebPage#typeText(WebBrowserElement, By, String)
+ */
+public WebBrowserElement typeText(final WebBrowserElement parentElement, final By locator, final String text) {
+	return this.page.typeText((parentElement != null) ? parentElement : this.element, locator, text);
+}
+
+/**
+ * @see WebPage#typeText(WebBrowserElement, String)
+ */
+public void typeText(final WebBrowserElement inputElement, final String text) {
+	this.page.typeText(inputElement, text);
+}
+
+/**
+ * @see WebPage#typeText(WebBrowserElement, String, Keys)
+ */
+public void typeText(final WebBrowserElement inputElement, final String text, final Keys key) {
+	this.page.typeText(inputElement, text, key);
 }
 
 /**
@@ -616,28 +742,6 @@ public List<WebBrowserElement> waitForElements(final By locator, final int timeo
 	return waitForElements(locator, fail, timeout);
 }
 
-///**
-// * Wait until having found an element searched using the given mechanism.
-// * <p>
-// * The element is searched in the entire document. If the element has to be
-// * searched in a frame and it's found, then the matching frame is selected after
-// * the method execution. That may impact further element researches...
-// * </p>
-// * @param locator The locator to use for the search
-// * @param timeout Time to wait until giving up if the element is not found
-// * @param frame Tells whether the element should be searched in a frame or
-// * not.
-// * @return The found web element as a {@link WebBrowserElement}.
-// * @throws ScenarioFailedError If the element is not found before the given
-// * timeout is reached.
-// * TODO Try to get rid off this method by selecting the frame explicitly before
-// * waiting for an element. Hence, {@link WebPageElement} waitForElement*
-// * methods could be used instead.
-// */
-//public WebBrowserElement waitForElement(final By locator, final int timeout, final boolean frame) {
-//	return waitForElement(this.element, locator, timeout, frame);
-//}
-
 /**
  * Wait for loading of the wrapped element to complete.
  */
@@ -669,30 +773,6 @@ public void waitForLoadingEnd() {
 public WebBrowserElement[] waitForMultipleElements(final boolean fail, final int timeout, final By... locators) {
 	return this.browser.waitForMultipleElements(this.element, locators, fail, timeout);
 }
-
-///**
-// * Wait until having found an element searched using the given mechanism.
-// * <p>
-// * If the element has to be searched in a frame and it's found, then the matching
-// * frame is selected after the method execution. That may impact further element
-// * researches...
-// * </p>
-// * @param parentElement The element from which the search has to be started.
-// * If <code>null</code>, then search in the entire page.
-// * @param locator The locator to use for the search
-// * @param timeout Time to wait until giving up if the element is not found
-// * @param frame Tells whether the element should be searched in a frame or
-// * not.
-// * @return The found web element as a {@link WebBrowserElement}.
-// * @throws ScenarioFailedError If the element is not found before the given
-// * timeout is reached.
-// * TODO Try to get rid off this method by selecting the frame explicitly before
-// * waiting for an element. Hence, {@link WebPageElement} waitForElement*
-// * methods could be used instead.
-// */
-//public WebBrowserElement waitForElement(final WebBrowserElement parentElement, final By locator, final int timeout, final boolean frame) {
-//	return this.browser.waitForElement(parentElement, locator, true /*fail*/, timeout);
-//}
 
 /**
  * Wait until at least one element is found using each of the given locator.
