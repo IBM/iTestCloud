@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
+import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * Class to handle select element.

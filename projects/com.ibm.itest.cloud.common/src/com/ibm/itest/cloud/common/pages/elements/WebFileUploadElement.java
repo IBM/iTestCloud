@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.EMPTY_STRING;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.PERIOD_STRING;
@@ -23,6 +23,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.tests.web.WebPage;
 
 /**
  * Manage a basic file upload field consisting of nothing but a file input element.

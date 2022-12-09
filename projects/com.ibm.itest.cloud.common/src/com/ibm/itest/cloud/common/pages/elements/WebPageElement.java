@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.pause;
 
@@ -24,6 +24,8 @@ import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
+import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
+import com.ibm.itest.cloud.common.tests.web.WebPage;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

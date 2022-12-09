@@ -15,6 +15,7 @@ package com.ibm.itest.cloud.common.tests.web;
 
 import org.openqa.selenium.WebDriver;
 
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

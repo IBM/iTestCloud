@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.web.*;

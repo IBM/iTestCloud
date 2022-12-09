@@ -16,6 +16,7 @@ package com.ibm.itest.cloud.common.tests.web;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
 
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 

@@ -17,7 +17,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.LINE_SEPAR
 
 import java.util.List;
 
-import com.ibm.itest.cloud.common.tests.web.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 
 public class MultipleVisibleElementsError extends ScenarioFailedError {
 

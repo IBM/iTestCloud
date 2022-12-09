@@ -18,6 +18,8 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.web.*;

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.tests.config.Timeouts.DEFAULT_TIMEOUT;
 import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
@@ -33,6 +33,7 @@ import com.ibm.itest.cloud.common.tests.config.Timeouts;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
+import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

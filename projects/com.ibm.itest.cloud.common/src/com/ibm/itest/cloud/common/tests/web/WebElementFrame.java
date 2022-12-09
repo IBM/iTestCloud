@@ -18,6 +18,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrint
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.config.Timeouts;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 

@@ -37,6 +37,7 @@ import com.ibm.itest.cloud.common.config.IConfig;
 import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.nls.NlsMessages;
 import com.ibm.itest.cloud.common.pages.IWebPage;
+import com.ibm.itest.cloud.common.pages.elements.*;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager;
@@ -427,7 +428,7 @@ protected WebBrowserElement bodyElement;
 private int verifyTries = 1;
 
 // NLS messages
-final protected NlsMessages nlsMessages;
+public final NlsMessages nlsMessages;
 
 // Additional information
 protected String[] data;
@@ -939,7 +940,7 @@ protected WebBrowserElement clickButton(final WebBrowserElement button, final bo
  * @see #waitForElement(WebBrowserElement, By)
  * @see WebBrowser#clickButton(WebBrowserElement, int, boolean)
  */
-protected WebBrowserElement clickButton(final WebBrowserElement parentElement, final By buttonBy) {
+public WebBrowserElement clickButton(final WebBrowserElement parentElement, final By buttonBy) {
 	WebBrowserElement button = waitForElement(parentElement, buttonBy);
 	return this.browser.clickButton(button, timeout(), false);
 }
@@ -1259,7 +1260,7 @@ protected abstract By getTitleElementLocator();
  *
  * @return The topology as a {@link Topology}
  */
-protected Topology getTopology() {
+public Topology getTopology() {
 	return this.topology;
 }
 
@@ -3671,7 +3672,7 @@ public void waitWhileBusy(final int busyTimeout) {
  * @throws ScenarioFailedError with the given message if no workaround is
  * possible (typically, when too many tries have been done...)
  */
-protected void workaround(final String message) {
+public void workaround(final String message) {
 	WebPageWorkaround workaround = new WebPageWorkaround(this, message);
 	workaround.execute();
 }

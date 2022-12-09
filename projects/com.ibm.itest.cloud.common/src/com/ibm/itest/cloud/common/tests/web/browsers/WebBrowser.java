@@ -13,11 +13,11 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.tests.web.browsers;
 
+import static com.ibm.itest.cloud.common.pages.elements.WebBrowserElement.MAX_RECOVERY_ATTEMPTS;
 import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
 import static com.ibm.itest.cloud.common.tests.utils.ByUtils.fixLocator;
 import static com.ibm.itest.cloud.common.tests.utils.FileUtil.createDir;
-import static com.ibm.itest.cloud.common.tests.web.WebBrowserElement.MAX_RECOVERY_ATTEMPTS;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -36,6 +36,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator.Position;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager;

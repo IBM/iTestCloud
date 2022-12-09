@@ -24,6 +24,8 @@ import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.acme.pages.dialogs.AcmeConfirmationDialog;
+import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.web.*;
