@@ -19,7 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.ibm.itest.cloud.common.tests.web.WebBrowser;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Performance Manager class, for gathering and storing the information for multiple performance page/action result.

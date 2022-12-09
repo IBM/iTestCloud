@@ -33,6 +33,7 @@ import com.ibm.itest.cloud.common.tests.config.Timeouts;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * A web browser element found in a {@link WebBrowser} page content.
@@ -161,7 +162,7 @@ final private int parentListSize, parentListIndex;
  * @param by The mechanism to use to search for the element
  */
 protected WebBrowserElement(final WebBrowser browser, final By by) {
-	this(browser, browser.getCurrentFrame(), browser.driver, by, null, 0, -1);
+	this(browser, browser.getCurrentFrame(), browser.getDriver(), by, null, 0, -1);
 }
 
 /**
@@ -330,7 +331,7 @@ public void clear() {
 	if (DEBUG) debugPrintln("			(clearing "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -353,7 +354,7 @@ public void clear() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -370,7 +371,7 @@ public void clear() {
 public void click() {
 	// Start performance timer if necessary
 	if (PERFORMANCE_ENABLED) {
-		this.browser.perfManager.startServerTimer();
+		this.browser.getPerfManager().startServerTimer();
 	}
 
 	try {
@@ -398,7 +399,7 @@ public void click(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(clicking on "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -420,7 +421,7 @@ public void click(final boolean recovery) {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -551,7 +552,7 @@ public WebBrowserElement findElement(final By locator, final WebBrowserFrame web
 	By fixedLocator = fixLocator(locator);
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -585,7 +586,7 @@ public WebBrowserElement findElement(final By locator, final WebBrowserFrame web
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -652,7 +653,7 @@ public List<WebElement> findElements(final By locator, final boolean displayed, 
 	By fixedLocator = fixLocator(locator);
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -704,7 +705,7 @@ public List<WebElement> findElements(final By locator, final boolean displayed, 
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -745,7 +746,7 @@ private String getAttribute(final String name, final boolean fail) throws Scenar
 	if (DEBUG) debugPrintln("			(getting attribute '"+name+"' for "+this+", fail="+fail+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -769,7 +770,7 @@ private String getAttribute(final String name, final boolean fail) throws Scenar
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -870,7 +871,7 @@ public Coordinates getCoordinates() {
 	if (DEBUG) debugPrintln("			(getting coordinates for "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -888,7 +889,7 @@ public Coordinates getCoordinates() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -906,7 +907,7 @@ public String getCssValue(final String propertyName) {
 	if (DEBUG) debugPrintln("			(getting CSS value of '"+propertyName+"' for "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -924,7 +925,7 @@ public String getCssValue(final String propertyName) {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1027,7 +1028,7 @@ public Point getLocation() {
 	if (DEBUG) debugPrintln("			(getting location of "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1045,7 +1046,7 @@ public Point getLocation() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1131,7 +1132,7 @@ public Dimension getSize() {
 	if (DEBUG) debugPrintln("			(getting size of "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1149,7 +1150,7 @@ public Dimension getSize() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1167,7 +1168,7 @@ public String getTagName() {
 	if (DEBUG) debugPrintln("			(getting tag name of "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1185,7 +1186,7 @@ public String getTagName() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1228,7 +1229,7 @@ public String getText(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(getting text for "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1272,7 +1273,7 @@ public String getText(final boolean recovery) {
 		}
 	}
 	finally {
-		if (this.frame != this.browser.frame) {
+		if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1339,7 +1340,7 @@ public boolean isDisplayed(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(getting displayed state for "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1380,7 +1381,7 @@ public boolean isDisplayed(final boolean recovery) {
 		}
 	}
 	finally {
-		if (this.frame != this.browser.frame) {
+		if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1418,7 +1419,7 @@ public boolean isEnabled(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(getting enabled state for "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1447,7 +1448,7 @@ public boolean isEnabled(final boolean recovery) {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1473,7 +1474,7 @@ public boolean isSelected() {
 	if (DEBUG) debugPrintln("			(getting selected state for "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1491,7 +1492,7 @@ public boolean isSelected() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1563,7 +1564,7 @@ public void moveToElement(final boolean entirelyVisible) {
 	if (DEBUG) debugPrintln("			(move to "+this+", entirelyVisible="+entirelyVisible+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1581,7 +1582,7 @@ public void moveToElement(final boolean entirelyVisible) {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1749,15 +1750,15 @@ public void removeViaJavaScript() {
 public void rightClick() {
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
 	try {
-		this.browser.actions.contextClick(this.webElement).perform();
+		this.browser.getActions().contextClick(this.webElement).perform();
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1804,7 +1805,7 @@ private void sendKeys(final boolean recovery, final boolean password, final Char
 	}
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1831,7 +1832,7 @@ private void sendKeys(final boolean recovery, final boolean password, final Char
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1884,7 +1885,7 @@ public void submit() {
 	if (DEBUG) debugPrintln("			(submitting on "+this+")");
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1902,7 +1903,7 @@ public void submit() {
 		}
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -1954,7 +1955,7 @@ public String toString() {
  */
 public WebBrowserElement waitForElement(final By locator) {
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -1962,7 +1963,7 @@ public WebBrowserElement waitForElement(final By locator) {
 		return this.browser.waitForElement(this, locator, true/*fail*/, DEFAULT_TIMEOUT, true/*displayed*/, true/*single*/);
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}
@@ -2100,7 +2101,7 @@ public List<WebBrowserElement> waitForElements(final By locator, final int timeo
 	if (DEBUG) debugPrintln("		+ waiting for elements: ["+locator+"] relatively to "+this);
 
 	// Select the frame again if necessary
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 		this.browser.selectFrame(this.frame, false/*store*/);
 	}
 
@@ -2108,7 +2109,7 @@ public List<WebBrowserElement> waitForElements(final By locator, final int timeo
 		return this.browser.waitForElements(this, locator, false/*do not fail*/, timeout, displayed);
 	}
 	finally {
-	if (this.frame != this.browser.frame) {
+	if (this.frame != this.browser.getFrame()) {
 			this.browser.selectFrame();
 		}
 	}

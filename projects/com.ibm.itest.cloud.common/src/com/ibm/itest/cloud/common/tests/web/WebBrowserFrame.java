@@ -15,6 +15,8 @@ package com.ibm.itest.cloud.common.tests.web;
 
 import org.openqa.selenium.WebDriver;
 
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+
 /**
  * Abstract class for frame used in browser page.
  * <p>
@@ -37,13 +39,13 @@ abstract public class WebBrowserFrame {
 	WebDriver driver;
 
 WebBrowserFrame(final WebBrowser browser) {
-    this.driver = browser.driver;
+    this.driver = browser.getDriver();
 }
 
 /**
  * Select current frame.
  */
-abstract void switchTo();
+public abstract void switchTo();
 
 /**
  * Return the frame element.
@@ -51,7 +53,7 @@ abstract void switchTo();
  * @return The frame element or <code>null</code> if the frame is not identified
  * with web element.
  */
-WebBrowserElement getElement() {
+public WebBrowserElement getElement() {
 	return null;
 }
 
@@ -61,7 +63,7 @@ WebBrowserElement getElement() {
  * @return The frame index or <code>-1</code> if the frame is not identified
  * with an index.
  */
-int getIndex() {
+public int getIndex() {
 	return -1;
 }
 
@@ -71,7 +73,7 @@ int getIndex() {
  * @return The frame name or <code>null</code> if the frame is not identified
  * with a name.
  */
-String getName() {
+public String getName() {
 	return null;
 }
 }

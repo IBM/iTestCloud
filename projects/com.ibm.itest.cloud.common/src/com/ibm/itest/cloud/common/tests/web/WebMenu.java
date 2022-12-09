@@ -519,7 +519,7 @@ public WebBrowserElement open(final WebBrowserElement webElement) {
  */
 protected void setPerfManagerRegressionType(final RegressionType regressionType, final boolean override) throws ScenarioFailedError {
 	if (PERFORMANCE_ENABLED) {
-		this.browser.perfManager.setRegressionType(regressionType, override);
+		this.browser.getPerfManager().setRegressionType(regressionType, override);
 	} else {
 		throw new ScenarioFailedError("Performances are not enabled for the scenario execution. Use -DperformanceEnabled=true to avoid this failure.");
 	}

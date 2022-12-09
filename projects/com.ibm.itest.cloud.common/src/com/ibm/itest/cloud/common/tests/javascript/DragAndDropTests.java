@@ -17,8 +17,8 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.println;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.tests.web.FirefoxBrowser;
 import com.ibm.itest.cloud.common.tests.web.WebBrowserElement;
+import com.ibm.itest.cloud.common.tests.web.browsers.FirefoxBrowser;
 
 @SuppressWarnings("unused")
 public class DragAndDropTests {

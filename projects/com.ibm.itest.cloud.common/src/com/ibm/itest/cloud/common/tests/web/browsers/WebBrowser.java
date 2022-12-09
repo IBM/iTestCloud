@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.tests.web.browsers;
 
 import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
@@ -43,6 +43,7 @@ import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.utils.*;
 import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
+import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * Abstract class to handle information of browser used to run FVT Selenium tests.
@@ -348,8 +349,8 @@ public abstract class WebBrowser implements SearchContext {
 //	private WebPage page;
 //	private final Stack<WebPage> history = new Stack<WebPage>();
 
-// Performances
-final PerfManager perfManager = PerfManager.createInstance(this); // Warning: Can be null!
+	// Performances
+	final PerfManager perfManager = PerfManager.createInstance(this); // Warning: Can be null!
 
 WebBrowser(final String name) {
 	// Init info
@@ -527,13 +528,13 @@ public void back() {
 //	this.page = this.history.pop();
 }
 
-/*
+/**
  * Catch WebDriverException until max allowed recovery tries is reached.
  *
  * TODO Change the exception parameter as StaleElementReferenceException
  * as this is the only caught exception now...
  */
-void catchWebDriverException(final WebDriverException wde, final String title, final int count) {
+public void catchWebDriverException(final WebDriverException wde, final String title, final int count) {
 	// Special treatment for alert exception
 	if (purgeAlerts(title) > 0) {
 		return;
@@ -648,7 +649,7 @@ public void checkConnection() {
  * the element.
  */
 public WebBrowserElement click(final WebBrowserElement element, final int xOffset, final int yOffset) {
-	this.actions.moveToElement(element.webElement, xOffset, yOffset);
+	this.actions.moveToElement(element.getWebElement(), xOffset, yOffset);
 	this.actions.click();
 	this.actions.build().perform();
 
@@ -833,8 +834,8 @@ public void deleteCookieNamed(final String cookieName) {
  * @param element The web element to doubl-click on
  */
 public void doubleClick(final WebBrowserElement element) {
-	this.actions.moveToElement(element.webElement);
-	this.actions.doubleClick(element.webElement);
+	this.actions.moveToElement(element.getWebElement());
+	this.actions.doubleClick(element.getWebElement());
 	this.actions.build().perform();
 }
 
@@ -847,8 +848,8 @@ public void doubleClick(final WebBrowserElement element) {
  */
 public void dragAndDrop(final WebBrowserElement sourceElement, final WebBrowserElement targetElement) {
 	debugPrintln("		+ Drag " + sourceElement + " to " + targetElement);
-	this.actions.moveToElement(sourceElement.webElement);
-	this.actions.dragAndDrop(sourceElement.webElement, targetElement.webElement);
+	this.actions.moveToElement(sourceElement.getWebElement());
+	this.actions.dragAndDrop(sourceElement.getWebElement(), targetElement.getWebElement());
 	this.actions.build().perform();
 }
 
@@ -861,8 +862,8 @@ public void dragAndDrop(final WebBrowserElement sourceElement, final WebBrowserE
  */
 public void dragAndDropBy(final WebBrowserElement element, final int xOffset, final int yOffset) {
 	debugPrintln("		+ Drag " + element + " to (" + xOffset+", "+yOffset+")");
-	this.actions.moveToElement(element.webElement);
-	this.actions.dragAndDropBy(element.webElement, xOffset, yOffset);
+	this.actions.moveToElement(element.getWebElement());
+	this.actions.dragAndDropBy(element.getWebElement(), xOffset, yOffset);
 	this.actions.build().perform();
 }
 
@@ -891,7 +892,7 @@ private void dragAndDropViaJavaScript(final WebBrowserElement dragFrom, final We
 	int dragToX= toLocation.getX() + dragToPosition.getOffset(toSize.getWidth());
 	int dragToY= toLocation.getY() + dragToPosition.getOffset(toSize.getHeight());
 
-	getJavascriptExecutor().executeScript(DrapAndDropSimulator.JAVASCRIPT_SIMULATE_EVENHTML5_DRAGANDDROP, dragFrom.webElement, dragTo.webElement, dragFromX, dragFromY, dragToX, dragToY);
+	getJavascriptExecutor().executeScript(DrapAndDropSimulator.JAVASCRIPT_SIMULATE_EVENHTML5_DRAGANDDROP, dragFrom.getWebElement(), dragTo.getWebElement(), dragFromX, dragFromY, dragToX, dragToY);
 }
 
 /**
@@ -1321,6 +1322,15 @@ public WebBrowserFrame getCurrentFrame() {
 }
 
 /**
+ * Return the current frame used by the browser.
+ *
+ * @return The frame as a {@link WebBrowserFrame}
+ */
+public WebBrowserFrame getFrame() {
+	return this.frame;
+}
+
+/**
  * Get the current page URL.
  *
  * @return The page URL as a {@link String}.
@@ -1524,7 +1534,7 @@ public boolean hasPopupWindow() {
  * @param element element to hover over.
  */
 public WebBrowserElement hover(final WebBrowserElement element) {
-	this.actions.moveToElement(element.webElement);
+	this.actions.moveToElement(element.getWebElement());
 	this.actions.build().perform();
 
 	return element;
@@ -1686,14 +1696,14 @@ public void moveToElement(final WebBrowserElement element, final boolean entirel
 	if (entirelyVisible) {
 		// Put the mouse to the element's top-left corner
 		try {
-			this.actions.moveToElement(element.webElement, -size.width/2, -size.height/2);
+			this.actions.moveToElement(element.getWebElement(), -size.width/2, -size.height/2);
 		}
 		catch (MoveTargetOutOfBoundsException ex) {
 			// skip
 		}
 		// Put the mouse to the element's bottom-right corner
 		try {
-			this.actions.moveToElement(element.webElement, size.width/2, size.height/2);
+			this.actions.moveToElement(element.getWebElement(), size.width/2, size.height/2);
 		}
 		catch (MoveTargetOutOfBoundsException ex) {
 			// skip
@@ -1702,7 +1712,7 @@ public void moveToElement(final WebBrowserElement element, final boolean entirel
 
 	// Put the mouse into the middle of the element
     try {
-	    this.actions.moveToElement(element.webElement).build().perform();
+	    this.actions.moveToElement(element.getWebElement()).build().perform();
     } catch (MoveTargetOutOfBoundsException mtoobe) {
     	if (!element.isInFrame()) {
 	    	printException(mtoobe);
@@ -1726,7 +1736,7 @@ public void moveToElement(final WebBrowserElement element, final boolean entirel
  * the element.
  */
 public void moveToElement(final WebBrowserElement element, final int xOffset, final int yOffset) {
-	this.actions.moveToElement(element.webElement, xOffset, yOffset).build().perform();
+	this.actions.moveToElement(element.getWebElement(), xOffset, yOffset).build().perform();
 }
 
 /**
@@ -1877,7 +1887,7 @@ public void resetFrame(final boolean store) {
  * the element.
  */
 public WebBrowserElement rightClick(final WebBrowserElement element, final int xOffset, final int yOffset) {
-	this.actions.moveToElement(element.webElement, xOffset, yOffset);
+	this.actions.moveToElement(element.getWebElement(), xOffset, yOffset);
 	this.actions.contextClick();
 	this.actions.build().perform();
 
@@ -2276,7 +2286,7 @@ public void selectFrame(final By locator, final int timeout) {
 		debugPrintln("		+ select frame " + locator);
 		debugPrintln("		  -> current frame: "+getCurrentFrame());
 	}
-	this.driver.switchTo().frame(waitForElement(locator, timeout).webElement);
+	this.driver.switchTo().frame(waitForElement(locator, timeout).getWebElement());
 }
 
 /**
@@ -2424,7 +2434,7 @@ public void selectFrame(final WebBrowserElement parentElement, final By locator,
 		debugPrintln("		+ select frame " + locator);
 		debugPrintln("		  -> current frame: "+getCurrentFrame());
 	}
-	this.driver.switchTo().frame(waitForElement(parentElement, locator, true /*fail*/, timeout).webElement);
+	this.driver.switchTo().frame(waitForElement(parentElement, locator, true /*fail*/, timeout).getWebElement());
 }
 
 public void selectFrame(final WebBrowserFrame webFrame) {
@@ -2460,7 +2470,7 @@ public void selectMultipleElements(final WebBrowserElement... elements) {
 	this.actions.keyDown(Keys.SHIFT);
 
 	for (WebBrowserElement element : elements) {
-		this.actions.click(element.webElement);
+		this.actions.click(element.getWebElement());
 	}
 
 	this.actions.keyUp(Keys.SHIFT).build().perform();
@@ -2581,7 +2591,7 @@ public void setWindowSize(final int width, final int height) {
  */
 public void shiftClick(final WebBrowserElement destination) {
 	this.actions.keyDown(Keys.SHIFT)
-	    .moveToElement(destination.webElement)
+	    .moveToElement(destination.getWebElement())
 	    .click()
 	    .keyUp(Keys.SHIFT)
 	    .build()

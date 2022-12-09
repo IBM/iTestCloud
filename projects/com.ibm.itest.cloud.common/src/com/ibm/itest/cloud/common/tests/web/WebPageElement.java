@@ -24,6 +24,7 @@ import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * This class manage a web element belonging to a web page and add some actions and functionalities that anyone can use. It also add some specific operations only accessible to the class hierarchy.

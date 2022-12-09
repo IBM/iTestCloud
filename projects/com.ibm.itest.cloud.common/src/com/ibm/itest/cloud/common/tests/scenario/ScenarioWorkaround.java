@@ -19,6 +19,7 @@ import java.util.*;
 
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.web.*;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Manage workaround applied when running a scenario.

@@ -16,6 +16,8 @@ package com.ibm.itest.cloud.common.tests.web;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
 
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+
 /**
  * Class to manage browser frame identified with a name.
  */
@@ -26,7 +28,7 @@ public class WebNamedFrame extends WebBrowserFrame {
 	 */
 	private String name;
 
-protected WebNamedFrame(final WebBrowser browser, final String name) {
+public WebNamedFrame(final WebBrowser browser, final String name) {
 	super(browser);
     this.name = name;
 }
@@ -44,7 +46,7 @@ public boolean equals(final Object obj) {
 }
 
 @Override
-String getName() {
+public String getName() {
 	return this.name;
 }
 
@@ -57,7 +59,7 @@ public int hashCode() {
  * Select current frame.
  */
 @Override
-void switchTo() {
+public void switchTo() {
 	if (DEBUG) debugPrintln("		+ Switch to "+this);
 	this.driver.switchTo().defaultContent();
 	this.driver.switchTo().frame(this.name);

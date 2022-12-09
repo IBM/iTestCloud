@@ -14,7 +14,7 @@
 package com.ibm.itest.cloud.common.tests.scenario;
 
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.tests.web.WebBrowser.JAVASCRIPT_ERROR_ALERT_PATTERN;
+import static com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser.JAVASCRIPT_ERROR_ALERT_PATTERN;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -35,8 +35,8 @@ import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
 import com.ibm.itest.cloud.common.tests.utils.*;
-import com.ibm.itest.cloud.common.tests.web.WebBrowser;
 import com.ibm.itest.cloud.common.tests.web.WebPage;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Manage scenario execution.

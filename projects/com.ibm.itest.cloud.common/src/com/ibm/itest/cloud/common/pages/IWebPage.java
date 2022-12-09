@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages;
 
-import com.ibm.itest.cloud.common.tests.web.WebBrowser;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Interface to define web page object API.

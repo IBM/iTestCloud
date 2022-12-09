@@ -23,6 +23,7 @@ import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.web.WebPage.ClickType;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * This class wraps a web element and add some actions and functionalities

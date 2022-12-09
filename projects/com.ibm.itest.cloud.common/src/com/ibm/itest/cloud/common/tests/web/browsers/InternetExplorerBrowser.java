@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2018, 2022 IBM Corporation and others.
+ * Copyright (c) 2012, 2022 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,25 +11,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.tests.web.browsers;
 
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.safari.SafariOptions;
 
 /**
- * The browser class when Safari is used to run the tests.
+ * The browser class when Internet Explorer is used to run the tests.
  */
-public class SafariBrowser extends WebBrowser {
+public class InternetExplorerBrowser extends WebBrowser {
 
-public SafariBrowser() {
-	super("Safari");
+public InternetExplorerBrowser() {
+	super("Internet Explorer");
 }
 
 @Override
 void initDriver() {
-	SafariOptions options = new SafariOptions();
+	System.setProperty("webdriver.ie.driver", this.driverPath);
+	InternetExplorerOptions options = new InternetExplorerOptions();
+//	DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
+//	ieCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+////	ieCapabilities.setCapability(ELEMENT_SCROLL_BEHAVIOR_ID, ELEMENT_SCROLL_BEHAVIOR_VALUE);
+//	ieCapabilities.setCapability("ie.ensureCleanSession", true);
+//	ieCapabilities.setCapability("javascriptEnabled", true);
+//	ieCapabilities.setCapability("ignoreZoomSetting", true);
 
 	if(this.remoteAddress != null) {
 		// Create driver for executing tests via Selenium Grid.
@@ -38,7 +45,7 @@ void initDriver() {
 	}
 	else {
 		// Create driver for executing tests on local host.
-		this.driver = new SafariDriver(options);
+		this.driver = new InternetExplorerDriver(options);
 	}
 }
 
@@ -64,11 +71,11 @@ public boolean isGoogleChrome() {
 
 @Override
 public boolean isInternetExplorer() {
-	return false;
+	return true;
 }
 
 @Override
 public boolean isSafari() {
-	return true;
+	return false;
 }
 }

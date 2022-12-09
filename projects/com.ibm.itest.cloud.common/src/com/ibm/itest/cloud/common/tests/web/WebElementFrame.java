@@ -19,6 +19,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrint
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.tests.config.Timeouts;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Class to manage browser frame identified with a web element.
@@ -55,7 +56,7 @@ public boolean equals(final Object obj) {
 }
 
 @Override
-WebBrowserElement getElement() {
+public WebBrowserElement getElement() {
 	return this.element;
 }
 
@@ -78,7 +79,7 @@ public boolean isDisplayed() {
  * Select current frame.
  */
 @Override
-void switchTo() {
+public void switchTo() {
 	if (DEBUG) debugPrintln("		+ Switch to "+this);
 	this.driver.switchTo().defaultContent();
 	this.driver.switchTo().frame(this.element.getWebElement());

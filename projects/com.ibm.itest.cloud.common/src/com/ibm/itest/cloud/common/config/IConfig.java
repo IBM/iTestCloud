@@ -14,7 +14,7 @@
 package com.ibm.itest.cloud.common.config;
 
 import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.web.WebBrowser;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 public interface IConfig {
 

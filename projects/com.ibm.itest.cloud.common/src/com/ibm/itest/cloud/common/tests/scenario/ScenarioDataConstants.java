@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.common.tests.scenario;
 
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.EMPTY_STRING;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParameterValue;
-import static com.ibm.itest.cloud.common.tests.web.WebBrowser.BROWSER_DOWNLOAD_DIR_ID;
-import static com.ibm.itest.cloud.common.tests.web.WebBrowser.BROWSER_DOWNLOAD_DIR_VALUE;
+import static com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser.BROWSER_DOWNLOAD_DIR_ID;
+import static com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser.BROWSER_DOWNLOAD_DIR_VALUE;
 
 import java.io.File;
 

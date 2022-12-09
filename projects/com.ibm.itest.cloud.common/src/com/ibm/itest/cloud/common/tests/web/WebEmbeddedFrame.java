@@ -17,6 +17,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
 
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Class to manage browser frame embedded in another frame.
@@ -39,7 +40,7 @@ public WebEmbeddedFrame(final WebBrowser browser, final WebBrowserFrame frame, f
 }
 
 @Override
-void switchTo() {
+public void switchTo() {
 	switchToParent();
 	this.driver.switchTo().frame(getElement().getWebElement());
 }

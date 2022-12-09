@@ -16,6 +16,8 @@ package com.ibm.itest.cloud.common.tests.web;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
 
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+
 /**
  * Class to manage browser frame identified with an index.
  */
@@ -26,7 +28,7 @@ public class WebIndexedFrame extends WebBrowserFrame {
 	 */
 	private int index = -1;
 
-WebIndexedFrame(final WebBrowser browser, final int index) {
+public WebIndexedFrame(final WebBrowser browser, final int index) {
 	super(browser);
     this.index = index;
 }
@@ -41,7 +43,7 @@ public boolean equals(final Object obj) {
 }
 
 @Override
-int getIndex() {
+public int getIndex() {
 	return this.index;
 }
 
@@ -54,7 +56,7 @@ public int hashCode() {
  * Select current frame.
  */
 @Override
-void switchTo() {
+public void switchTo() {
 	if (DEBUG) debugPrintln("		+ Switch to "+this);
 	this.driver.switchTo().defaultContent();
 	this.driver.switchTo().frame(this.index);

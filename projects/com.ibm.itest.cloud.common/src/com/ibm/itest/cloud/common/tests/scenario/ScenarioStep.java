@@ -22,8 +22,8 @@ import org.junit.runners.model.Statement;
 
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.web.WebBrowser;
 import com.ibm.itest.cloud.common.tests.web.WebPage;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Manage a list of tests to execute in a scenario step.

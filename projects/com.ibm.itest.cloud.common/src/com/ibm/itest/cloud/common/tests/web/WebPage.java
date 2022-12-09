@@ -46,6 +46,7 @@ import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
 import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
 import com.ibm.itest.cloud.common.tests.utils.FileUtil;
+import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * The abstract class for any web page connected to a {@link WebBrowser}.
@@ -439,7 +440,7 @@ public WebPage(final String url, final Config config, final User user, final Str
 
 	// Init fields
 	this.browser = config.getBrowser();
-	this.driver = this.browser.driver;
+	this.driver = this.browser.getDriver();
 	this.location = url;
     this.config = config;
     this.data = data;
@@ -2541,7 +2542,7 @@ final protected void setOpenTimeout(final int timeout) {
  */
 protected void setPerfManagerRegressionType(final RegressionType regressionType, final boolean override) throws ScenarioFailedError {
 	if (PERFORMANCE_ENABLED) {
-		this.browser.perfManager.setRegressionType(regressionType, override);
+		this.browser.getPerfManager().setRegressionType(regressionType, override);
 	} else {
 		throw new ScenarioFailedError("Performances are not enabled for the scenario execution. Use -DperformanceEnabled=true to avoid this failure.");
 	}
@@ -2557,7 +2558,7 @@ protected void setPerfManagerRegressionType(final RegressionType regressionType,
  */
 protected void setPerfManagerUserActionName(final String action) throws ScenarioFailedError {
 	if (PERFORMANCE_ENABLED) {
-		this.browser.perfManager.setUserActionName(action);
+		this.browser.getPerfManager().setUserActionName(action);
 	} else {
 		throw new ScenarioFailedError("Performances are not enabled for the scenario execution. Use -DperformanceEnabled=true to avoid this failure.");
 	}
@@ -2585,7 +2586,7 @@ final public int shortTimeout() {
  */
 public void startNewBrowserSession() {
 	this.browser = getConfig().openNewBrowser();
-	this.driver = this.browser.driver;
+	this.driver = this.browser.getDriver();
 
 	// Clear page cache except for current page object
 	getPagesHistory().clear();
@@ -2603,7 +2604,7 @@ public void startNewBrowserSession() {
  */
 protected void startPerfManagerServerTimer() throws ScenarioFailedError {
 	if (PERFORMANCE_ENABLED) {
-		this.browser.perfManager.startServerTimer();
+		this.browser.getPerfManager().startServerTimer();
 	} else {
 		throw new ScenarioFailedError("Performances are not enabled for the scenario execution. Use -DperformanceEnabled=true to avoid this failure.");
 	}

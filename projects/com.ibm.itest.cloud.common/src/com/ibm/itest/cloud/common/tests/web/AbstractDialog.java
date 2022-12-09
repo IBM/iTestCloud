@@ -533,7 +533,7 @@ public WebBrowserElement open(final WebBrowserElement openElement, final Action 
 
 	// Start performance timer
    	if (PERFORMANCE_ENABLED) {
-		this.browser.perfManager.startServerTimer();
+		this.browser.getPerfManager().startServerTimer();
    	}
 
 	// Click on element which opens the dialog
