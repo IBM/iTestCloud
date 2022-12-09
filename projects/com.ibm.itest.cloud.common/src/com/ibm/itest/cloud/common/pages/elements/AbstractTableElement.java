@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.*;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion;
-import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
 
 /**
  * Class to handle web element with <code>table</code> tag name.

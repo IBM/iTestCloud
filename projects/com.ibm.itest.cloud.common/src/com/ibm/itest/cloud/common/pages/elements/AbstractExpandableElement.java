@@ -21,9 +21,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
-import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
 
 /**
  * Abstract class to handle an expandable web element in a web page.

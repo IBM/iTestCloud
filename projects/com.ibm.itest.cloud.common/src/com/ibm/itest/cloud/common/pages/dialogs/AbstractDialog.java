@@ -25,9 +25,9 @@ import org.openqa.selenium.interactions.Action;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
-import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * Abstract class for any window opened as a dialog in a browser page.

@@ -29,11 +29,11 @@ import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.config.Timeouts;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
-import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**

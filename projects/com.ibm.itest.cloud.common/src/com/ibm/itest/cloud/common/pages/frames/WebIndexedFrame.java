@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.frames;
 
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;

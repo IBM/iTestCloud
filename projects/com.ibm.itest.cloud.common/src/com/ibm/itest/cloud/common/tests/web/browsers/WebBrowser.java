@@ -38,6 +38,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.frames.*;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator;
 import com.ibm.itest.cloud.common.tests.javascript.DrapAndDropSimulator.Position;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager;
@@ -45,7 +46,6 @@ import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.tests.scenario.errors.*;
 import com.ibm.itest.cloud.common.tests.utils.*;
 import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
-import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * Abstract class to handle information of browser used to run FVT Selenium tests.

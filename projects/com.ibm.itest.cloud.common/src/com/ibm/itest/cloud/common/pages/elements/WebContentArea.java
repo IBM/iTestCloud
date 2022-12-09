@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.common.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
+import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 
 /**
  * Abstract class to manage web page content areas.

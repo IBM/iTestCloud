@@ -19,13 +19,13 @@ import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.nls.NlsMessages;
 import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.config.User;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.tests.topology.Application;
 import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.web.WebBrowserFrame;
 import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
