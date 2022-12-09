@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.dialogs;
 
 import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
 
@@ -21,6 +21,7 @@ import com.ibm.itest.cloud.common.pages.elements.Window;
 import com.ibm.itest.cloud.common.tests.config.Config;
 import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * Abstract class for any window opened in a browser page.

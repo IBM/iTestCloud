@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.common.tests.scenario.errors;
 
 import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
 
+import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
 import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
-import com.ibm.itest.cloud.common.tests.web.AbstractDialog;
 
 import junit.framework.AssertionFailedError;
 

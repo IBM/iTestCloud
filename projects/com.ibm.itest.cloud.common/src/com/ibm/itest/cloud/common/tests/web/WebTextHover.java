@@ -17,6 +17,7 @@ import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
 
 import org.openqa.selenium.*;
 
+import com.ibm.itest.cloud.common.pages.dialogs.AbstractWindow;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 
 /**

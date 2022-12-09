@@ -11,13 +11,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *********************************************************************/
-package com.ibm.itest.cloud.common.tests.web;
+package com.ibm.itest.cloud.common.pages.dialogs;
 
 import java.util.List;
 
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * Abstract class for any dialog opened in a frame.

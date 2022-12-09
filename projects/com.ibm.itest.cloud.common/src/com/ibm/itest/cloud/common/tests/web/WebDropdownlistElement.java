@@ -24,6 +24,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.interactions.Action;
 
+import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
 import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
 

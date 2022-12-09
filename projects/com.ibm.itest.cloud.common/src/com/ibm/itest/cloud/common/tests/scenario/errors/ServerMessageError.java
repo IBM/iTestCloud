@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.tests.scenario.errors;
 
-import com.ibm.itest.cloud.common.tests.web.AbstractDialog;
+import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
 
 /**
  * Error to report Server error message.

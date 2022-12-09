@@ -475,7 +475,7 @@ public WebPage(final String url, final Config config, final User user, final Str
  * scenario execution. Hence, callers have to check whether the performances are
  * enabled before calling this method using {@link PerfManager#PERFORMANCE_ENABLED}.
  */
-protected void addPerfResult(final RegressionType regressionType, final String pageTitle) throws ScenarioFailedError {
+public void addPerfResult(final RegressionType regressionType, final String pageTitle) throws ScenarioFailedError {
 
 	// Check that performances are enabled
 	if (!PERFORMANCE_ENABLED) {
@@ -2602,7 +2602,7 @@ public void startNewBrowserSession() {
  * scenario execution. Hence, callers have to check whether the performances are
  * enabled before calling this method using {@link PerfManager#PERFORMANCE_ENABLED}.
  */
-protected void startPerfManagerServerTimer() throws ScenarioFailedError {
+public void startPerfManagerServerTimer() throws ScenarioFailedError {
 	if (PERFORMANCE_ENABLED) {
 		this.browser.getPerfManager().startServerTimer();
 	} else {
