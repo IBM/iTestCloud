@@ -19,8 +19,8 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
@@ -44,11 +44,11 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public class AcmeMenuElement extends AcmeAbstractExpandableElement {
 
-public AcmeMenuElement(final WebPage page, final By findBy, final By expansionLocator) {
+public AcmeMenuElement(final Page page, final By findBy, final By expansionLocator) {
 	super(page, findBy, expansionLocator);
 }
 
-public AcmeMenuElement(final WebPage page, final WebBrowserElement webElement, final By expansionLocator) {
+public AcmeMenuElement(final Page page, final BrowserElement webElement, final By expansionLocator) {
 	super(page, webElement, expansionLocator);
 }
 
@@ -64,7 +64,7 @@ public boolean isExpandable() throws ScenarioFailedError {
 
 @Override
 public boolean isExpanded() throws ScenarioFailedError {
-	WebBrowserElement sidebarElement =
+	BrowserElement sidebarElement =
 		this.browser.waitForElement(this.element, By.xpath(".//ul[contains(@class,'dropdown-menu')]"), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
 	return sidebarElement.isDisplayed() && sidebarElement.getAttributeValue("class").contains("open");
 }
@@ -98,7 +98,7 @@ public <T extends AcmeAbstractWebPage> T select(final String item, final Class<T
 public <T extends AcmeAbstractWebPage> T select(final String item, final Class<T> pageClass, final boolean force) {
 	if (DEBUG) debugPrintln("		+ Select '"+ item + "' from the drop down list");
 
-	WebBrowserElement itemElement =
+	BrowserElement itemElement =
 		this.browser.waitForElement(this.element,
 			By.xpath(".//li[contains(@class,'dropdown-link') and .//a[text()='" + item + "']]"), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
 
@@ -109,7 +109,7 @@ public <T extends AcmeAbstractWebPage> T select(final String item, final Class<T
 
 	expand();
 
-	WebBrowserElement anchorElement = itemElement.waitForElement(By.xpath(".//a"));
+	BrowserElement anchorElement = itemElement.waitForElement(By.xpath(".//a"));
 
 	if(pageClass == null){
 		anchorElement.click();

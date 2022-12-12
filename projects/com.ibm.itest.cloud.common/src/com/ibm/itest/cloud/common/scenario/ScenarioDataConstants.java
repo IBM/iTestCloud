@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.scenario;
 
-import static com.ibm.itest.cloud.common.browsers.WebBrowser.BROWSER_DOWNLOAD_DIR_ID;
-import static com.ibm.itest.cloud.common.browsers.WebBrowser.BROWSER_DOWNLOAD_DIR_VALUE;
+import static com.ibm.itest.cloud.common.browsers.Browser.BROWSER_DOWNLOAD_DIR_ID;
+import static com.ibm.itest.cloud.common.browsers.Browser.BROWSER_DOWNLOAD_DIR_VALUE;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.EMPTY_STRING;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterValue;
 

@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.acme.pages.dialogs;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 
 /**
  * This class represents a generic confirmation dialog and manages all its common actions.
@@ -41,19 +41,19 @@ public abstract class AcmeConfirmationDialog extends AcmeWebPageDialog {
 	private static final By DIALOG_LOCATOR = By.xpath("//div[(@class='modal-inner') or (@class='modal-dialog') or contains(@class,'modal-container') or contains(@class,'vex-message-dlg')]");
 	protected static final String CANCEL_BUTTON_XPATH = ".//*[text()='Cancel']";
 
-public AcmeConfirmationDialog(final WebPage page) {
+public AcmeConfirmationDialog(final Page page) {
 	super(page, DIALOG_LOCATOR);
 }
 
-public AcmeConfirmationDialog(final WebPage page, final String... data) {
+public AcmeConfirmationDialog(final Page page, final String... data) {
 	super(page, DIALOG_LOCATOR, data);
 }
 
-public AcmeConfirmationDialog(final WebPage page, final WebBrowserFrame frame) {
+public AcmeConfirmationDialog(final Page page, final BrowserFrame frame) {
 	super(page, DIALOG_LOCATOR, frame);
 }
 
-public AcmeConfirmationDialog(final WebPage page, final WebBrowserFrame frame, final String... data) {
+public AcmeConfirmationDialog(final Page page, final BrowserFrame frame, final String... data) {
 	super(page, DIALOG_LOCATOR, frame, data);
 }
 

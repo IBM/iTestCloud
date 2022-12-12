@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.scenario;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
 
 /**
@@ -24,7 +24,7 @@ import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
  * message will be displayed in the console to as a part of this workaround.
  * </p>
  */
-public abstract class ScenarioSilentWorkaround<P extends WebPage> extends ScenarioWorkaround<P> {
+public abstract class ScenarioSilentWorkaround<P extends Page> extends ScenarioWorkaround<P> {
 
 public ScenarioSilentWorkaround(final P page, final String msg) {
 	this(page, msg, true, null);

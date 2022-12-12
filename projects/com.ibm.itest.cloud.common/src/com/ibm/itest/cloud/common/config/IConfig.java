@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.config;
 
-import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.browsers.Browser;
 import com.ibm.itest.cloud.common.topology.Topology;
 
 public interface IConfig {
@@ -29,9 +29,9 @@ public int closeDialogTimeout();
 /**
  * Return the browser used while running the scenario.
  *
- * @return The browser as {@link WebBrowser}.
+ * @return The browser as {@link Browser}.
  */
-public WebBrowser getBrowser();
+public Browser getBrowser();
 
 /**
  * Return the default timeout used to wait for an expected element in

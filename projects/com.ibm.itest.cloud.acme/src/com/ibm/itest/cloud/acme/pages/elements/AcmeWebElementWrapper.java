@@ -16,9 +16,9 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.ElementWrapper;
 
 /**
  * This class represents a generic web element and manages all its common actions.
@@ -33,29 +33,29 @@ import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
  * </ul>
  * </p>
  */
-public abstract class AcmeWebElementWrapper extends WebElementWrapper {
+public abstract class AcmeWebElementWrapper extends ElementWrapper {
 
-public AcmeWebElementWrapper(final WebElementWrapper parent) {
+public AcmeWebElementWrapper(final ElementWrapper parent) {
 	super(parent);
 }
 
-public AcmeWebElementWrapper(final WebElementWrapper parent, final By findBy) {
+public AcmeWebElementWrapper(final ElementWrapper parent, final By findBy) {
 	super(parent, findBy);
 }
 
-public AcmeWebElementWrapper(final WebElementWrapper parent, final WebBrowserElement element) {
+public AcmeWebElementWrapper(final ElementWrapper parent, final BrowserElement element) {
 	super(parent, element);
 }
 
-public AcmeWebElementWrapper(final WebPage page) {
+public AcmeWebElementWrapper(final Page page) {
 	super(page);
 }
 
-public AcmeWebElementWrapper(final WebPage page, final By findBy) {
+public AcmeWebElementWrapper(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
-public AcmeWebElementWrapper(final WebPage page, final WebBrowserElement element) {
+public AcmeWebElementWrapper(final Page page, final BrowserElement element) {
 	super(page, element);
 }
 

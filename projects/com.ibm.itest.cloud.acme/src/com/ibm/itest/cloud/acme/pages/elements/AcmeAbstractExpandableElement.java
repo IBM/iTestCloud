@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.*;
 
 /**
@@ -32,33 +32,33 @@ import com.ibm.itest.cloud.common.pages.elements.*;
  * </ul>
  * </p>
  */
-public abstract class AcmeAbstractExpandableElement extends AbstractExpandableElement {
+public abstract class AcmeAbstractExpandableElement extends ExpandableElement {
 
-public AcmeAbstractExpandableElement(final WebElementWrapper parent, final By locator) {
+public AcmeAbstractExpandableElement(final ElementWrapper parent, final By locator) {
 	super(parent, locator);
 }
 
-public AcmeAbstractExpandableElement(final WebElementWrapper parent, final By locator, final By expansionLocator) {
+public AcmeAbstractExpandableElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
 	super(parent, locator, expansionLocator);
 }
 
-public AcmeAbstractExpandableElement(final WebElementWrapper parent, final WebBrowserElement webElement, final By expansionLocator) {
+public AcmeAbstractExpandableElement(final ElementWrapper parent, final BrowserElement webElement, final By expansionLocator) {
 	super(parent, webElement, expansionLocator);
 }
 
-public AcmeAbstractExpandableElement(final WebPage page, final By locator) {
+public AcmeAbstractExpandableElement(final Page page, final By locator) {
 	super(page, locator);
 }
 
-public AcmeAbstractExpandableElement(final WebPage page, final By locator, final By expansionLocator) {
+public AcmeAbstractExpandableElement(final Page page, final By locator, final By expansionLocator) {
 	super(page, locator, expansionLocator);
 }
 
-public AcmeAbstractExpandableElement(final WebPage page, final WebBrowserElement webElement) {
+public AcmeAbstractExpandableElement(final Page page, final BrowserElement webElement) {
 	super(page, webElement);
 }
 
-public AcmeAbstractExpandableElement(final WebPage page, final WebBrowserElement webElement, final By expansionLocator) {
+public AcmeAbstractExpandableElement(final Page page, final BrowserElement webElement, final By expansionLocator) {
 	super(page, webElement, expansionLocator);
 }
 

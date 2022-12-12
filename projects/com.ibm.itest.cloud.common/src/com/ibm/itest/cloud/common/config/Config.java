@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.common.config;
 
 import static com.ibm.itest.cloud.common.config.Timeouts.*;
 
-import com.ibm.itest.cloud.common.browsers.WebBrowser;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.browsers.Browser;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.topology.Topology;
 
 /**
@@ -28,7 +28,7 @@ import com.ibm.itest.cloud.common.topology.Topology;
  * web page (see {@link Timeouts} for more details).</li>
  * <li><b>topology</b>: The topology of the CLM applications (see {@link Topology}
  * for more details).</li>
- * <li><b>browser</b>: The browser used for the scenario (see {@link WebBrowser}
+ * <li><b>browser</b>: The browser used for the scenario (see {@link Browser}
  * for more details).</li>
  * <li><b>screenshots directory</b>: the directories where screenshots taken
  * during the scenario has to be put. There are two directories, one for
@@ -42,7 +42,7 @@ abstract public class Config implements IConfig {
 	// General
 	protected Topology topology;
 	protected Timeouts timeouts;
-	WebBrowser browser;
+	Browser browser;
 
 public Config() {
 	// Init topology
@@ -50,7 +50,7 @@ public Config() {
 	// Init timeouts
 	initTimeouts();
 	// Init browser
-	this.browser = WebBrowser.createInstance();
+	this.browser = Browser.createInstance();
 }
 
 public Config(final Config config) {
@@ -73,10 +73,10 @@ public int closeDialogTimeout() {
 /**
  * Return the browser used while running the scenario.
  *
- * @return The browser as {@link WebBrowser}.
+ * @return The browser as {@link Browser}.
  */
 @Override
-public WebBrowser getBrowser() {
+public Browser getBrowser() {
 	return this.browser;
 }
 
@@ -190,12 +190,12 @@ abstract protected void initTopology();
  * Close the current browser session and open a new one. <p>
  *
  * <b>Warning:</b> This should not be called directly as the page cache needs to be reset after this call
- * and the current page needs to be reopened. Use startNewBrowserSession in {@link WebPage} instead.
+ * and the current page needs to be reopened. Use startNewBrowserSession in {@link Page} instead.
  *
- * @return The newly opened browser as a {@link WebBrowser}
+ * @return The newly opened browser as a {@link Browser}
  */
-public WebBrowser openNewBrowser() {
+public Browser openNewBrowser() {
 	this.browser.close();
-	return this.browser = WebBrowser.createInstance();
+	return this.browser = Browser.createInstance();
 }
 }

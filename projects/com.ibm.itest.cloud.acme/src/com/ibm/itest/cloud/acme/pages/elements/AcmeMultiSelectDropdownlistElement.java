@@ -17,9 +17,9 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.ElementWrapper;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
@@ -42,21 +42,21 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public class AcmeMultiSelectDropdownlistElement extends AcmeDropdownlistElement {
 
-public AcmeMultiSelectDropdownlistElement(final WebElementWrapper parent, final By findBy, final By expansionLocator, final By selectionLocator) {
+public AcmeMultiSelectDropdownlistElement(final ElementWrapper parent, final By findBy, final By expansionLocator, final By selectionLocator) {
 	super(parent, findBy, expansionLocator, selectionLocator);
 }
 
-public AcmeMultiSelectDropdownlistElement(final WebPage page, final String label) {
+public AcmeMultiSelectDropdownlistElement(final Page page, final String label) {
 	super(page, By.xpath("//*[text()='" + label + "']/..//div[contains(@class,'DropdownInline')]"), By.xpath(".//*[contains(@class,'selectButton')]"), By.xpath(".//*[contains(@class,'multiSelectValues')]"));
 }
 
-public AcmeMultiSelectDropdownlistElement(final WebPage page, final By findBy, final By expansionLocator, final By selectionLocator) {
+public AcmeMultiSelectDropdownlistElement(final Page page, final By findBy, final By expansionLocator, final By selectionLocator) {
 	super(page, findBy, expansionLocator, selectionLocator);
 }
 
 @Override
 public void collapse() throws ScenarioFailedError {
-	WebBrowserElement clickOffPanelElement =
+	BrowserElement clickOffPanelElement =
 			this.element.waitForElement(By.xpath(".//*[contains(@class,'MultiSelect__clickOffPanel')]"), 1 /*timeout*/);
 	if(clickOffPanelElement != null) {
 		clickOffPanelElement.click();

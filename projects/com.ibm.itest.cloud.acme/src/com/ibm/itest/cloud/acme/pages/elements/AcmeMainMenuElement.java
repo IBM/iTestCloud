@@ -19,7 +19,7 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
@@ -42,7 +42,7 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public class AcmeMainMenuElement extends AcmeMainMenuNodeElement {
 
-public AcmeMainMenuElement(final WebPage page) {
+public AcmeMainMenuElement(final Page page) {
 	super(page, By.xpath("//*[@class='dap-section-link-container']"));
 }
 

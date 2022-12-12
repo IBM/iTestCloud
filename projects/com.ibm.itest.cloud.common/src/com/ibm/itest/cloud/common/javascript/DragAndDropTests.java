@@ -18,7 +18,7 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.println;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.browsers.FirefoxBrowser;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 
 @SuppressWarnings("unused")
 public class DragAndDropTests {
@@ -89,8 +89,8 @@ public static void main01(final String[] args) {
 public static void main02(final String[] args) {
 	FirefoxBrowser browser = new FirefoxBrowser();
 	browser.get("http://www.dhtmlgoodies.com/submitted-scripts/i-google-like-drag-drop/");
-	WebBrowserElement source = browser.findElement(By.xpath("//h1[text()='Block 1']"));
-	WebBrowserElement target = browser.findElement(By.xpath("//h1[text()='Block 3']"));
+	BrowserElement source = browser.findElement(By.xpath("//h1[text()='Block 1']"));
+	BrowserElement target = browser.findElement(By.xpath("//h1[text()='Block 3']"));
 	browser.dragAndDrop(source, target);
 	browser.close();
 }
@@ -98,8 +98,8 @@ public static void main02(final String[] args) {
 public static void main03(final String[] args) {
 	FirefoxBrowser browser = new FirefoxBrowser();
 	browser.get("http://the-internet.herokuapp.com/drag_and_drop");
-	WebBrowserElement source = browser.findElement(By.id("column-a"));
-	WebBrowserElement target = browser.findElement(By.id("column-b"));
+	BrowserElement source = browser.findElement(By.id("column-a"));
+	BrowserElement target = browser.findElement(By.id("column-b"));
 	println("Source text is initially: "+source.getText());
 	println("Target text is initially: "+target.getText());
 	browser.executeScript(JAVASCRIPT_CODE_FOR_DND+"$('#column-a').simulateDragDrop({ dropTarget: '#column-b'});");
@@ -113,8 +113,8 @@ public static void main03(final String[] args) {
 public static void main(final String[] args) {
 	FirefoxBrowser browser = new FirefoxBrowser();
 	browser.get("http://www.dhtmlgoodies.com/submitted-scripts/i-google-like-drag-drop/");
-	WebBrowserElement source = browser.findElement(By.xpath("//h1[text()='Block 1']"));
-	WebBrowserElement target = browser.findElement(By.xpath("//h1[text()='Block 3']"));
+	BrowserElement source = browser.findElement(By.xpath("//h1[text()='Block 1']"));
+	BrowserElement target = browser.findElement(By.xpath("//h1[text()='Block 3']"));
 //	browser.dragAndDrop(source, target, Position.Top_Left, Position.Top_Left);
 	browser.close();
 }

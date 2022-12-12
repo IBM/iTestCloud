@@ -21,7 +21,7 @@ import com.ibm.itest.cloud.acme.pages.AcmeHomePage;
 import com.ibm.itest.cloud.acme.topology.AcmeApplication;
 import com.ibm.itest.cloud.acme.topology.AcmeTopology;
 import com.ibm.itest.cloud.common.config.*;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.scenario.ScenarioStep;
 /**
  * Manage a scenario step.
@@ -143,7 +143,7 @@ private AcmeAbstractWebPage openPortalWebPageHelper(final Class<? extends AcmeAb
  * @param pageClass The page associated class
  * @return The opened page as {@link AcmeAbstractWebPage}.
  */
-protected <P extends WebPage> P openWebPage(final String url, final IConfig newConfig, final IUser newUser, final Class<P> pageClass, final String... data) {
+protected <P extends Page> P openWebPage(final String url, final IConfig newConfig, final IUser newUser, final Class<P> pageClass, final String... data) {
 	AcmeAbstractWebPage currentPage = getCurrentPage();
 	if (currentPage != null) {
 		println("================================================================================");
@@ -153,6 +153,6 @@ protected <P extends WebPage> P openWebPage(final String url, final IConfig newC
 		printStackTrace(1);
 		println("================================================================================");
 	}
-	return WebPage.openPage(url, (Config) newConfig, (User) newUser, pageClass, data);
+	return Page.openPage(url, (Config) newConfig, (User) newUser, pageClass, data);
 }
 }

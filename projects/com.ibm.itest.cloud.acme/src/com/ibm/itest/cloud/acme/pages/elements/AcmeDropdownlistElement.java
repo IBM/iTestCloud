@@ -24,9 +24,9 @@ import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.acme.pages.dialogs.AcmeConfirmationDialog;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.ElementWrapper;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
@@ -93,70 +93,70 @@ public static By getDropdownListElementLocator(final String label, final boolean
 
 	private final By selectionLocator;
 
-public AcmeDropdownlistElement(final WebElementWrapper parent) {
+public AcmeDropdownlistElement(final ElementWrapper parent) {
 	this(parent, getDropdownListElementLocator(true /*isRelative*/), EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final By locator) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final By locator) {
 	this(parent, locator, EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final By locator, final By expansionLocator) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
 	this(parent, locator, expansionLocator, SELECTION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final By locator, final By expansionLocator, final By selectionLocator) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final By locator, final By expansionLocator, final By selectionLocator) {
 	super(parent, locator, expansionLocator);
 	this.selectionLocator = selectionLocator;
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final String label) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final String label) {
 	this(parent, getDropdownListElementLocator(label, true /*isRelative*/), EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final WebBrowserElement webElement) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final BrowserElement webElement) {
 	this(parent, webElement, EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final WebBrowserElement webElement, final By expansionLocator) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final BrowserElement webElement, final By expansionLocator) {
 	this(parent, webElement, expansionLocator, SELECTION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebElementWrapper parent, final WebBrowserElement webElement, final By expansionLocator, final By selectionLocator) {
+public AcmeDropdownlistElement(final ElementWrapper parent, final BrowserElement webElement, final By expansionLocator, final By selectionLocator) {
 	super(parent, webElement, expansionLocator);
 	this.selectionLocator = selectionLocator;
 }
 
-public AcmeDropdownlistElement(final WebPage page) {
+public AcmeDropdownlistElement(final Page page) {
 	this(page, getDropdownListElementLocator(false /*isRelative*/), EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebPage page, final By findBy) {
+public AcmeDropdownlistElement(final Page page, final By findBy) {
 	this(page, findBy, EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebPage page, final By findBy, final By expansionLocator) {
+public AcmeDropdownlistElement(final Page page, final By findBy, final By expansionLocator) {
 	this(page, findBy, expansionLocator, SELECTION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebPage page, final By findBy, final By expansionLocator, final By selectionLocator) {
+public AcmeDropdownlistElement(final Page page, final By findBy, final By expansionLocator, final By selectionLocator) {
 	super(page, findBy, expansionLocator);
 	this.selectionLocator = selectionLocator;
 }
 
-public AcmeDropdownlistElement(final WebPage page, final String label) {
+public AcmeDropdownlistElement(final Page page, final String label) {
 	this(page, getDropdownListElementLocator(label, false /*isRelative*/), EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebPage page, final WebBrowserElement webElement) {
+public AcmeDropdownlistElement(final Page page, final BrowserElement webElement) {
 	this(page, webElement, EXPANSION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebPage page, final WebBrowserElement webElement, final By expansionLocator) {
+public AcmeDropdownlistElement(final Page page, final BrowserElement webElement, final By expansionLocator) {
 	this(page, webElement, expansionLocator, SELECTION_LOCATOR);
 }
 
-public AcmeDropdownlistElement(final WebPage page, final WebBrowserElement webElement, final By expansionLocator, final By selectionLocator) {
+public AcmeDropdownlistElement(final Page page, final BrowserElement webElement, final By expansionLocator, final By selectionLocator) {
 	super(page, webElement, expansionLocator);
 	this.selectionLocator = selectionLocator;
 }
@@ -171,12 +171,12 @@ protected String getExpandableAttribute() {
  *
  * @param fail Specifies whether to fail if a matching option element is not found before the timeout.
  *
- * @return The option element matching the given pattern as {@link WebBrowserElement}.
+ * @return The option element matching the given pattern as {@link BrowserElement}.
  */
-protected WebBrowserElement getOptionElement(final Pattern pattern, final boolean fail) {
-	List<WebBrowserElement> optionsItemElements = getOptionElements(fail);
+protected BrowserElement getOptionElement(final Pattern pattern, final boolean fail) {
+	List<BrowserElement> optionsItemElements = getOptionElements(fail);
 
-	for (WebBrowserElement optionsItemElement : optionsItemElements) {
+	for (BrowserElement optionsItemElement : optionsItemElements) {
 		if(pattern.matcher(optionsItemElement.getText()).matches()){
 			return optionsItemElement;
 		}
@@ -205,7 +205,7 @@ protected By getOptionElementLocator() {
  *
  * @return All the option elements in the drop-down list element.
  */
-protected List<WebBrowserElement> getOptionElements(final boolean fail) {
+protected List<BrowserElement> getOptionElements(final boolean fail) {
 	return this.browser.waitForElements(this.element, getOptionElementLocator(), fail, fail ? timeout() : 1 /*timeout*/, false /*displayed*/);
 }
 
@@ -215,10 +215,10 @@ protected List<WebBrowserElement> getOptionElements(final boolean fail) {
  * @return The list of options available in the dropdown list as {@link List}.
  */
 public List<String> getOptions() {
-	List<WebBrowserElement> optionsItemElements = getOptionElements(false /*displayed*/);
+	List<BrowserElement> optionsItemElements = getOptionElements(false /*displayed*/);
 	List<String> items = new ArrayList<String>();
 
-	for (WebBrowserElement optionsItemElement : optionsItemElements) {
+	for (BrowserElement optionsItemElement : optionsItemElements) {
 		items.add(optionsItemElement.getText());
 	}
 
@@ -231,16 +231,16 @@ public List<String> getOptions() {
  * @return The currently selected item in the dropdown list as a {@link String}
  */
 public String getSelection() {
-	WebBrowserElement currentlySelectionElement = getSelectionElement();
+	BrowserElement currentlySelectionElement = getSelectionElement();
 	return (currentlySelectionElement != null) ? currentlySelectionElement.getText() : null;
 }
 
 /**
  * Return the selection element.
  *
- * @return the selection element as {@link WebBrowserElement}.
+ * @return the selection element as {@link BrowserElement}.
  */
-protected WebBrowserElement getSelectionElement() {
+protected BrowserElement getSelectionElement() {
 	return (this.selectionLocator != null) ? this.element.waitForElement(this.selectionLocator, 0 /*timeout*/, false /*displayed*/, true /*single*/) : null;
 }
 
@@ -257,7 +257,7 @@ public boolean isExpanded() throws ScenarioFailedError {
 		return true;
 	}
 
-	WebBrowserElement selectOptionsElement =
+	BrowserElement selectOptionsElement =
 		this.element.waitForElement(By.xpath(".//ul[@class='select__options']"), 1 /*timeout*/, false /*displayed*/, true /*single*/);
 	if(selectOptionsElement != null) {
 		String style = selectOptionsElement.getAttributeValue("style");
@@ -312,9 +312,9 @@ protected boolean isSelected(final Pattern pattern) {
  *
  * @param index The zero-based index of the item to be selected from the menu.
  *
- * @return The selected item as {@link WebBrowserElement}.
+ * @return The selected item as {@link BrowserElement}.
  */
-public WebBrowserElement select(final int index) {
+public BrowserElement select(final int index) {
 	List<String> options = getOptions();
 	// Check if the given index is valid.
 	if(options.size() <= index) {
@@ -329,13 +329,13 @@ public WebBrowserElement select(final int index) {
  *
  * @param pattern The pattern to use to match the item to select.
  *
- * @return The selected menu item as a {@link WebBrowserElement}
+ * @return The selected menu item as a {@link BrowserElement}
  */
-public WebBrowserElement select(final Pattern pattern) {
+public BrowserElement select(final Pattern pattern) {
 	String selection = null;
 
 	for (int i = 0; i < SELECTION_RETRY_LIMIT; i++) {
-		WebBrowserElement optionElement = selectHelper(pattern);
+		BrowserElement optionElement = selectHelper(pattern);
 
 		if(optionElement == null) {
 			return null;
@@ -363,9 +363,9 @@ public WebBrowserElement select(final Pattern pattern) {
  *
  * @param item The item to select from the menu.
  *
- * @return The selected item as {@link WebBrowserElement}.
+ * @return The selected item as {@link BrowserElement}.
  */
-public WebBrowserElement select(final String item) {
+public BrowserElement select(final String item) {
 	return select(Pattern.compile(Pattern.quote(item)));
 }
 
@@ -387,10 +387,10 @@ public <P extends AcmeConfirmationDialog> P selectByOpeningDialog(final Pattern 
 
 	try {
 		if((data == null) || (data.length == 0)) {
-			confirmationDialog = dialogClass.getConstructor(WebPage.class).newInstance(getPage());
+			confirmationDialog = dialogClass.getConstructor(Page.class).newInstance(getPage());
 		}
 		else {
-			confirmationDialog = dialogClass.getConstructor(WebPage.class, String[].class).newInstance(getPage(), data);
+			confirmationDialog = dialogClass.getConstructor(Page.class, String[].class).newInstance(getPage(), data);
 		}
 	}
 	catch (WebDriverException e) {
@@ -442,7 +442,7 @@ public <P extends AcmeConfirmationDialog> P selectByOpeningDialog(final String i
  */
 @SuppressWarnings("unchecked")
 public <T extends AcmeAbstractWebPage> T selectByOpeningPage(final Pattern pattern, final Class<T> pageClass, final String... pageData) {
-	WebBrowserElement menuItemElement = selectHelper(pattern);
+	BrowserElement menuItemElement = selectHelper(pattern);
 
 	if(menuItemElement == null){
 		return (T) getPage();
@@ -480,9 +480,9 @@ public <T extends AcmeAbstractWebPage> T selectByOpeningPage(final String item, 
  *
  * @param pattern The pattern to match a list item for the given.
  *
- * @return A list item matching the given as a {@link WebBrowserElement}.
+ * @return A list item matching the given as a {@link BrowserElement}.
  */
-protected WebBrowserElement selectHelper(final Pattern pattern) {
+protected BrowserElement selectHelper(final Pattern pattern) {
 	if (DEBUG) debugPrintln("		+ Select item in pattern '"+ pattern.pattern() + "' from the drop down list");
 
 	if(isSelected(pattern)) {
@@ -504,7 +504,7 @@ private boolean selectionCheckExpected() {
  *
  * @param optionElement The option element to select.
  */
-protected void selectOptionElement(final WebBrowserElement optionElement) {
+protected void selectOptionElement(final BrowserElement optionElement) {
 //	optionElement.click();
 	// The option element is not scrolled at times. Therefore, use the JavaScript method to click the option element to
 	// select it since the particular method seems to perform the scroll operation properly.

@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.*;
 
@@ -34,7 +34,7 @@ import com.ibm.itest.cloud.common.scenario.errors.*;
  * <p>
  * Following functionalities are specialized by the dialog:
  * <ul>
- * <li>{@link #open(WebBrowserElement)}: open the window by clicking on the
+ * <li>{@link #open(BrowserElement)}: open the window by clicking on the
  * given web element.</li>
  * <li>{@link #selectDialogFrame()}: Sets the browser frame to the dialog frame.
  * </ul>
@@ -61,13 +61,13 @@ import com.ibm.itest.cloud.common.scenario.errors.*;
  * Close the dialog by opening a web page via clicking on the close button (usually the 'OK' button).</li>
  * <li>{@link #getTitle()}: Return the title of the dialog.</li>
  * <li>{@link #isOpened()}: Check whether a dialog is opened or not.</li>
- * <li>{@link #open(WebBrowserElement)}: open the dialog by clicking on the given web element.</li>
+ * <li>{@link #open(BrowserElement)}: open the dialog by clicking on the given web element.</li>
  * <li>{@link #opened()}: Get the element on an already opened dialog.</li>
  * </ul>
  * </p><p>
  * Internal API methods accessible from subclasses are:
  * <ul>
- * <li>{@link #clickOnOpenElement(WebBrowserElement, Action)}: Click on open element in order to open the dialog.</li>
+ * <li>{@link #clickOnOpenElement(BrowserElement, Action)}: Click on open element in order to open the dialog.</li>
  * <li>{@link #closeAction(boolean)}: The action to perform to close the dialog.</li>
  * <li>{@link #getContentElementLocator()}:
  * Return the locator for the content element of the current dialog.</li>
@@ -83,21 +83,21 @@ import com.ibm.itest.cloud.common.scenario.errors.*;
  */
 abstract public class AbstractDialog extends AbstractWindow {
 
-	private List<WebBrowserElement> alreadyOpenedDialogElements;
+	private List<BrowserElement> alreadyOpenedDialogElements;
 
-public AbstractDialog(final WebPage page, final By findBy) {
+public AbstractDialog(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
-public AbstractDialog(final WebPage page, final By findBy, final String... data) {
+public AbstractDialog(final Page page, final By findBy, final String... data) {
 	super(page, findBy, data);
 }
 
-public AbstractDialog(final WebPage page, final By findBy, final String frame) {
+public AbstractDialog(final Page page, final By findBy, final String frame) {
 	super(page, findBy, frame);
 }
 
-public AbstractDialog(final WebPage page, final By findBy, final WebBrowserFrame frame, final String... data) {
+public AbstractDialog(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
 	super(page, findBy, frame, data);
 }
 
@@ -118,9 +118,9 @@ public void cancelAll() {
  * @param pageClass A class representing the web page opened after closing the dialog.
  * @param pageData Additional information to store in the page when opening it.
  *
- * @return The opened web page as a subclass of {@link WebPage}.
+ * @return The opened web page as a subclass of {@link Page}.
  */
-public <T extends WebPage> T cancelByOpeningPage(final Class<T> pageClass, final String... pageData) {
+public <T extends Page> T cancelByOpeningPage(final Class<T> pageClass, final String... pageData) {
 	return closeByOpeningPage(false /*validate*/, pageClass, pageData);
 }
 
@@ -135,7 +135,7 @@ public <T extends WebPage> T cancelByOpeningPage(final Class<T> pageClass, final
  * opened.
  * @param postElementClickAction The action to perform after clicking the link as {@link Action}.
  */
-protected void clickOnOpenElement(final WebBrowserElement openElement, final Action postElementClickAction) {
+protected void clickOnOpenElement(final BrowserElement openElement, final Action postElementClickAction) {
 	if (DEBUG) debugPrintln("		+ Click on '"+openElement+"' to open the dialog");
 
 	// If no element was given then do nothing
@@ -219,7 +219,7 @@ protected void close(final boolean validate) {
  */
 @Override
 protected void closeAction(final boolean validate) {
-	WebBrowserElement buttonElement =
+	BrowserElement buttonElement =
 		this.browser.waitForElement(this.element, By.xpath(getCloseButton(validate)), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
 	this.browser.clickButton(buttonElement, timeout(), false /*validate*/);
 }
@@ -244,15 +244,15 @@ private void closeAll(final boolean validate) {
 	if (DEBUG) debugPrintln("		+ Close all possible opened dialogs.");
 
 	// Get all opened dialogs
-	List<WebBrowserElement> openedDialogElements = getOpenedDialogElements(tinyTimeout());
+	List<BrowserElement> openedDialogElements = getOpenedDialogElements(tinyTimeout());
 
 	// Close them all by accepting each dialog from the last to the first (descending order).
 	// A dialogs appeared later may cover a former. Therefore, interacting with a former
 	// dialog before suppressing the latter may not be possible.
 	for (int i = 0; i < openedDialogElements.size(); i++) {
-		WebBrowserElement dialogElement = openedDialogElements.get(openedDialogElements.size()-1-i);
+		BrowserElement dialogElement = openedDialogElements.get(openedDialogElements.size()-1-i);
 		String buttonXpath = getCloseButton(validate);
-		WebBrowserElement buttonElement = dialogElement.waitForElement(By.xpath(buttonXpath), 1/*sec*/);
+		BrowserElement buttonElement = dialogElement.waitForElement(By.xpath(buttonXpath), 1/*sec*/);
 		if (buttonElement == null) {
 			throw new WaitElementTimeoutError("Cannot close dialog '" + this.findBy +"' as close button '"+buttonXpath+"' was not found.");
 		}
@@ -267,9 +267,9 @@ private void closeAll(final boolean validate) {
  * @param dialogClass A class representing the new dialog opened after closing this dialog.
  * @param dialogData Additional information to store in the dialog when opening it.
  *
- * @return The opened confirmation dialog as a subclass of {@link WebConfirmationDialog}.
+ * @return The opened confirmation dialog as a subclass of {@link ConfirmationDialog}.
  */
-public <P extends WebConfirmationDialog> P closeByOpeningDialog(final boolean validate, final Class<P> dialogClass, final String... dialogData) {
+public <P extends ConfirmationDialog> P closeByOpeningDialog(final boolean validate, final Class<P> dialogClass, final String... dialogData) {
 	// Perform any actions prior to closing the window.
 	if(validate) preCloseActions();
 
@@ -277,10 +277,10 @@ public <P extends WebConfirmationDialog> P closeByOpeningDialog(final boolean va
 
 	try {
 		if((dialogData == null) || (dialogData.length == 0)) {
-			confirmationDialog = dialogClass.getConstructor(WebPage.class).newInstance(getPage());
+			confirmationDialog = dialogClass.getConstructor(Page.class).newInstance(getPage());
 		}
 		else {
-			confirmationDialog = dialogClass.getConstructor(WebPage.class, String[].class).newInstance(getPage(), dialogData);
+			confirmationDialog = dialogClass.getConstructor(Page.class, String[].class).newInstance(getPage(), dialogData);
 		}
 
 	}
@@ -307,9 +307,9 @@ public <P extends WebConfirmationDialog> P closeByOpeningDialog(final boolean va
  * @param dialogClass A class representing the new dialog opened after closing this dialog.
  * @param dialogData Additional information to store in the dialog when opening it.
  *
- * @return The opened confirmation dialog as a subclass of {@link WebConfirmationDialog}.
+ * @return The opened confirmation dialog as a subclass of {@link ConfirmationDialog}.
  */
-public <P extends WebConfirmationDialog> P closeByOpeningDialog(final Class<P> dialogClass, final String... dialogData) {
+public <P extends ConfirmationDialog> P closeByOpeningDialog(final Class<P> dialogClass, final String... dialogData) {
 	return closeByOpeningDialog(true /*validate*/, dialogClass, dialogData);
 }
 
@@ -321,9 +321,9 @@ public <P extends WebConfirmationDialog> P closeByOpeningDialog(final Class<P> d
  * @param postLinkClickAction The action to perform after clicking the link as {@link Action}.
  * @param pageData Additional information to store in the page when opening it.
  *
- * @return The opened web page as a subclass of {@link WebPage}.
+ * @return The opened web page as a subclass of {@link Page}.
  */
-<T extends WebPage> T closeByOpeningPage(final boolean validate, final Class<T> pageClass, final Action postLinkClickAction, final String... pageData) {
+<T extends Page> T closeByOpeningPage(final boolean validate, final Class<T> pageClass, final Action postLinkClickAction, final String... pageData) {
 	// Perform any actions prior to closing the window.
 	if(validate) preCloseActions();
 
@@ -337,9 +337,9 @@ public <P extends WebConfirmationDialog> P closeByOpeningDialog(final Class<P> d
  * @param pageClass A class representing the web page opened after closing the dialog.
  * @param pageData Additional information to store in the page when opening it.
  *
- * @return The opened web page as a subclass of {@link WebPage}.
+ * @return The opened web page as a subclass of {@link Page}.
  */
-<T extends WebPage> T closeByOpeningPage(final boolean validate, final Class<T> pageClass, final String... pageData) {
+<T extends Page> T closeByOpeningPage(final boolean validate, final Class<T> pageClass, final String... pageData) {
 	return closeByOpeningPage(validate, pageClass, null /*postLinkClickAction*/, pageData);
 }
 
@@ -350,9 +350,9 @@ public <P extends WebConfirmationDialog> P closeByOpeningDialog(final Class<P> d
  * @param postLinkClickAction The action to perform after clicking the link as {@link Action}.
  * @param pageData Additional information to store in the page when opening it.
  *
- * @return The opened web page as a subclass of {@link WebPage}.
+ * @return The opened web page as a subclass of {@link Page}.
  */
-public <T extends WebPage> T closeByOpeningPage(final Class<T> pageClass, final Action postLinkClickAction, final String... pageData) {
+public <T extends Page> T closeByOpeningPage(final Class<T> pageClass, final Action postLinkClickAction, final String... pageData) {
 	return closeByOpeningPage(true /*validate*/, pageClass, postLinkClickAction, pageData);
 }
 
@@ -363,9 +363,9 @@ public <T extends WebPage> T closeByOpeningPage(final Class<T> pageClass, final 
  * @param pageClass A class representing the web page opened after closing the dialog.
  * @param pageData Additional information to store in the page when opening it.
  *
- * @return The opened web page as a subclass of {@link WebPage}.
+ * @return The opened web page as a subclass of {@link Page}.
  */
-public <T extends WebPage> T closeByOpeningPage(final Class<T> pageClass, final String... pageData) {
+public <T extends Page> T closeByOpeningPage(final Class<T> pageClass, final String... pageData) {
 	return closeByOpeningPage(true /*validate*/, pageClass, pageData);
 }
 
@@ -383,8 +383,8 @@ protected abstract By getContentElementLocator();
  */
 protected abstract Pattern getExpectedTitle();
 
-private List<WebBrowserElement> getMatchingDialogElements(final int timeout) {
-	List<WebBrowserElement> matchingDialogElements;
+private List<BrowserElement> getMatchingDialogElements(final int timeout) {
+	List<BrowserElement> matchingDialogElements;
 	long timeoutMillis = timeout * 1000 + System.currentTimeMillis();
 
 	do {
@@ -394,17 +394,17 @@ private List<WebBrowserElement> getMatchingDialogElements(final int timeout) {
 	return matchingDialogElements;
 }
 
-private List<WebBrowserElement> getMatchingDialogElements(final List<WebBrowserElement> openedDialogElements) {
+private List<BrowserElement> getMatchingDialogElements(final List<BrowserElement> openedDialogElements) {
 	// If a title is not expected for the dialog, no further checking is need.
 	if(!isTitleExpected()) {
 		return openedDialogElements;
 	}
 
 	// If reached here, a title is expected for the dialog. Therefore, check the title.
-	List<WebBrowserElement> matchingDialogElements = new ArrayList<WebBrowserElement>();
+	List<BrowserElement> matchingDialogElements = new ArrayList<BrowserElement>();
 
-	for (WebBrowserElement openedDialogElement : openedDialogElements) {
-		WebBrowserElement titleElement = openedDialogElement.waitForElement(getTitleElementLocator(), tinyTimeout());
+	for (BrowserElement openedDialogElement : openedDialogElements) {
+		BrowserElement titleElement = openedDialogElement.waitForElement(getTitleElementLocator(), tinyTimeout());
 
 		if((titleElement != null) && getExpectedTitle().matcher(titleElement.getText()).matches()) {
 			matchingDialogElements.add(openedDialogElement);
@@ -418,9 +418,9 @@ private List<WebBrowserElement> getMatchingDialogElements(final List<WebBrowserE
  * Get the opened dialog elements.
  *
  * @param seconds Time to wait for the elements
- * @return The list of opened dialog elements as a {@link List} of {@link WebBrowserElement}
+ * @return The list of opened dialog elements as a {@link List} of {@link BrowserElement}
  */
-protected List<WebBrowserElement> getOpenedDialogElements(final int seconds) {
+protected List<BrowserElement> getOpenedDialogElements(final int seconds) {
 	return this.browser.waitForElements(getParentElement(), this.findBy, false /*fail*/, seconds, true/*visible*/);
 }
 
@@ -516,7 +516,7 @@ protected boolean matchTitle() {
 }
 
 @Override
-public WebBrowserElement open(final WebBrowserElement openElement) {
+public BrowserElement open(final BrowserElement openElement) {
 	return open(openElement, null /*postElementClickAction*/);
 }
 
@@ -526,9 +526,9 @@ public WebBrowserElement open(final WebBrowserElement openElement) {
  * @param openElement The element on which to perform the open action.
  * @param postElementClickAction The action to perform after clicking the element as {@link Action}.
  *
- * @return The web element matching the opened window as a {@link WebBrowserElement}.
+ * @return The web element matching the opened window as a {@link BrowserElement}.
  */
-public WebBrowserElement open(final WebBrowserElement openElement, final Action postElementClickAction) {
+public BrowserElement open(final BrowserElement openElement, final Action postElementClickAction) {
 	if (DEBUG) debugPrintln("		+ Open "+getClassSimpleName(getClass())+" dialog");
 
 	// Get list of already opened dialog IDs
@@ -611,7 +611,7 @@ public WebBrowserElement open(final WebBrowserElement openElement, final Action 
  *
  * @return The dialog as a {@link AbstractDialog} subclass.
  */
-public WebBrowserElement opened() {
+public BrowserElement opened() {
 	if (DEBUG) debugPrintln("		+ Initialize the opened "+getClassSimpleName(getClass())+" dialog");
 	setElement();
 	if (this.element == null) {
@@ -635,11 +635,11 @@ protected void selectDialogFrame() {
  */
 protected void setElement() {
 	// Get list of opened dialog elements
-   	List<WebBrowserElement> openedDialogElements = getOpenedDialogElements(2/*sec*/);
+   	List<BrowserElement> openedDialogElements = getOpenedDialogElements(2/*sec*/);
    	// Remove the dialogs, which already existed, from the consideration.
    	if(this.alreadyOpenedDialogElements != null) openedDialogElements.removeAll(this.alreadyOpenedDialogElements);
    	// Remove the dialogs, which do not have a matching title, from the consideration.
-   	List<WebBrowserElement> matchingDialogElements = getMatchingDialogElements(openedDialogElements);
+   	List<BrowserElement> matchingDialogElements = getMatchingDialogElements(openedDialogElements);
 
    	// Go through the map to see if there's any doubled opened dialog
    	final int size = matchingDialogElements.size();
@@ -656,7 +656,7 @@ protected void setElement() {
    			// Apparently, there are several dialogs opened, hence close all but the last one
    			debugPrintln("WARNING: "+size+" dialogs have been found after having clicked on open element, keep the last one and close all others");
    			for (int i=0; i<size-1; i++) {
-	   			WebBrowserElement windowElement = matchingDialogElements.get(i);
+	   			BrowserElement windowElement = matchingDialogElements.get(i);
    				debugPrintln("	-> close dialog '"+windowElement+"' by clicking on "+getCloseButton(false)+" button.");
 	   			windowElement.findElement(By.xpath(getCloseButton(false))).click();
    			}
@@ -673,16 +673,16 @@ protected void setElement() {
  * @deprecated Use {@link AbstractDialog#setElement() instead.}
  */
 @Deprecated
-protected void setElement(@SuppressWarnings("unused") final List<WebBrowserElement> alreadyOpenedDialogElements) {
+protected void setElement(@SuppressWarnings("unused") final List<BrowserElement> alreadyOpenedDialogElements) {
 	throw new ScenarioFailedError("This method should not be used");
 }
 
 /**
  * Wait for the content element to be loaded.
  *
- * @return The content element as {@link WebBrowserElement}.
+ * @return The content element as {@link BrowserElement}.
  */
-protected WebBrowserElement waitForContentElement() {
+protected BrowserElement waitForContentElement() {
 	return this.element.waitForElement(getContentElementLocator());
 }
 

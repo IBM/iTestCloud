@@ -18,9 +18,9 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.ElementWrapper;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
@@ -47,19 +47,19 @@ private static By getTabListElementLocator(final boolean isRelative) {
 	return By.xpath((isRelative ? "." : EMPTY_STRING) + "//*[contains(@class,'subHeader_') or contains(@class,'tabs__list') or (@class='bx--tabs')]");
 }
 
-public AcmeTabListElement(final WebElementWrapper parent) {
+public AcmeTabListElement(final ElementWrapper parent) {
 	super(parent, getTabListElementLocator(true /*isRelative*/));
 }
 
-public AcmeTabListElement(final WebPage page) {
+public AcmeTabListElement(final Page page) {
 	this(page, getTabListElementLocator(false /*isRelative*/));
 }
 
-public AcmeTabListElement(final WebPage page, final By findBy) {
+public AcmeTabListElement(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
-public AcmeTabListElement(final WebPage page, final WebBrowserElement element) {
+public AcmeTabListElement(final Page page, final BrowserElement element) {
 	super(page, element);
 }
 
@@ -82,9 +82,9 @@ protected void clickOnOpenLinkElement(final String name) {
  *
  * @param tabName The name or label of the tab.
  *
- * @return The link element to be used to open the given tab as {@link WebBrowserElement}.
+ * @return The link element to be used to open the given tab as {@link BrowserElement}.
  */
-protected WebBrowserElement getOpenLinkElement(final String tabName) {
+protected BrowserElement getOpenLinkElement(final String tabName) {
 	return this.element.waitForElement(By.xpath(".//*[(contains(@class,'subHeaderLink') or contains(@class,'tabs__tab') or contains(@class,'tabs__nav-link')) and contains(text(),'" + tabName + "')]"));
 }
 
@@ -97,7 +97,7 @@ protected WebBrowserElement getOpenLinkElement(final String tabName) {
  * <code>false</code> otherwise.
  */
 protected boolean isOpen(final String tabName) {
-	WebBrowserElement tabOpenLinkElement = getOpenLinkElement(tabName);
+	BrowserElement tabOpenLinkElement = getOpenLinkElement(tabName);
 	String classValue = tabOpenLinkElement.getAttribute("class");
 	String ariaSelectedValue = tabOpenLinkElement.getAttribute("aria-selected");
 	return ((classValue != null) && (classValue.toLowerCase().contains("selected") || classValue.toLowerCase().contains("active"))) ||
@@ -132,10 +132,10 @@ public <T extends AcmeTab> T openTab(final String name, final Class<T> tabClass,
 	T tab;
 	try {
 		if((data == null) || (data.length == 0)) {
-			tab = tabClass.getConstructor(WebPage.class).newInstance(getPage());
+			tab = tabClass.getConstructor(Page.class).newInstance(getPage());
 		}
 		else {
-			tab = tabClass.getConstructor(WebPage.class, String[].class).newInstance(getPage(), data);
+			tab = tabClass.getConstructor(Page.class, String[].class).newInstance(getPage(), data);
 		}
 	}
 	catch (WebDriverException e) {

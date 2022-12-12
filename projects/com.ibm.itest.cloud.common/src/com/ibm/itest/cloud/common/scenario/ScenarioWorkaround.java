@@ -17,10 +17,10 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import java.util.*;
 
-import com.ibm.itest.cloud.common.browsers.WebBrowser;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.browsers.Browser;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
@@ -29,7 +29,7 @@ import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
  * </p>
  * Design Need to be finalized Workaround
  */
-abstract public class ScenarioWorkaround<P extends WebPage> {
+abstract public class ScenarioWorkaround<P extends Page> {
 
 	/* Constants */
 	private final static Set<String> WORKAROUNDED_PAGES = new HashSet<String>();
@@ -87,14 +87,14 @@ public ScenarioWorkaround(final P page, final String msg, final AbstractDialog d
  * Subclass has to specify what to do to workaround the problem.
  * </p>
  */
-abstract public WebBrowserElement execute();
+abstract public BrowserElement execute();
 
 /**
  * Return the web browser.
  *
- * @return The browser as a {@link WebBrowser}.
+ * @return The browser as a {@link Browser}.
  */
-public WebBrowser getBrowser() {
+public Browser getBrowser() {
 	return this.page.getBrowser();
 }
 

@@ -19,7 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.browsers.Browser;
 
 /**
  * Performance Manager class, for gathering and storing the information for multiple performance page/action result.
@@ -87,7 +87,7 @@ Timer serverTimer = new Timer();
 double serverLoadTime = 0;
 long timeDateStamp = 0;
 boolean pageLoading = false;
-final WebBrowser browser;
+final Browser browser;
 final LogWriter debugLogWriter;
 final TaskDataWriter taskDataWriter;
 
@@ -103,14 +103,14 @@ public enum RegressionType { Client, Server }
  * @return The created instance as a {@link PerfManager} or <code>null</code>
  * if the performances are not managed during the scenario execution.
  */
-public static PerfManager createInstance(final WebBrowser browser) {
+public static PerfManager createInstance(final Browser browser) {
 	if (PERFORMANCE_ENABLED) {
 		return new PerfManager(browser);
 	}
 	return null;
 }
 
-private PerfManager(final WebBrowser browser){
+private PerfManager(final Browser browser){
 	this.browser = browser;
 	this.taskDataWriter = new TaskDataWriter(PERFORMANCE_FILE_LOCATION);
 

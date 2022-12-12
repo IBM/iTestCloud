@@ -19,9 +19,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.acme.pages.dialogs.AcmeConfirmationDialog;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.ElementWrapper;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
@@ -62,42 +62,42 @@ public static By getLabelElementLocator(final String label, final boolean isRela
 	return By.xpath((isRelative? "." : "") + "//label[.='" + label + "']");
 }
 
-	private final WebBrowserElement labelElement;
+	private final BrowserElement labelElement;
 
-public AcmeSelectionElement(final WebElementWrapper parent, final By labelElementLocator) {
+public AcmeSelectionElement(final ElementWrapper parent, final By labelElementLocator) {
 	super(parent);
 	this.labelElement = parent.getElement().waitForElement(labelElementLocator);
 	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
 }
 
-public AcmeSelectionElement(final WebElementWrapper parent, final String label) {
+public AcmeSelectionElement(final ElementWrapper parent, final String label) {
 	this(parent, getLabelElementLocator(label, true /*isRelative*/));
 }
 
-public AcmeSelectionElement(final WebElementWrapper parent, final WebBrowserElement labelElement) {
+public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement labelElement) {
 	this(parent, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
 }
 
-public AcmeSelectionElement(final WebElementWrapper parent, final WebBrowserElement element, final WebBrowserElement labelElement) {
+public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement element, final BrowserElement labelElement) {
 	super(parent, element);
 	this.labelElement = labelElement;
 }
 
-public AcmeSelectionElement(final WebPage page, final By labelElementLocator) {
+public AcmeSelectionElement(final Page page, final By labelElementLocator) {
 	super(page);
 	this.labelElement = waitForElement(labelElementLocator);
 	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
 }
 
-public AcmeSelectionElement(final WebPage page, final String label) {
+public AcmeSelectionElement(final Page page, final String label) {
 	this(page, getLabelElementLocator(label, false /*isRelative*/));
 }
 
-public AcmeSelectionElement(final WebPage page, final WebBrowserElement labelElement) {
+public AcmeSelectionElement(final Page page, final BrowserElement labelElement) {
 	this(page, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
 }
 
-public AcmeSelectionElement(final WebPage page, final WebBrowserElement element, final WebBrowserElement labelElement) {
+public AcmeSelectionElement(final Page page, final BrowserElement element, final BrowserElement labelElement) {
 	super(page, element);
 	this.labelElement = labelElement;
 }
@@ -168,7 +168,7 @@ public <P extends AcmeConfirmationDialog> P selectByOpeningDialog(final Class<P>
 	P confirmationDialog;
 
 	try {
-		confirmationDialog = dialogClass.getConstructor(WebPage.class).newInstance(getPage());
+		confirmationDialog = dialogClass.getConstructor(Page.class).newInstance(getPage());
 	}
 	catch (WebDriverException e) {
 		throw e;

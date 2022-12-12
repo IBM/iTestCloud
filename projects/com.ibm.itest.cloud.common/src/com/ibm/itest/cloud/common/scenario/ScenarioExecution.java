@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.scenario;
 
-import static com.ibm.itest.cloud.common.browsers.WebBrowser.JAVASCRIPT_ERROR_ALERT_PATTERN;
+import static com.ibm.itest.cloud.common.browsers.Browser.JAVASCRIPT_ERROR_ALERT_PATTERN;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -29,9 +29,9 @@ import org.junit.runners.model.Statement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
-import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.browsers.Browser;
 import com.ibm.itest.cloud.common.config.Config;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.performance.PerfManager;
 import com.ibm.itest.cloud.common.scenario.errors.*;
 import com.ibm.itest.cloud.common.topology.Application;
@@ -69,7 +69,7 @@ import com.ibm.itest.cloud.common.utils.*;
  * console output.</li>
  * </ul>
  * </p><p>
- * Another important thing done by this class is to store the current {@link WebPage page}
+ * Another important thing done by this class is to store the current {@link Page page}
  * to be able to pass it from test to test inside a scenario step and also from step
  * to step inside the scenario. That allow easy transition between tests when
  * a test ends on the same page where the following one starts.
@@ -220,7 +220,7 @@ private void checkServerSpeed(final long start, final int timeLimit) {
  */
 protected void cleanUp(final Throwable t) {
 	println("		-> Cleanup test by clearing the pages cache.");
-	WebPage.clearHistory();
+	Page.clearHistory();
 }
 
 private void createExecutionDetailsFile() {
@@ -276,9 +276,9 @@ private String getApplicationUrls() {
 /**
  * Return the browser used to run the scenario
  *
- * @return The {@link WebBrowser}.
+ * @return The {@link Browser}.
  */
-public WebBrowser getBrowser() {
+public Browser getBrowser() {
 	return this.config.getBrowser();
 }
 
@@ -336,7 +336,7 @@ private void handleAlert(final FrameworkMethod frameworkMethod, final WebDriverE
 
 private void handleBrowserError(final Statement statement, final FrameworkMethod frameworkMethod, final Object target, final boolean isNotRerunnable, final long start, final BrowserError be) throws Throwable {
 	this.blemishes.browserErrors++;
-	WebPage currentPage = WebPage.getCurrentPage();
+	Page currentPage = Page.getCurrentPage();
 	manageFailure(start, be, isNotRerunnable && (currentPage != null));
 	if (this.blemishes.browserErrors >= this.browserErrorsThreshold) {
 		println("Too many browser errors occurred during scenario execution, give up.");
@@ -592,7 +592,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	}
 	catch (UnreachableBrowserException ube) {
 		this.blemishes.browserErrors++;
-		WebPage currentPage = WebPage.getCurrentPage();
+		Page currentPage = Page.getCurrentPage();
 		manageFailure(start, ube, isNotRerunnable && (currentPage != null));
 		if (this.blemishes.browserErrors >= this.browserErrorsThreshold) {
 			println("		  -> The browser seems to have a problem which cannot be worked around by just a restart, give up!");
@@ -620,7 +620,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 		}
 		else if (isBrowserCrashedMessage(message)) {
 			this.blemishes.browserErrors++;
-			WebPage currentPage = WebPage.getCurrentPage();
+			Page currentPage = Page.getCurrentPage();
 			manageFailure(start, wde, isNotRerunnable && (currentPage != null));
 			if (this.blemishes.browserErrors >= this.browserErrorsThreshold) {
 				println("		  -> The browser seems to have a problem which cannot be worked around by just a restart, give up!");
@@ -635,7 +635,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 		}
 		else {
 			this.blemishes.failures++;
-			WebPage currentPage = WebPage.getCurrentPage();
+			Page currentPage = Page.getCurrentPage();
 			manageFailure(start, wde, isNotRerunnable);
 			if (this.blemishes.failures >= this.failuresThreshold) {
 				takeSnapshotFailure();
@@ -658,7 +658,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(ite));
 	}
 	catch (WaitElementTimeoutError wete) {
-		WebPage currentPage = WebPage.getCurrentPage();
+		Page currentPage = Page.getCurrentPage();
 		// If a WaitElementTimeoutError occurs during the login operation in a new browser session, then the current page
 		// will be null. This situation should be considered.
 		if((currentPage != null) && currentPage.isInApplicationContext()) {
@@ -698,7 +698,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	}
 	catch (InvocationTargetException ite) {
 		this.blemishes.invocations++;
-		WebPage currentPage = WebPage.getCurrentPage();
+		Page currentPage = Page.getCurrentPage();
 		manageFailure(start, ite, isNotRerunnable);
 		if (this.blemishes.invocations >= this.invocationsThreshold) {
 			println("Too many invocation target exceptions occurred during scenario execution, give up.");
@@ -719,7 +719,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	}
 	catch (MultipleVisibleElementsError mvee) {
 		this.blemishes.multiples++;
-		WebPage currentPage = WebPage.getCurrentPage();
+		Page currentPage = Page.getCurrentPage();
 		manageFailure(start, mvee, isNotRerunnable);
 		if (this.blemishes.multiples >= this.multiplesThreshold) {
 			println("Too many multiple elements errors occurred during scenario execution, give up.");

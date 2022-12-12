@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.*;
 
 /**
@@ -33,21 +33,21 @@ import com.ibm.itest.cloud.common.pages.elements.*;
  * </ul>
  * </p>
  */
-public class AcmeAbstractDynamicExpandableElement extends AbstractDynamicExpandableElement {
+public class AcmeAbstractDynamicExpandableElement extends DynamicExpandableElement {
 
-public AcmeAbstractDynamicExpandableElement(final WebElementWrapper parent, final By locator, final By expansionLocator) {
+public AcmeAbstractDynamicExpandableElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
 	super(parent, locator, expansionLocator);
 }
 
-public AcmeAbstractDynamicExpandableElement(final WebElementWrapper parent, final By locator, final WebBrowserElement expansionElement) {
+public AcmeAbstractDynamicExpandableElement(final ElementWrapper parent, final By locator, final BrowserElement expansionElement) {
 	super(parent, locator, expansionElement);
 }
 
-public AcmeAbstractDynamicExpandableElement(final WebPage page, final By locator, final By expansionLocator) {
+public AcmeAbstractDynamicExpandableElement(final Page page, final By locator, final By expansionLocator) {
 	super(page, locator, expansionLocator);
 }
 
-public AcmeAbstractDynamicExpandableElement(final WebPage page, final By locator, final WebBrowserElement expansionElement) {
+public AcmeAbstractDynamicExpandableElement(final Page page, final By locator, final BrowserElement expansionElement) {
 	super(page, locator, expansionElement);
 }
 

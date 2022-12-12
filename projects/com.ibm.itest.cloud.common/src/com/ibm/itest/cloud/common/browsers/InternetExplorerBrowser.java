@@ -21,7 +21,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 /**
  * The browser class when Internet Explorer is used to run the tests.
  */
-public class InternetExplorerBrowser extends WebBrowser {
+public class InternetExplorerBrowser extends Browser {
 
 public InternetExplorerBrowser() {
 	super("Internet Explorer");

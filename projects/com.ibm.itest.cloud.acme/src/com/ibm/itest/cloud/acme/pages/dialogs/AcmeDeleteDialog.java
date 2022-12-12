@@ -15,7 +15,7 @@ package com.ibm.itest.cloud.acme.pages.dialogs;
 
 import java.util.regex.Pattern;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
@@ -37,11 +37,11 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public class AcmeDeleteDialog extends AcmeConfirmationDialog {
 
-public AcmeDeleteDialog(final WebPage page) {
+public AcmeDeleteDialog(final Page page) {
 	super(page);
 }
 
-public AcmeDeleteDialog(final WebPage page, final String... data) {
+public AcmeDeleteDialog(final Page page, final String... data) {
 	super(page, data);
 }
 

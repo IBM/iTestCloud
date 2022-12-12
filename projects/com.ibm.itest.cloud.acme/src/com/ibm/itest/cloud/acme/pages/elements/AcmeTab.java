@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 
 /**
  * This class represents a generic tab and manages all its common actions.
@@ -55,7 +55,7 @@ public abstract class AcmeTab extends AcmeWebTitledElementWrapper {
  * must locate a tab element in the page. An {@link InvocationTargetException} will be raised
  * otherwise.
  */
-public AcmeTab(final WebPage page, final By findBy) {
+public AcmeTab(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
@@ -75,7 +75,7 @@ public AcmeTab(final WebPage page, final By findBy) {
  * the particular changing title must be passed via this parameter. If the title is constant
  * on the other hand, then it should be hard-coded in {@link #getExpectedTitle()} method.
  */
-public AcmeTab(final WebPage page, final By findBy, final String... data) {
+public AcmeTab(final Page page, final By findBy, final String... data) {
 	super(page, findBy, data);
 }
 
@@ -90,7 +90,7 @@ public AcmeTab(final WebPage page, final By findBy, final String... data) {
  * This generated xpath must locate the tab element in the page. An {@link InvocationTargetException}
  * will be raised otherwise.
  */
-public AcmeTab(final WebPage page, final String classKeyword) {
+public AcmeTab(final Page page, final String classKeyword) {
 	this(page, classKeyword, (String[]) null);
 }
 
@@ -112,7 +112,7 @@ public AcmeTab(final WebPage page, final String classKeyword) {
  * the particular changing title must be passed via this parameter. If the title is constant
  * on the other hand, then it should be hard-coded in {@link #getExpectedTitle()} method.
  */
-public AcmeTab(final WebPage page, final String classKeyword, final String... data) {
+public AcmeTab(final Page page, final String classKeyword, final String... data) {
 	super(page, getTabElementLocator(classKeyword, false /*isRelative*/), data);
 }
 }

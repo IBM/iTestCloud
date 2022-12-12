@@ -28,7 +28,7 @@ import com.ibm.itest.cloud.common.utils.FileUtil;
 /**
  * The browser class when Firefox is used to run the tests.
  */
-public class FirefoxBrowser extends WebBrowser {
+public class FirefoxBrowser extends Browser {
 
 	// Firefox specific info
 	FirefoxProfile firefoxProfile;

@@ -21,7 +21,7 @@ import org.openqa.selenium.safari.SafariOptions;
 /**
  * The browser class when Safari is used to run the tests.
  */
-public class SafariBrowser extends WebBrowser {
+public class SafariBrowser extends Browser {
 
 public SafariBrowser() {
 	super("Safari");

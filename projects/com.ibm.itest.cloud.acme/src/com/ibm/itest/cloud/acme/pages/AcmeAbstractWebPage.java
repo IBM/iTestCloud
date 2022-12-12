@@ -28,8 +28,8 @@ import com.ibm.itest.cloud.acme.pages.elements.*;
 import com.ibm.itest.cloud.acme.scenario.AcmeScenarioLoginError;
 import com.ibm.itest.cloud.acme.topology.AcmeApplication;
 import com.ibm.itest.cloud.common.config.User;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 import com.ibm.itest.cloud.common.scenario.errors.BrowserError;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
@@ -58,7 +58,7 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * <li>{@link #getRootElementLocator()}: Return the locator for the root web element of the current web page.</li>
  * <li>{@link #isInApplicationContext()}: Specifies whether the web page is in the context of the application.</li>
  * <li>{@link #matchBrowserUrl()}: Return whether the current page location matches the browser URL or not.</li>
- * <li>{@link #matchDisplayedUser(User, WebBrowserElement)}: Return whether the displayed user matches the user name or not.</li>
+ * <li>{@link #matchDisplayedUser(User, BrowserElement)}: Return whether the displayed user matches the user name or not.</li>
  * <li>{@link #openPageViaBreadcrumb(int, Class, String...)}: Open a page by clicking on the Breadcrumb link at a given index.</li>
  * <li>{@link #performLogin(User)}: Perform login operation on the current page to be connected to the given user.</li>
  * <li>{@link #performLogout()}: Logout the page from current user to new user.</li>
@@ -66,7 +66,7 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * </ul>
  * </p>
  */
-public abstract class AcmeAbstractWebPage extends WebPage {
+public abstract class AcmeAbstractWebPage extends Page {
 
 	private static final int LAST_INDEX = -1;
 	private static final By NAVIGATION_TITLE_LINK_LOCATOR = By.xpath("//*[contains(@class,'dap-nav-title-link')]");
@@ -114,11 +114,11 @@ public AcmeApplication getApplication() {
  * @param fail Specifies whether to fail if a breadcrumb element is unavailable
  * at the given index.
  *
- * @return The breadcrumb element at a given index as {@link WebBrowserElement} or
+ * @return The breadcrumb element at a given index as {@link BrowserElement} or
  * <code>null</code> if a breadcrumb element is unavailable at the given index and
  * asked not to fail.
  */
-protected WebBrowserElement getBreadcrumbElement(final int index, final boolean fail) {
+protected BrowserElement getBreadcrumbElement(final int index, final boolean fail) {
 	String xpath = index < 0 ? LAST_BREADCRUMB_ELEMENT_XPATH : (BREADCRUMB_ELEMENTS_XPATH_PREFIX + "[" + (index+1) + "]/*");
 	return waitForElement(By.xpath(xpath), fail, fail? timeout() : 1);
 }
@@ -145,7 +145,7 @@ public String getBreadcrumbText(final int index) {
 	return getBreadcrumbText(getBreadcrumbElement(index, true /*fail*/));
 }
 
-private String getBreadcrumbText(final WebBrowserElement breadcrumElement) {
+private String getBreadcrumbText(final BrowserElement breadcrumElement) {
 	String titleValue = breadcrumElement.getAttribute("title");
 	return (titleValue != null) ? titleValue : breadcrumElement.getText();
 }
@@ -156,10 +156,10 @@ private String getBreadcrumbText(final WebBrowserElement breadcrumElement) {
  * @return All breadcrumb texts of the page as {@link List}.
  */
 public List<String> getBreadcrumbTexts() {
-	List<WebBrowserElement> breadcrumElements = waitForElements(By.xpath(BREADCRUMB_ELEMENTS_XPATH_PREFIX));
+	List<BrowserElement> breadcrumElements = waitForElements(By.xpath(BREADCRUMB_ELEMENTS_XPATH_PREFIX));
 	List<String> breadcrumbTexts = new ArrayList<String>(breadcrumElements.size());
 
-	for (WebBrowserElement breadcrumElement : breadcrumElements) {
+	for (BrowserElement breadcrumElement : breadcrumElements) {
 		breadcrumbTexts.add(getBreadcrumbText(breadcrumElement));
 	}
 
@@ -302,7 +302,7 @@ protected boolean matchBrowserUrlPath(final String pageURL, final String browser
 }
 
 @Override
-protected boolean matchDisplayedUser(final User user, final WebBrowserElement loggedUserElement) {
+protected boolean matchDisplayedUser(final User user, final BrowserElement loggedUserElement) {
 	String loggedUserName = loggedUserElement.getText();
 	return (loggedUserName != null) && loggedUserName.equalsIgnoreCase(user.getName());
 }
@@ -377,7 +377,7 @@ protected void performLogin(final User user) {
 	// field will be hidden and a continue button will be provided after entering such an IBM id.
 	// Clicking this button will open the "Sign in with your w3id" page. The user name and password
 	// of the IBM w3ID (intranet id) must be entered in this page.
-	WebBrowserElement[] ibmIdLoginRelatedElements =
+	BrowserElement[] ibmIdLoginRelatedElements =
 		waitForMultipleElements(IBM_ID_LOG_IN_ELEMENT_LOCATOR, IBM_ID_USER_NAME_ELEMENT_LOCATOR);
 
 	// If the Log In button is present, click it to open the login page.
@@ -401,7 +401,7 @@ protected void performLogin(final User user) {
 		// This will ensure that the IBM w3ID login page has loaded.
 		waitForElement(By.id("w3idheader"));
 
-		WebBrowserElement[] w3idLoginRelatedElements =
+		BrowserElement[] w3idLoginRelatedElements =
 			this.browser.waitForMultipleElements(
 				null /*parentElement*/, new By[]{By.name("username"), getLoggedUserElementLocator()}, new boolean[]{true,false} /*displayFlags*/, true /*fail*/, timeout());
 
@@ -422,7 +422,7 @@ protected void performLogin(final User user) {
 			clickButton(By.id("btn_signin"), true /*check*/);
 
 			// If an error message (such as "Your w3id or password was entered incorrectly") is displayed, throw an exception.
-			WebBrowserElement w3idLoginErrorMessage = waitForElement(By.className("errorMessage"), false /*fail*/, 1 /*time_out*/, false /*displayed*/);
+			BrowserElement w3idLoginErrorMessage = waitForElement(By.className("errorMessage"), false /*fail*/, 1 /*time_out*/, false /*displayed*/);
 			if(w3idLoginErrorMessage != null) {
 				throw new AcmeScenarioLoginError("The following error occurred during log in operation: " + w3idLoginErrorMessage.getText());
 			}
@@ -439,7 +439,7 @@ protected void performLogin(final User user) {
 		clickButton(By.id("signinbutton"));
 
 		// Check whether there's a login issue in the login page.
-		WebBrowserElement ibmAlertElement =
+		BrowserElement ibmAlertElement =
 			waitForElement(By.xpath("//*[contains(@class,'ibm-alert')]/*"), false /*fail*/, 2 /*time_out*/, false /*displayed*/);
 		if (ibmAlertElement != null) {
 			// Throw an appropriate error if there is a login issue.
@@ -447,7 +447,7 @@ protected void performLogin(final User user) {
 		}
 
 		// Check if an APS Portal account does not exist for the given IBM ID.
-		WebBrowserElement alertErrorElement =
+		BrowserElement alertErrorElement =
 			waitForElement(By.xpath("//*[contains(@class,'alert--error')]"), false /*fail*/, 1 /*time_out*/, false /*displayed*/);
 		if(alertErrorElement != null) {
 			String alertError = alertErrorElement.getText();
@@ -466,9 +466,9 @@ protected void performLogin(final User user) {
 		}
 
 		// Check whether there's a login issue in Watson Studio.
-		WebBrowserElement errorMsgElement = waitForElement(By.id("errormsg"), /*fail:*/false, /*timeout:*/1, /*displayed:*/false);
+		BrowserElement errorMsgElement = waitForElement(By.id("errormsg"), /*fail:*/false, /*timeout:*/1, /*displayed:*/false);
 		if (errorMsgElement != null && errorMsgElement.isDisplayed()) {
-			WebBrowserElement textElement = errorMsgElement.waitForElement(By.xpath(".//p[@id='errtxt']"));
+			BrowserElement textElement = errorMsgElement.waitForElement(By.xpath(".//p[@id='errtxt']"));
 			throw new AcmeScenarioLoginError("Cannot login on page '"+this.location+"' with user "+user+".\nError message is: "+textElement.getText());
 		}
 	}

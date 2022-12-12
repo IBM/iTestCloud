@@ -25,7 +25,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 /**
  * The browser class when Google Chrome is used to run the tests.
  */
-public class GoogleChromeBrowser extends WebBrowser {
+public class GoogleChromeBrowser extends Browser {
 
 	private ChromeDriverService service;
 	private ChromeOptions options;

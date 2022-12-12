@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.*;
 
 /**
@@ -33,29 +33,29 @@ import com.ibm.itest.cloud.common.pages.elements.*;
  * </ul>
  * </p>
  */
-public abstract class AcmeWebTitledElementWrapper extends WebTitledElementWrapper {
+public abstract class AcmeWebTitledElementWrapper extends TitledElementWrapper {
 
-public AcmeWebTitledElementWrapper(final WebElementWrapper parent, final By findBy) {
+public AcmeWebTitledElementWrapper(final ElementWrapper parent, final By findBy) {
 	super(parent, findBy);
 }
 
-public AcmeWebTitledElementWrapper(final WebElementWrapper parent, final By findBy, final String... data) {
+public AcmeWebTitledElementWrapper(final ElementWrapper parent, final By findBy, final String... data) {
 	super(parent, findBy, data);
 }
 
-public AcmeWebTitledElementWrapper(final WebPage page, final By findBy) {
+public AcmeWebTitledElementWrapper(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
-public AcmeWebTitledElementWrapper(final WebPage page, final By findBy, final String... data) {
+public AcmeWebTitledElementWrapper(final Page page, final By findBy, final String... data) {
 	super(page, findBy, data);
 }
 
-public AcmeWebTitledElementWrapper(final WebPage page, final WebBrowserElement element) {
+public AcmeWebTitledElementWrapper(final Page page, final BrowserElement element) {
 	super(page, element);
 }
 
-public AcmeWebTitledElementWrapper(final WebPage page, final WebBrowserElement element, final String... data) {
+public AcmeWebTitledElementWrapper(final Page page, final BrowserElement element, final String... data) {
 	super(page, element, data);
 }
 

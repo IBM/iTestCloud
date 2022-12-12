@@ -16,9 +16,9 @@ package com.ibm.itest.cloud.acme.pages.dialogs;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.dialogs.WebInFrameDialog;
-import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.dialogs.InFrameDialog;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 
 /**
  * This class represents a generic dialog opened in a frame and manages all its common actions.
@@ -33,9 +33,9 @@ import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
  * </ul>
  * </p>
  */
-abstract public class AcmeWebInFrameDialog extends WebInFrameDialog {
+abstract public class AcmeWebInFrameDialog extends InFrameDialog {
 
-public AcmeWebInFrameDialog(final WebPage page, final By findBy, final WebBrowserFrame frame) {
+public AcmeWebInFrameDialog(final Page page, final By findBy, final BrowserFrame frame) {
 	super(page, findBy, frame);
 }
 

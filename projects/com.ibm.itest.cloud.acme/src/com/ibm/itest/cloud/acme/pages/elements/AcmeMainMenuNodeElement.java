@@ -16,8 +16,8 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 
 /**
  * This class represents and manages a node (item) of the main menu element of a web page
@@ -29,7 +29,7 @@ import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
  * </p><p>
  * Following private features are also defined or specialized by this page:
  * <ul>
- * <li>{@link #createChildElement(WebBrowserElement)}:
+ * <li>{@link #createChildElement(BrowserElement)}:
  * Create a element wrapper for a given child tree node or tree leaf element.</li>
  * <li>{@link #getChildElement(String, boolean)}:
  * Return the child tree node or tree leaf element at a given path.</li>
@@ -42,16 +42,16 @@ public class AcmeMainMenuNodeElement extends AcmeTreeNodeElement {
 	private static final By LABEL_ELEMENT_LOCATOR = By.xpath(LABEL_ELEMENT_XPATH);
 	private static final By CHILD_ELEMENT_LOCATOR = By.xpath("./ul/li[" + LABEL_ELEMENT_XPATH + "]");
 
-public AcmeMainMenuNodeElement(final WebPage page, final By locator) {
+public AcmeMainMenuNodeElement(final Page page, final By locator) {
 	super(page, locator, LABEL_ELEMENT_LOCATOR, null /*expansionBy*/, CHILD_ELEMENT_LOCATOR);
 }
 
-public AcmeMainMenuNodeElement(final WebPage page, final WebBrowserElement webElement) {
+public AcmeMainMenuNodeElement(final Page page, final BrowserElement webElement) {
 	super(page, webElement, LABEL_ELEMENT_LOCATOR, null /*expansionBy*/, CHILD_ELEMENT_LOCATOR);
 }
 
 @Override
-protected AcmeMainMenuNodeElement createChildElement(final WebBrowserElement childWebElement) {
+protected AcmeMainMenuNodeElement createChildElement(final BrowserElement childWebElement) {
 	return new AcmeMainMenuNodeElement(getPage(), childWebElement);
 }
 

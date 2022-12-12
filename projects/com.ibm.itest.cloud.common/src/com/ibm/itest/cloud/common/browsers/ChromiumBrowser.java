@@ -24,7 +24,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 /**
  * The browser class when Chromium or Electron is used to run the tests.
  */
-public class ChromiumBrowser extends WebBrowser {
+public class ChromiumBrowser extends Browser {
 
 	private ChromeDriverService service;
 

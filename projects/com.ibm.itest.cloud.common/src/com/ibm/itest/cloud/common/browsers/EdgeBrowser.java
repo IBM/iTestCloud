@@ -36,7 +36,7 @@ import org.openqa.selenium.edge.EdgeOptions;
  * </ul>
  * </p>
  */
-public class EdgeBrowser extends WebBrowser {
+public class EdgeBrowser extends Browser {
 
 	/* Fields */
 	private EdgeOptions options;

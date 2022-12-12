@@ -17,7 +17,7 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.LINE_SEPARATOR;
 
 import java.util.List;
 
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 
 public class MultipleVisibleElementsError extends ScenarioFailedError {
 
@@ -48,7 +48,7 @@ public MultipleVisibleElementsError(final String message) {
  *
  * @param elements List of elements found
  */
-public MultipleVisibleElementsError(final List<WebBrowserElement> elements) {
+public MultipleVisibleElementsError(final List<BrowserElement> elements) {
 	this("Unexpected multiple elements found.", elements);
 }
 
@@ -59,7 +59,7 @@ public MultipleVisibleElementsError(final List<WebBrowserElement> elements) {
  * @param message Specific message
  * @param elements List of elements found
  */
-public MultipleVisibleElementsError(final String message, final List<WebBrowserElement> elements) {
+public MultipleVisibleElementsError(final String message, final List<BrowserElement> elements) {
 	super(message + LINE_SEPARATOR
 		+ "			-> element: " + elements.get(0).getBy() + LINE_SEPARATOR
 		+ "			-> # found: " + elements.size());

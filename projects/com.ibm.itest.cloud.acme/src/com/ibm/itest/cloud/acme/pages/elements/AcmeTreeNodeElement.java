@@ -16,9 +16,9 @@ package com.ibm.itest.cloud.acme.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
-import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.WebTreeNodeElement;
+import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.TreeNodeElement;
 
 /**
  * This class represents a node or a leaf element of a tree element and manages its common
@@ -69,13 +69,13 @@ import com.ibm.itest.cloud.common.pages.elements.WebTreeNodeElement;
  * </ul>
  * </p>
  */
-public class AcmeTreeNodeElement extends WebTreeNodeElement {
+public class AcmeTreeNodeElement extends TreeNodeElement {
 
-public AcmeTreeNodeElement(final WebPage page, final By locator, final By labelBy, final By expansionBy, final By childrenBy) {
+public AcmeTreeNodeElement(final Page page, final By locator, final By labelBy, final By expansionBy, final By childrenBy) {
 	super(page, locator, labelBy, expansionBy, childrenBy);
 }
 
-public AcmeTreeNodeElement(final WebPage page, final WebBrowserElement webElement, final By labelBy, final By expansionBy, final By childrenBy) {
+public AcmeTreeNodeElement(final Page page, final BrowserElement webElement, final By labelBy, final By expansionBy, final By childrenBy) {
 	super(page, webElement, labelBy, expansionBy, childrenBy);
 }
 

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
+import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 import com.ibm.itest.cloud.common.scenario.errors.InvalidCommandException;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.utils.EncryptionUtils;
@@ -624,11 +624,11 @@ public static long getElapsedTime(final long start) {
  * @param pattern The pattern to match the text of the desired element.
  * @param fail Specifies whether to fail if a matching element can not be found in the list.
  *
- * @return The element matching the given pattern as {@link WebBrowserElement} or <code>null</code> if
+ * @return The element matching the given pattern as {@link BrowserElement} or <code>null</code> if
  * a matching element can not be found and asked not to fail.
  */
-public static WebBrowserElement getElementFromList(final List<WebBrowserElement> elements, final Pattern pattern, final boolean fail) {
-	for (WebBrowserElement element : elements) {
+public static BrowserElement getElementFromList(final List<BrowserElement> elements, final Pattern pattern, final boolean fail) {
+	for (BrowserElement element : elements) {
 		if(pattern.matcher(element.getText()).matches()) {
 			return element;
 		}

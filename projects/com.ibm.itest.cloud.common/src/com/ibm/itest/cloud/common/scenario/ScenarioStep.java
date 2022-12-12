@@ -20,9 +20,9 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.browsers.Browser;
 import com.ibm.itest.cloud.common.config.Config;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.topology.Topology;
 
 /**
@@ -93,7 +93,7 @@ public static void setUpStep() {
 /**
  * @see Config#getBrowser()
  */
-protected WebBrowser getBrowser() {
+protected Browser getBrowser() {
 	return getConfig().getBrowser();
 }
 
@@ -115,11 +115,11 @@ protected ScenarioData getData() {
  * The current test page or the page stored by the {@link ScenarioExecution}
  * if none was already stored.
  *
- * @return The page as a subclass of {@link WebPage}. May be <code>null</code>
+ * @return The page as a subclass of {@link Page}. May be <code>null</code>
  * if no page was stored neither in current test nor in previous one.
  * TODO Use {@link #getCurrentPage()} instead.
  */
-protected WebPage getPage() {
+protected Page getPage() {
 //	if (this.page == null) {
 //		this.page = getScenarioExecution().getPage();
 //	}
@@ -133,12 +133,12 @@ protected WebPage getPage() {
  * The current test page or the page stored by the {@link ScenarioExecution}
  * if none was already stored.
  *
- * @return The page as a subclass of {@link WebPage}. May be <code>null</code>
+ * @return The page as a subclass of {@link Page}. May be <code>null</code>
  * if no page was stored neither in current test nor in previous one.
  */
-protected WebPage getCurrentPage() {
+protected Page getCurrentPage() {
 //	return getBrowser().getCurrentPage();
-	return WebPage.getCurrentPage();
+	return Page.getCurrentPage();
 }
 
 /**

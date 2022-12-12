@@ -15,7 +15,7 @@ package com.ibm.itest.cloud.acme.pages.elements;
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 
 /**
  * This class defines and manages the <b>Profile</b> menu element.
@@ -39,7 +39,7 @@ public class AcmeProfileMenuElement extends AcmeMenuElement {
  *
  * @param page The page in which the created instance will belong to
  */
-public AcmeProfileMenuElement(final WebPage page) {
+public AcmeProfileMenuElement(final Page page) {
 	super(page, By.id("dap-profile"), By.xpath(".//*[contains(@class,'toggle')]"));
 }
 }

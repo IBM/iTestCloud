@@ -19,10 +19,10 @@ import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.*;
 import com.ibm.itest.cloud.common.config.Config;
-import com.ibm.itest.cloud.common.pages.WebPage;
+import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.*;
-import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.pages.frames.WebNamedFrame;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
+import com.ibm.itest.cloud.common.pages.frames.NamedFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
@@ -38,7 +38,7 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * </p><p>
  * Internal API methods accessible in the framework are:
  * <ul>
- * <li>{@link #open(WebBrowserElement)}: open the window by clicking on the given web element.</li>
+ * <li>{@link #open(BrowserElement)}: open the window by clicking on the given web element.</li>
  * </ul>
  * </p><p>
  * Internal API methods accessible from subclasses are:
@@ -47,13 +47,13 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * <li>{@link #closeAction(boolean)}: The action to perform to close the window.</li>
  * <li>{@link #closeTimeout()}: Time allowed to close the window.</li>
  * <li>{@link #getCloseButton(boolean)}: Return the xpath of the button to close the window.</li>
- * <li>{@link #open(WebBrowserElement)}: open the window by clicking on the given web element.</li>
+ * <li>{@link #open(BrowserElement)}: open the window by clicking on the given web element.</li>
  * <li>{@link #waitForLoadingEnd()}: Wait for the window content to be loaded.</li>
  * <li>{@link #preCloseActions()}: Perform any actions prior to closing the window.</li>
  * </ul>
  * </p>
  */
-abstract public class AbstractWindow extends WebElementWrapper implements Window, WebConstants {
+abstract public class AbstractWindow extends ElementWrapper implements Window, Constants {
 
 	/**
 	 *  The mechanism to find the opened window in the web page.
@@ -70,22 +70,22 @@ abstract public class AbstractWindow extends WebElementWrapper implements Window
 	 */
 	protected String[] data;
 
-public AbstractWindow(final WebPage page, final By findBy) {
+public AbstractWindow(final Page page, final By findBy) {
 	this(page, findBy, (String[]) null);
 }
 
-public AbstractWindow(final WebPage page, final By findBy, final String... data) {
-	this(page, findBy, (WebBrowserFrame) null, data);
+public AbstractWindow(final Page page, final By findBy, final String... data) {
+	this(page, findBy, (BrowserFrame) null, data);
 }
 
-public AbstractWindow(final WebPage page, final By findBy, final String frame) {
-	this(page, findBy, new WebNamedFrame(page.getBrowser(), frame));
+public AbstractWindow(final Page page, final By findBy, final String frame) {
+	this(page, findBy, new NamedFrame(page.getBrowser(), frame));
 }
 
-public AbstractWindow(final WebPage page, final By findBy, final WebBrowserFrame frame, final String... data) {
+public AbstractWindow(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
 	super(page, frame);
 	this.findBy = findBy;
-	this.max = WebBrowserElement.MAX_RECOVERY_ATTEMPTS;
+	this.max = BrowserElement.MAX_RECOVERY_ATTEMPTS;
 	this.data = data;
 }
 
@@ -161,7 +161,7 @@ protected abstract String getCloseButton(boolean validate);
 @Override
 public boolean isCloseable() {
 	// Get web element for close button
-	WebBrowserElement closeButtonElement =
+	BrowserElement closeButtonElement =
 		this.element.waitForElement(By.xpath(getCloseButton(true/*validate*/)), tinyTimeout());
 
 	// If button is found then return whether it's enabled or not
@@ -177,9 +177,9 @@ public boolean isCloseable() {
  * Open the window by clicking on the given web element.
  *
  * @param openElement The element on which to perform the open action.
- * @return The web element matching the opened window as a {@link WebBrowserElement}.
+ * @return The web element matching the opened window as a {@link BrowserElement}.
  */
-abstract public WebBrowserElement open(final WebBrowserElement openElement);
+abstract public BrowserElement open(final BrowserElement openElement);
 
 /**
  * Perform any actions prior to closing the window.
