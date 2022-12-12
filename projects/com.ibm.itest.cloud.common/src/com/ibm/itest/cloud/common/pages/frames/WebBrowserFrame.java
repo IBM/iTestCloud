@@ -15,8 +15,8 @@ package com.ibm.itest.cloud.common.pages.frames;
 
 import org.openqa.selenium.WebDriver;
 
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Abstract class for frame used in browser page.

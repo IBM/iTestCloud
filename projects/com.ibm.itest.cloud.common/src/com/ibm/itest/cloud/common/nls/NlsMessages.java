@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.nls;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParameterValue;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.println;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterValue;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.println;
 
 import java.util.*;
 

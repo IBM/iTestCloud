@@ -13,17 +13,17 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.topology;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParameterValue;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.printException;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterValue;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.printException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
 
 import com.ibm.itest.cloud.acme.config.AcmeConstants;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.topology.Application;
-import com.ibm.itest.cloud.common.tests.topology.Topology;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.topology.Application;
+import com.ibm.itest.cloud.common.topology.Topology;
 
 /**
  * Class to manage the topology.

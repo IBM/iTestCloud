@@ -19,7 +19,6 @@ import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.pages.elements.WebTreeNodeElement;
-import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * This class represents a node or a leaf element of a tree element and manages its common

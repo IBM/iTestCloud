@@ -19,7 +19,6 @@ import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.WebInFrameDialog;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * This class represents a generic dialog opened in a frame and manages all its common actions.

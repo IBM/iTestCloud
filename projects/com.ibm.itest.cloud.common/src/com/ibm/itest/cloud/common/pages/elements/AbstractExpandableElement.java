@@ -13,17 +13,17 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintStackTrace;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
-import static com.ibm.itest.cloud.common.tests.utils.ByUtils.isRelativeLocator;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintStackTrace;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.utils.ByUtils.isRelativeLocator;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
  * Abstract class to handle an expandable web element in a web page.

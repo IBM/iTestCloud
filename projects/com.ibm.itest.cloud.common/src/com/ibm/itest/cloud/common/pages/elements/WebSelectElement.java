@@ -20,8 +20,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
 
 /**
  * Class to handle select element.

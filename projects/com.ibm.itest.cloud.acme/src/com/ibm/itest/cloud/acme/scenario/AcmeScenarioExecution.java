@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.scenario;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParameterIntValue;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.sleep;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterIntValue;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.sleep;
 
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
@@ -22,7 +22,7 @@ import org.junit.runners.model.Statement;
 import com.ibm.itest.cloud.acme.config.AcmeConfig;
 import com.ibm.itest.cloud.acme.config.AcmeConstants;
 import com.ibm.itest.cloud.acme.topology.AcmeTopology;
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioExecution;
+import com.ibm.itest.cloud.common.scenario.ScenarioExecution;
 
 /**
  * Manage scenario execution.

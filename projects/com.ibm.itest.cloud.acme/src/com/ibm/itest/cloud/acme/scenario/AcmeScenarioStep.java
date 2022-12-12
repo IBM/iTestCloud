@@ -13,19 +13,16 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.scenario;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import com.ibm.itest.cloud.acme.config.AcmeConfig;
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.acme.pages.AcmeHomePage;
 import com.ibm.itest.cloud.acme.topology.AcmeApplication;
 import com.ibm.itest.cloud.acme.topology.AcmeTopology;
-import com.ibm.itest.cloud.common.config.IConfig;
-import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.config.*;
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.config.Config;
-import com.ibm.itest.cloud.common.tests.config.User;
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioStep;
+import com.ibm.itest.cloud.common.scenario.ScenarioStep;
 /**
  * Manage a scenario step.
  * <p>

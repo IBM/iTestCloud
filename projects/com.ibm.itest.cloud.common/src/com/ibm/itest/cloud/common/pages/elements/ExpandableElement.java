@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Interface for an expandable element.

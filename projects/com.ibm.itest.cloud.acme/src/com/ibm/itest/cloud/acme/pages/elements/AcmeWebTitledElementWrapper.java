@@ -18,7 +18,6 @@ import org.openqa.selenium.By;
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.*;
-import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * This class represents a generic titled web element and manages all its common actions.

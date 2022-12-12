@@ -13,13 +13,13 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.factories;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.utils.CustomClassLoader;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.utils.CustomClassLoader;
 
 
 /**

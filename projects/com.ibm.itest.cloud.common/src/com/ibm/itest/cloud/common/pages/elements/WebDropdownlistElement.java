@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.tests.utils.ByUtils.isRelativeLocator;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.utils.ByUtils.isRelativeLocator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ import org.openqa.selenium.interactions.Action;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
  * This class represents a generic dropdown list element and manages all its common actions.

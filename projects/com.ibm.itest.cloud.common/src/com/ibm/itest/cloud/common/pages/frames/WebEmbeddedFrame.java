@@ -13,12 +13,12 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.frames;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.DEBUG;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Class to manage browser frame embedded in another frame.

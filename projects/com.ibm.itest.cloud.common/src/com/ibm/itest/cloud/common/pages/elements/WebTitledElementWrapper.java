@@ -13,15 +13,15 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.IncorrectTitleError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.IncorrectTitleError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * This class wraps a titled web element and add some actions and functionalities

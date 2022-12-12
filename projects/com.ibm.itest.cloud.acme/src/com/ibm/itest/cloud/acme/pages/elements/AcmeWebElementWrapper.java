@@ -19,7 +19,6 @@ import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
-import com.ibm.itest.cloud.common.tests.web.*;
 
 /**
  * This class represents a generic web element and manages all its common actions.

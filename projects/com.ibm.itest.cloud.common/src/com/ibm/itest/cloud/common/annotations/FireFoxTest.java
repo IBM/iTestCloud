@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.common.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioData;
+import com.ibm.itest.cloud.common.scenario.ScenarioData;
 
 /**
  * Annotation to identify whether a step or test related to the FireFox borwser.

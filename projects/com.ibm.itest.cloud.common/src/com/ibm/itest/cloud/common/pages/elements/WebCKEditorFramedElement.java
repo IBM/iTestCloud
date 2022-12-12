@@ -13,18 +13,18 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.*;
 
+import com.ibm.itest.cloud.common.config.Timeouts;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.frames.WebElementFrame;
-import com.ibm.itest.cloud.common.tests.config.Timeouts;
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Class to handle a CKEditor element based on a iframe.

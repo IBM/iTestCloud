@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.topology;
 
-import com.ibm.itest.cloud.common.tests.topology.Application;
+import com.ibm.itest.cloud.common.topology.Application;
 
 /**
  * Class to manage the application.

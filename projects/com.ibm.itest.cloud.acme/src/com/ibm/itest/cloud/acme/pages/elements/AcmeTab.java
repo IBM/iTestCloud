@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.EMPTY_STRING;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.EMPTY_STRING;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.DEBUG;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ import org.openqa.selenium.*;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
 
 /**
  * Class to handle web element with <code>table</code> tag name.

@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.scenario;
 
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioLoginError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioLoginError;
 
 /**
  * This class defines a specific error to signal a login error while

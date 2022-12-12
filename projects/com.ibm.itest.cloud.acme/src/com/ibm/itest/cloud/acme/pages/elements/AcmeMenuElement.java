@@ -13,15 +13,15 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.DEBUG;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * This class represents a generic menu element and manages all its common actions.

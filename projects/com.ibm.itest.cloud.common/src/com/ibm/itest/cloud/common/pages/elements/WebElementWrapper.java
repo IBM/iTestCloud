@@ -19,13 +19,13 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.WebPage.ClickType;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.config.Config;
-import com.ibm.itest.cloud.common.tests.scenario.errors.*;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.scenario.errors.*;
 
 /**
  * This class wraps a web element and add some actions and functionalities

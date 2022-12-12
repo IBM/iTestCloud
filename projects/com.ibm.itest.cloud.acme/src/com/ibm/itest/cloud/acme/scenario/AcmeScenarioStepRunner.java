@@ -21,7 +21,7 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioStepRunner;
+import com.ibm.itest.cloud.common.scenario.ScenarioStepRunner;
 
 /**
  * Manage a scenario step JUnit run.

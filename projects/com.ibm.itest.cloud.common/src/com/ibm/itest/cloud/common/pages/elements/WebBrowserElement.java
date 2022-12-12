@@ -13,11 +13,11 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.config.Timeouts.DEFAULT_TIMEOUT;
-import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.tests.utils.ByUtils.fixLocator;
-import static com.ibm.itest.cloud.common.tests.utils.ByUtils.getLocatorString;
+import static com.ibm.itest.cloud.common.config.Timeouts.DEFAULT_TIMEOUT;
+import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.utils.ByUtils.fixLocator;
+import static com.ibm.itest.cloud.common.utils.ByUtils.getLocatorString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +28,11 @@ import org.openqa.selenium.interactions.Coordinates;
 import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
-import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.config.*;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.config.Timeouts;
-import com.ibm.itest.cloud.common.tests.config.User;
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
-import com.ibm.itest.cloud.common.tests.scenario.errors.*;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
+import com.ibm.itest.cloud.common.scenario.errors.*;
 
 /**
  * A web browser element found in a {@link WebBrowser} page content.

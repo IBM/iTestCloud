@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.println;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.println;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -22,9 +22,8 @@ import com.ibm.itest.cloud.acme.pages.dialogs.AcmeConfirmationDialog;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.pages.elements.WebElementWrapper;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
-import com.ibm.itest.cloud.common.tests.web.*;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
  * This class represents a generic selection element such as a check-box and radio-button

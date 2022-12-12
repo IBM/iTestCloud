@@ -13,15 +13,15 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion.EQUALS;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.utils.StringComparisonCriterion.EQUALS;
 
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
-import com.ibm.itest.cloud.common.tests.utils.StringComparisonCriterion;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
+import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
 
 
 /**

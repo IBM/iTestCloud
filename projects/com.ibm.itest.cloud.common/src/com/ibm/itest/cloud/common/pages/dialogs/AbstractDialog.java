@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.dialogs;
 
-import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ import org.openqa.selenium.interactions.Action;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
-import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
-import com.ibm.itest.cloud.common.tests.scenario.errors.*;
+import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
+import com.ibm.itest.cloud.common.scenario.errors.*;
 
 /**
  * Abstract class for any window opened as a dialog in a browser page.

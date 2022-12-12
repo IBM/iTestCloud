@@ -14,7 +14,7 @@
 package com.ibm.itest.cloud.acme.pages;
 
 import com.ibm.itest.cloud.acme.config.AcmeConfig;
-import com.ibm.itest.cloud.common.tests.config.User;
+import com.ibm.itest.cloud.common.config.User;
 
 /**
  * This class represents and manages the <b>Home</b> web page.

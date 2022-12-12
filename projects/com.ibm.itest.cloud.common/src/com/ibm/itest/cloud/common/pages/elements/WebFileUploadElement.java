@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.EMPTY_STRING;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.PERIOD_STRING;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.EMPTY_STRING;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.PERIOD_STRING;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Manage a basic file upload field consisting of nothing but a file input element.

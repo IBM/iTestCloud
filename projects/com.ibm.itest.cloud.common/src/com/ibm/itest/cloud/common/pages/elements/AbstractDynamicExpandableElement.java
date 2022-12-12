@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.common.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Abstract class to handle an expandable web element in a web page where the web element is only

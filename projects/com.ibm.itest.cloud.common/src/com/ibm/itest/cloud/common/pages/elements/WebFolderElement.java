@@ -13,15 +13,15 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import java.util.*;
 
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.WaitElementTimeoutError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
  * Class to handle a folder web element in a web page.  A folder may contain multiple folders,

@@ -14,7 +14,7 @@
 package com.ibm.itest.cloud.acme.scenario;
 
 import com.ibm.itest.cloud.acme.config.AcmeUser;
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioData;
+import com.ibm.itest.cloud.common.scenario.ScenarioData;
 
 /**
  * This class provide APIs for accessing data, which is used while executing test scenarios.

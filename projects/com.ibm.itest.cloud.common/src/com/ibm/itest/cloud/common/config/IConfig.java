@@ -13,8 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.config;
 
-import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.topology.Topology;
 
 public interface IConfig {
 

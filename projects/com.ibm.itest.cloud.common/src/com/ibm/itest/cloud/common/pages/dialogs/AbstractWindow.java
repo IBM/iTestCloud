@@ -13,18 +13,18 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.dialogs;
 
-import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
+import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.*;
+import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.*;
 import com.ibm.itest.cloud.common.pages.frames.WebBrowserFrame;
 import com.ibm.itest.cloud.common.pages.frames.WebNamedFrame;
-import com.ibm.itest.cloud.common.tests.config.Config;
-import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.tests.web.*;
+import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Abstract class for any window opened in a browser page.

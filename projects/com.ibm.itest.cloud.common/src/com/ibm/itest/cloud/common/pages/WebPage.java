@@ -13,12 +13,12 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages;
 
+import static com.ibm.itest.cloud.common.config.Timeouts.DELAY_AFTER_CLICK_LINK_TIMEOUT;
+import static com.ibm.itest.cloud.common.config.Timeouts.DELAY_BEFORE_CLICK_LINK_TIMEOUT;
 import static com.ibm.itest.cloud.common.pages.WebPage.ClickType.CLICK;
-import static com.ibm.itest.cloud.common.tests.config.Timeouts.DELAY_AFTER_CLICK_LINK_TIMEOUT;
-import static com.ibm.itest.cloud.common.tests.config.Timeouts.DELAY_BEFORE_CLICK_LINK_TIMEOUT;
-import static com.ibm.itest.cloud.common.tests.performance.PerfManager.PERFORMANCE_ENABLED;
-import static com.ibm.itest.cloud.common.tests.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
+import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static java.util.regex.Pattern.DOTALL;
 
 import java.io.File;
@@ -33,21 +33,18 @@ import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
-import com.ibm.itest.cloud.common.config.IConfig;
-import com.ibm.itest.cloud.common.config.IUser;
+import com.ibm.itest.cloud.common.WebPageWorkaround;
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.config.*;
 import com.ibm.itest.cloud.common.nls.NlsMessages;
 import com.ibm.itest.cloud.common.pages.elements.*;
-import com.ibm.itest.cloud.common.tests.config.Config;
-import com.ibm.itest.cloud.common.tests.config.User;
-import com.ibm.itest.cloud.common.tests.performance.PerfManager;
-import com.ibm.itest.cloud.common.tests.performance.PerfManager.RegressionType;
-import com.ibm.itest.cloud.common.tests.scenario.errors.*;
-import com.ibm.itest.cloud.common.tests.topology.Application;
-import com.ibm.itest.cloud.common.tests.topology.Topology;
-import com.ibm.itest.cloud.common.tests.utils.ByUtils.ComparisonPattern;
-import com.ibm.itest.cloud.common.tests.utils.FileUtil;
-import com.ibm.itest.cloud.common.tests.web.WebPageWorkaround;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.performance.PerfManager;
+import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
+import com.ibm.itest.cloud.common.scenario.errors.*;
+import com.ibm.itest.cloud.common.topology.Application;
+import com.ibm.itest.cloud.common.topology.Topology;
+import com.ibm.itest.cloud.common.utils.FileUtil;
+import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
 
 /**
  * The abstract class for any web page connected to a {@link WebBrowser}.

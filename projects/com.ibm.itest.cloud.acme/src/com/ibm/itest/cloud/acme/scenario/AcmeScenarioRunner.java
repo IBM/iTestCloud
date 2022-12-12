@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.acme.scenario;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioRunner;
+import com.ibm.itest.cloud.common.scenario.ScenarioRunner;
 
 /**
  * Manage the scenario JUnit run.

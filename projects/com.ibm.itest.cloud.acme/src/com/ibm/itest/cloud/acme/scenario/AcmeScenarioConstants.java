@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.scenario;
 
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioDataConstants;
+import com.ibm.itest.cloud.common.scenario.ScenarioDataConstants;
 
 /**
  * Common utility methods.

@@ -13,9 +13,9 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.config;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParameterIntValue;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterIntValue;
 
-import com.ibm.itest.cloud.common.tests.config.Timeouts;
+import com.ibm.itest.cloud.common.config.Timeouts;
 
 /**
  * This class defines the timeouts.

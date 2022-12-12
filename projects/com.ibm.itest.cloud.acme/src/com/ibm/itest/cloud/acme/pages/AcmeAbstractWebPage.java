@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.pages;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -27,11 +27,11 @@ import com.ibm.itest.cloud.acme.config.AcmeUser;
 import com.ibm.itest.cloud.acme.pages.elements.*;
 import com.ibm.itest.cloud.acme.scenario.AcmeScenarioLoginError;
 import com.ibm.itest.cloud.acme.topology.AcmeApplication;
+import com.ibm.itest.cloud.common.config.User;
 import com.ibm.itest.cloud.common.pages.WebPage;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.tests.config.User;
-import com.ibm.itest.cloud.common.tests.scenario.errors.BrowserError;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.BrowserError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * This class represents a generic web page and manages all its common actions.

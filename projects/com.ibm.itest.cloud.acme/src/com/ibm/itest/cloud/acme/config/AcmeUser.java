@@ -13,9 +13,9 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.config;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.getParameterBooleanValue;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterBooleanValue;
 
-import com.ibm.itest.cloud.common.tests.config.User;
+import com.ibm.itest.cloud.common.config.User;
 
 /**
  * This class defines and manages a user.

@@ -13,14 +13,14 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.frames;
 
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.DEBUG;
-import static com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.DEBUG;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
 
 import org.openqa.selenium.By;
 
+import com.ibm.itest.cloud.common.browsers.WebBrowser;
+import com.ibm.itest.cloud.common.config.Timeouts;
 import com.ibm.itest.cloud.common.pages.elements.WebBrowserElement;
-import com.ibm.itest.cloud.common.tests.config.Timeouts;
-import com.ibm.itest.cloud.common.tests.web.browsers.WebBrowser;
 
 /**
  * Class to manage browser frame identified with a web element.

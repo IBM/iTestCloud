@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.common.pages.elements;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Interface for a table element.

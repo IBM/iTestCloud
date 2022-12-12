@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.common.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.WebPage;
-import com.ibm.itest.cloud.common.tests.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * This class represents a tree element and manages its common functionality.

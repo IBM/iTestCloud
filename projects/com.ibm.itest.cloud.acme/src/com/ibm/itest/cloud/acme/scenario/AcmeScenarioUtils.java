@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.scenario;
 
-import com.ibm.itest.cloud.common.tests.scenario.ScenarioUtils;
+import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
 
 /**
  * Utilities to perform various operations.

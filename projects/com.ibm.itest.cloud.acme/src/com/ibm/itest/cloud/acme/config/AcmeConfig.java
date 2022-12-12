@@ -16,7 +16,7 @@ package com.ibm.itest.cloud.acme.config;
 import static com.ibm.itest.cloud.acme.config.AcmeTimeouts.CATALOG_PROCESSING_COMPLETION_TIMEOUT;
 
 import com.ibm.itest.cloud.acme.topology.AcmeTopology;
-import com.ibm.itest.cloud.common.tests.config.Config;
+import com.ibm.itest.cloud.common.config.Config;
 
 /**
  * This class defines and manages the configuration.
