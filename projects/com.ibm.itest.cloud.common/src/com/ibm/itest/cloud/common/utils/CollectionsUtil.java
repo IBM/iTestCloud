@@ -1,11 +1,3 @@
-/*******************************************************************************
- * Licensed Materials - Property of IBM
- * © Copyright IBM Corporation 2022. All Rights Reserved.
- * 
- * Note to U.S. Government Users Restricted Rights:
- * Use, duplication or disclosure restricted by GSA ADP Schedule
- * Contract with IBM Corp. 
- *******************************************************************************/
 /*********************************************************************
  * Copyright (c) 2014, 2022 IBM Corporation and others.
  *
@@ -20,6 +12,8 @@
  * limitations under the License.
  *********************************************************************/
 package com.ibm.itest.cloud.common.utils;
+
+import static java.util.Arrays.asList;
 
 import java.util.*;
 
@@ -36,7 +30,6 @@ public class CollectionsUtil {
  * @return The list as as {@link List}
  */
 public static <T> List<T> getListFromArray(final T[] array) {
-	return Arrays.asList(array);
+	return asList(array);
 }
-
 }
