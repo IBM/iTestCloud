@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * Licensed Materials - Property of IBM
+ * © Copyright IBM Corporation 2022. All Rights Reserved.
+ * 
+ * Note to U.S. Government Users Restricted Rights:
+ * Use, duplication or disclosure restricted by GSA ADP Schedule
+ * Contract with IBM Corp. 
+ *******************************************************************************/
 /*********************************************************************
  * Copyright (c) 2014, 2022 IBM Corporation and others.
  *
@@ -28,11 +36,7 @@ public class CollectionsUtil {
  * @return The list as as {@link List}
  */
 public static <T> List<T> getListFromArray(final T[] array) {
-	List<T> list = new ArrayList<T>();
-	for (T item: array) {
-		list.add(item);
-	}
-	return list;
+	return Arrays.asList(array);
 }
 
 }
