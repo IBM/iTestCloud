@@ -13,6 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.utils;
 
+import static java.util.Arrays.asList;
+
 import java.util.*;
 
 /**
@@ -28,11 +30,6 @@ public class CollectionsUtil {
  * @return The list as as {@link List}
  */
 public static <T> List<T> getListFromArray(final T[] array) {
-	List<T> list = new ArrayList<T>();
-	for (T item: array) {
-		list.add(item);
-	}
-	return list;
+	return asList(array);
 }
-
 }
