@@ -16,10 +16,13 @@ package com.ibm.itest.cloud.common.scenario;
 import static com.ibm.itest.cloud.common.utils.FileUtil.createDir;
 
 import java.io.*;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import javax.management.timer.Timer;
 
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -80,8 +83,8 @@ public class ScenarioUtils {
 		Arrays.asList(new String[]{"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"});
 
 	/* Time and date */
-	public static final int ONE_MINUTE = 60000;
-	public static final long ONE_HOUR = 3600000L;
+	public static final int ONE_MINUTE = (int)Timer.ONE_MINUTE;
+	public static final long ONE_HOUR = Timer.ONE_HOUR;
 	public static final SimpleDateFormat COMPACT_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss"); //$NON-NLS-1$
 	public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss"); //$NON-NLS-1$
 	public static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy"); //$NON-NLS-1$
@@ -1385,42 +1388,16 @@ public static void sleep(final int seconds) {
  * @return The time as a human readable readable {@link String}.
  */
 public static String timeString(final long time) {
-	NumberFormat format = NumberFormat.getInstance();
-	format.setMaximumFractionDigits(1);
-	StringBuffer buffer = new StringBuffer();
-	if (time == 0) {
-		// print nothing
-	} if (time < 100) { // less than 0.1s
-		buffer.append(time);
-		buffer.append("ms"); //$NON-NLS-1$
-	} else if (time < 1000) { // less than 1s
-		if ((time%100) != 0) {
-			format.setMaximumFractionDigits(2);
-		}
-		buffer.append(format.format(time/1000.0));
-		buffer.append("s"); //$NON-NLS-1$
-	} else if (time < ONE_MINUTE) {  // less than 1mn
-		if ((time%1000) == 0) {
-			buffer.append(time/1000);
-		} else {
-			buffer.append(format.format(time/1000.0));
-		}
-		buffer.append("s"); //$NON-NLS-1$
-	} else if (time < ONE_HOUR) {  // less than 1h
-		buffer.append(time/ONE_MINUTE).append("mn "); //$NON-NLS-1$
-		long seconds = time%ONE_MINUTE;
-		buffer.append(seconds/1000);
-		buffer.append("s"); //$NON-NLS-1$
-	} else {  // more than 1h
-		long h = time / ONE_HOUR;
-		buffer.append(h).append("h "); //$NON-NLS-1$
-		long m = (time % ONE_HOUR) / ONE_MINUTE;
-		buffer.append(m).append("mn "); //$NON-NLS-1$
-		long seconds = m%ONE_MINUTE;
-		buffer.append(seconds/1000);
-		buffer.append("s"); //$NON-NLS-1$
-	}
-	return buffer.toString();
+	if (time < 100) return time + "ms";
+
+	String timeStr = Duration.of(time, ChronoUnit.MILLIS)
+			.toString()
+			.substring(2)
+			.replaceAll("(\\d[HMS])", "$1 ")
+			.toLowerCase()
+			.replace("m", "mn")
+			.trim();
+	return timeStr += timeStr.endsWith("h") ? " 0mn 0s" : timeStr.endsWith("n") ? " 0s" : EMPTY_STRING;
 }
 
 /**
