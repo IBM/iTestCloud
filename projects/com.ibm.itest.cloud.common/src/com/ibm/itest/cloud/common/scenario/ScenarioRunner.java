@@ -418,7 +418,7 @@ protected boolean testShouldRun(final Description methodDescription) {
 			}
 			if (this.lastTest == null) {
 				if (LAST_TEST != null && LAST_TEST.length() != 0) {
-					if (!methodName.contains(FIRST_TEST)) {
+					if (methodName.contains(LAST_TEST)) {
 						this.lastTest = methodDescription;
 					}
 				}
