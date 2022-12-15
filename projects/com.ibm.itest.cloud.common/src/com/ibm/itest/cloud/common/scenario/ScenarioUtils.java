@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import javax.management.timer.Timer;
+
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
@@ -80,8 +82,8 @@ public class ScenarioUtils {
 		Arrays.asList(new String[]{"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"});
 
 	/* Time and date */
-	public static final int ONE_MINUTE = 60000;
-	public static final long ONE_HOUR = 3600000L;
+	public static final int ONE_MINUTE = (int)Timer.ONE_MINUTE;
+	public static final long ONE_HOUR = Timer.ONE_HOUR;
 	public static final SimpleDateFormat COMPACT_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss"); //$NON-NLS-1$
 	public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss"); //$NON-NLS-1$
 	public static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy"); //$NON-NLS-1$
