@@ -82,7 +82,7 @@ public class ScenarioUtils {
 		Arrays.asList(new String[]{"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"});
 
 	/* Time and date */
-	public static final int ONE_MINUTE = Math.toIntExact(Timer.ONE_MINUTE);
+	public static final int ONE_MINUTE = (int)Timer.ONE_MINUTE;
 	public static final long ONE_HOUR = Timer.ONE_HOUR;
 	public static final SimpleDateFormat COMPACT_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss"); //$NON-NLS-1$
 	public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss"); //$NON-NLS-1$
