@@ -368,7 +368,7 @@ protected BrowserElement getExpansionElement(final By expansionLocator) {
 
 	if(isRelativeLocator(expansionLocator)) return this.element.waitForElement(expansionLocator);
 
-	return waitForElement(expansionLocator);
+	return this.browser.waitForElement(expansionLocator, timeout());
 }
 
 /**
