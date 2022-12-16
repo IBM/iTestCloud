@@ -33,7 +33,6 @@ import org.openqa.selenium.By;
  * <li>{@link #xpathMatchingItemText(String, String)}: Return a xpath equals to the given text using the given prefix.</li>
  * <li>{@link #xpathMatchingText(ComparisonPattern, String)}: Return a xpath to match the given text using the given pattern.</li>
  * <li>{@link #xpathMatchingTexts(ComparisonPattern, boolean, String...)}: Return a xpath to match the given texts using the given pattern.</li>
- * <li>{@link #xpathQuotedString(String)}: Return a xpath string safely taking into account whether the given string contains any combination of quotation marks.</li>
  * <li>{@link #xpathStringForTextComparison(ComparisonPattern, String)}:  Return a xpath string to compare the given text using the given pattern.</li>
  * </ul>
  * </p>
@@ -311,112 +310,114 @@ private static By xpathMatchingTexts(final String xpathPrefix, final ComparisonP
 	return By.xpath(xpathBuilder.toString());
 }
 
-/**
- * Return a xpath string safely taking into account whether the given string contains
- * any combination of quotation marks.
- * <p>
- * This method will have following behavior:
- * <ol>
- * <li>returns the given string quoted with apostrophes if the given
- * string does not contain any apostrophe.</li>
- * <li>returns the given string quoted with quotes if the given
- * string does not contain any quote.</li>
- * <li>returns a concatenation of strings quoteds by quotes for parts wihtout any quotes
- * and quoted by apostrophes for quotes.</li>
- * </ol>
- * </p><p>
- * Here are some examples to highlight these different behaviors:
- * <ol>
- * <li>for the string: <pre>I'm reading Harry Potter</pre> this method will
- * return the following xpath:<pre>"I'm reading Harry Potter"</pre></li>
- * <li>for the string: <pre>I am reading "Harry Potter"</pre> this method will
- * return the following xpath:<pre>'I am reading "Harry Potter"'</pre></li>
- * <li>for the string: <code>I'm reading "Harry Potter"</code> this method will
- * return the following xpath: <pre>concat("I'm reading ",'"',"Harry Potter",'"')</pre></li>
- * </ol>
- * </p>
- * @param xpathString String to search for quotation marks
- * @return The xpath string to be used safely as a parameter of {@link By#xpath(String)} method.
- */
-public static String xpathQuotedString(final String xpathString) {
-	if (DEBUG) debugPrintln("		+ (insertString="+xpathString+")");
-
-	// If string has no quotes then return a string surrounded by quotes
-	if (!xpathString.contains("\"")) {
-		StringBuilder xpathBuilder = new StringBuilder("\"").append(xpathString).append("\"");
-		if (DEBUG) debugPrintln("		  -> there's no quote in the string, returned string is: "+xpathBuilder);
-		return xpathBuilder.toString();
-	}
-
-	// If string has no apostrophes then return a string surrounded by apostrophes
-	if (!xpathString.contains("'")) {
-		StringBuilder xpathBuilder = new StringBuilder("'").append(xpathString).append("'");
-		if (DEBUG) debugPrintln("		  -> there's no apostrophe in the string, returned string is: "+xpathBuilder);
-		return xpathBuilder.toString();
-	}
-
-	// There's a mix of apostrophes and quotes, hence the string so must use xpath concat method
-	StringBuilder xpathBuilder = new StringBuilder("concat(");
-
-	// Going to look for " as they are less likely than ' in our string so will minimise number of arguments to concat.
-	StringTokenizer tokenizer = new StringTokenizer(xpathString, "\"", true); // tokenizer returns delimiters
-	int quotes = 0, tokens = 0;
-	while (tokenizer.hasMoreTokens()) {
-
-		// Get next token
-		final String nextToken = tokenizer.nextToken();
-
-		// Check whether the token is a delimiter
-		if (nextToken.equals("\"")) {
-
-			// Check whether this is a contiguous delimiter or not
-			if (quotes == 0) {
-				// Not a contiguous delimiter...
-				// ...need first close previous token if any
-				if (tokens > 0) {
-					xpathBuilder.append("\", ");
-				}
-				//...then opens apostrophe to surround delimiter
-				xpathBuilder.append("'");
-			}
-
-			// Add delimiter to final string
-			xpathBuilder.append(nextToken);
-
-			// Close the apostrophe in case of last token
-			if (!tokenizer.hasMoreTokens()) {
-				xpathBuilder.append("'");
-			}
-
-			// Increment the counter for contiguous delimiter
-			quotes++;
-		} else {
-			// If there was delimiters before the token, then close the apostrophe which surround them
-			if (quotes > 0) {
-				xpathBuilder.append("', ");
-			}
-
-			// Open the quote and add token to final string
-			xpathBuilder.append("\"").append(nextToken);
-
-			// Close the quote in case of last token
-			if (!tokenizer.hasMoreTokens()) {
-				xpathBuilder.append("\"");
-			}
-
-			// Reset the contiguous delimiters counter
-			quotes=0;
-		}
-
-		// Increment the number of tokens
-		tokens++;
-	}
-
-	// Finalize the xpath and return it
-	xpathBuilder.append(")");
-	if (DEBUG) debugPrintln("		  -> there's was a mix of apostrophes and quotes in the string, returned string is: "+xpathBuilder);
-	return xpathBuilder.toString();
-}
+///**
+// * Return a xpath string safely taking into account whether the given string contains
+// * any combination of quotation marks.
+// * <p>
+// * This method will have following behavior:
+// * <ol>
+// * <li>returns the given string quoted with apostrophes if the given
+// * string does not contain any apostrophe.</li>
+// * <li>returns the given string quoted with quotes if the given
+// * string does not contain any quote.</li>
+// * <li>returns a concatenation of strings quoteds by quotes for parts wihtout any quotes
+// * and quoted by apostrophes for quotes.</li>
+// * </ol>
+// * </p><p>
+// * Here are some examples to highlight these different behaviors:
+// * <ol>
+// * <li>for the string: <pre>I'm reading Harry Potter</pre> this method will
+// * return the following xpath:<pre>"I'm reading Harry Potter"</pre></li>
+// * <li>for the string: <pre>I am reading "Harry Potter"</pre> this method will
+// * return the following xpath:<pre>'I am reading "Harry Potter"'</pre></li>
+// * <li>for the string: <code>I'm reading "Harry Potter"</code> this method will
+// * return the following xpath: <pre>concat("I'm reading ",'"',"Harry Potter",'"')</pre></li>
+// * </ol>
+// * </p>
+// * @param xpathString String to search for quotation marks
+// * @return The xpath string to be used safely as a parameter of {@link By#xpath(String)} method.
+// * @deprecated Use {@link Quotes#escape(String)} instead.
+// */
+//@Deprecated
+//public static String xpathQuotedString(final String xpathString) {
+//	if (DEBUG) debugPrintln("		+ (insertString="+xpathString+")");
+//
+//	// If string has no quotes then return a string surrounded by quotes
+//	if (!xpathString.contains("\"")) {
+//		StringBuilder xpathBuilder = new StringBuilder("\"").append(xpathString).append("\"");
+//		if (DEBUG) debugPrintln("		  -> there's no quote in the string, returned string is: "+xpathBuilder);
+//		return xpathBuilder.toString();
+//	}
+//
+//	// If string has no apostrophes then return a string surrounded by apostrophes
+//	if (!xpathString.contains("'")) {
+//		StringBuilder xpathBuilder = new StringBuilder("'").append(xpathString).append("'");
+//		if (DEBUG) debugPrintln("		  -> there's no apostrophe in the string, returned string is: "+xpathBuilder);
+//		return xpathBuilder.toString();
+//	}
+//
+//	// There's a mix of apostrophes and quotes, hence the string so must use xpath concat method
+//	StringBuilder xpathBuilder = new StringBuilder("concat(");
+//
+//	// Going to look for " as they are less likely than ' in our string so will minimise number of arguments to concat.
+//	StringTokenizer tokenizer = new StringTokenizer(xpathString, "\"", true); // tokenizer returns delimiters
+//	int quotes = 0, tokens = 0;
+//	while (tokenizer.hasMoreTokens()) {
+//
+//		// Get next token
+//		final String nextToken = tokenizer.nextToken();
+//
+//		// Check whether the token is a delimiter
+//		if (nextToken.equals("\"")) {
+//
+//			// Check whether this is a contiguous delimiter or not
+//			if (quotes == 0) {
+//				// Not a contiguous delimiter...
+//				// ...need first close previous token if any
+//				if (tokens > 0) {
+//					xpathBuilder.append("\", ");
+//				}
+//				//...then opens apostrophe to surround delimiter
+//				xpathBuilder.append("'");
+//			}
+//
+//			// Add delimiter to final string
+//			xpathBuilder.append(nextToken);
+//
+//			// Close the apostrophe in case of last token
+//			if (!tokenizer.hasMoreTokens()) {
+//				xpathBuilder.append("'");
+//			}
+//
+//			// Increment the counter for contiguous delimiter
+//			quotes++;
+//		} else {
+//			// If there was delimiters before the token, then close the apostrophe which surround them
+//			if (quotes > 0) {
+//				xpathBuilder.append("', ");
+//			}
+//
+//			// Open the quote and add token to final string
+//			xpathBuilder.append("\"").append(nextToken);
+//
+//			// Close the quote in case of last token
+//			if (!tokenizer.hasMoreTokens()) {
+//				xpathBuilder.append("\"");
+//			}
+//
+//			// Reset the contiguous delimiters counter
+//			quotes=0;
+//		}
+//
+//		// Increment the number of tokens
+//		tokens++;
+//	}
+//
+//	// Finalize the xpath and return it
+//	xpathBuilder.append(")");
+//	if (DEBUG) debugPrintln("		  -> there's was a mix of apostrophes and quotes in the string, returned string is: "+xpathBuilder);
+//	return xpathBuilder.toString();
+//}
 
 /**
  * Return a xpath string to compare the given text using the given pattern.

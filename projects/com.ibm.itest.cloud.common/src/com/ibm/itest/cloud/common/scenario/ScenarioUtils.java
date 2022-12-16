@@ -1245,25 +1245,6 @@ public static void printStepStart(final String stepName) {
     }
 }
 
-/**
- * Quote a given text to be used in an xpath expression.
- *
- * @param text The text to be quoted.
- *
- * @return The quoted text to be used in an xpath expression.
- */
-public static String quote(final String text) {
-	if(!text.contains("\"")) {
-		return "\"" + text + "\"";
-	}
-	else if (!text.contains("'")) {
-		return "'" + text + "'";
-	}
-	else {
-		return "concat(\"" + text.replace("\"", "\", '\"', \"") + "\")";
-	}
-}
-
 private static Properties readParametersFile(final String fileDir, final String filePath) {
     File paramFile = new File(fileDir, filePath);
     Properties properties = new Properties();
