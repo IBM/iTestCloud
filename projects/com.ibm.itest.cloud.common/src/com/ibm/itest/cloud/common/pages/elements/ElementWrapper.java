@@ -625,7 +625,7 @@ public BrowserElement waitForElement(final By locator, final int timeout) {
  * methods could be used instead.
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator) {
-	return this.browser.waitForElement(parentElement != null ? parentElement : this.element, locator, true /*fail*/, timeout());
+	return this.browser.waitForElement((parentElement != null) ? parentElement : this.element, locator, true /*fail*/, timeout());
 }
 
 /**
@@ -645,7 +645,7 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * methods could be used instead.
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final int timeout) {
-	return this.browser.waitForElement(parentElement != null ? parentElement : this.element, locator, true /*fail*/, timeout);
+	return this.browser.waitForElement((parentElement != null) ? parentElement : this.element, locator, true /*fail*/, timeout);
 }
 
 /**
