@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2014, 2022 IBM Corporation and others.
+ * Copyright (c) 2022 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,64 +20,14 @@ import junit.framework.AssertionFailedError;
  * <p>
  * This class contains following API methods:
  * <ul>
- * <li>{@link #isNull(Object)}: Return {@code true} if the provided reference is {@code null} otherwise
- * {@code false}.</li>
- * <li>{@link #nonNull(Object)}: Return {@code true} if the provided reference is non-{@code null}
- * otherwise {@code false}.</li>
- * <li>{@link #requireNonNull(Object)}: Check that the given object reference is not {@code null}.</li>
  * <li>{@link #requireNonNull(Object, String)}: Check that the given object reference is not {@code null}
  * and throw a customized {@link NullPointerException} if it is</li>
  * <li>{@link #requireNonNull(Object, AssertionFailedError)}: Check that the given object reference is not
  * {@code null} and throw a customized error that is or extends {@link AssertionFailedError} if it is.</li>
- * <li>{@link #toString()}: Return the result of calling {@code toString} for a non-{@code null} argument
- * and {@code "null"} for a {@code null} argument.</li>
  * </ul>
  * </p>
  */
 public final class ObjectUtils {
-/**
- * Return {@code true} if the provided reference is {@code null} otherwise {@code false}.
- *
- * @param object A reference to be checked against {@code null}.
- *
- * @return {@code true} if the provided reference is {@code null} otherwise {@code false}.
- */
-public static boolean isNull(final Object object) {
-    return object == null;
-}
-
-/**
- * Return {@code true} if the provided reference is non-{@code null} otherwise {@code false}.
- *
- * @param object A reference to be checked against {@code null}.
- *
- * @return {@code true} if the provided reference is non-{@code null} otherwise {@code false}.
- */
-public static boolean nonNull(final Object object) {
-    return object != null;
-}
-
-/**
- * Check that the given object reference is not {@code null}. This method is mainly used for parameter
- * validation in methods and constructors, as demonstrated below:
- *
- * <pre>
- * public Foo(Bar bar) {
- *     this.bar = ObjectUtils.requireNonNull(bar);
- * }
- * </pre>
- *
- * @param object The object reference to check for nullity.
- * @param <T> The type of the object reference.
- *
- * @return {@code object} if not {@code null}.
- *
- * @throws NullPointerException if {@code object} is {@code null}.
- */
-public static <T> T requireNonNull(final T object) {
-    if (object == null) throw new NullPointerException();
-    return object;
-}
 
 /**
  * Check that the given object reference is not {@code null} and throw a customized {@link NullPointerException}
@@ -129,18 +79,5 @@ public static <T> T requireNonNull(final T object, final String message) {
 public static <T, U extends AssertionFailedError> T requireNonNull(final T object, final U error) {
     if (object == null) throw error;
     return object;
-}
-
-/**
- * Return the result of calling {@code toString} for a non-{@code null} argument and {@code "null"} for a
- * {@code null} argument.
- *
- * @param object An object.
- *
- * @return The result of calling {@code toString} for a non-{@code null} argument and {@code "null"} for a
- * {@code null} argument.
- */
-public static String toString(final Object object) {
-    return String.valueOf(object);
 }
 }
