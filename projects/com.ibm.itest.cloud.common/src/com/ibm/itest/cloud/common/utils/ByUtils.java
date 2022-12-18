@@ -28,6 +28,8 @@ import org.openqa.selenium.By;
  * <li>{@link #fixLocator(By)}: Check whether the locator need to be fixed.</li>
  * <li>{@link #isRelativeLocator(By)}: Check whether the given is a relative locator.</li>
  * <li>{@link #getLocatorString(By)}: Return the string content for the given locator.</li>
+ * <li>{@link #getNodeTextInLowerCase(boolean)}: Return the XPath string of converting the node text to lower-case.</li>
+ * <li>{@link #getNodeTextInUpperCase(boolean)}: Return the XPath string of converting the node text to upper-case.</li>
  * <li>{@link #xpathCompareWithText(ComparisonPattern, String, boolean)}: Return a xpath string to compare the given text using the given pattern.</li>
  * <li>{@link #xpathMatchingItemText(String, ComparisonPattern, String)}: Return a xpath to match the given text using the given prefix and pattern.</li>
  * <li>{@link #xpathMatchingItemText(String, String)}: Return a xpath equals to the given text using the given prefix.</li>
@@ -51,6 +53,15 @@ public class ByUtils {
 
 	private static final String NORMALIZE_SPACE_TEXT = "normalize-space(text())";
 	public static final String RELATIVITY_STRING = PERIOD_STRING;
+
+private static String convertCaseInXpath(final String uiTest, final boolean isToUpperCase) {
+	final String alphabetInLowerCase = "abcdefghijklmnopqrstuvwxyz";
+	final String alphabetInUpperCase = alphabetInLowerCase.toUpperCase();
+	return (new StringBuilder("translate(" + uiTest + ",'"))
+			.append(isToUpperCase ? alphabetInLowerCase : alphabetInUpperCase).append("','")
+			.append(isToUpperCase ? alphabetInUpperCase : alphabetInLowerCase).append("')")
+			.toString();
+}
 
 /**
  * Check whether the locator need to be fixed.
@@ -119,6 +130,60 @@ public static String getCombinedLocatorString(final boolean relative, final Stri
 public static String getLocatorString(final By locator) {
 	String locatorString = locator.toString();
 	return locatorString.substring(locatorString.indexOf(": ")+2);
+}
+
+private static String getNodeText(final boolean isContextItemExp) {
+	return isContextItemExp ? "." : "text()";
+}
+
+/**
+ * Return the XPath translate string to convert text to lower-case.
+ *
+ * @param isContextItemExp Specifies whether to use {@code .} (Context Item Expression) or {@code text()}
+ * to get the text in a node. If {@code true} is provided as the value of this parameter, the Context Item
+ * Expression {@code .} is used, whereas if {@code false}, the {@code text()} is used, as demonstrated below:
+ *
+ * <pre>
+ * System.out.println("//*[contains(" + getNodeTextInLowerCase(true) + "='email@abc.com']]");
+ * System.out.println("//*[contains(" + getNodeTextInLowerCase(false) + "='email@abc.com']]");
+ * </pre>
+ *
+ * The output is shown below:
+ *
+ * <pre>
+ * //*[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='email@abc.com']]
+ * //*[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='email@abc.com']]
+ * </pre>
+ *
+ * @return The XPath string of converting the node text to lower-case as {@link String}.
+ */
+public static String getNodeTextInLowerCase(final boolean isContextItemExp) {
+	return convertCaseInXpath(getNodeText(isContextItemExp), false);
+}
+
+/**
+ * Return the XPath translate string to convert text to upper-case.
+ *
+ * @param isContextItemExp Specifies whether to use {@code .} (Context Item Expression) or {@code text()}
+ * to get the text in a node. If {@code true} is provided as the value of this parameter, the Context Item
+ * Expression {@code .} is used, whereas if {@code false}, the {@code text()} is used, as demonstrated below:
+ *
+ * <pre>
+ * System.out.println("//*[contains(" + getNodeTextInUpperCase(true) + "='USERID']]");
+ * System.out.println("//*[contains(" + getNodeTextInUpperCase(false) + "='USERID']]");
+ * </pre>
+ *
+ * The output is shown below:
+ *
+ * <pre>
+ * //*[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='USERID']]
+ * //*[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='USERID']]
+ * </pre>
+ *
+ * @return The XPath string of converting the node text to upper-case as {@link String}.
+ */
+public static String getNodeTextInUpperCase(final boolean isContextItemExp) {
+	return convertCaseInXpath(getNodeText(isContextItemExp), true);
 }
 
 /**
