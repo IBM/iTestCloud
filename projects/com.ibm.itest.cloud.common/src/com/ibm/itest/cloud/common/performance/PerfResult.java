@@ -14,6 +14,7 @@
 package com.ibm.itest.cloud.common.performance;
 
 import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.EMPTY_STRING;
 
 import java.util.ArrayList;
 
@@ -85,6 +86,10 @@ public void addResponseTime(final double serverTime, final double clientTime, fi
 	this.timeDateStamps.add(TaskDataWriter.timestamp2(timeDateStamp,true));
 }
 
+private boolean areEqual(final String s, final String t) {
+	return s == null && t == null ? true : s == null ? false : t == null ? false : s.equals(t);
+}
+
 /**
  * Check if the current result matches the input values.  This method's logic
  * effectively manages how results are aggregated and matched together.
@@ -105,13 +110,13 @@ public boolean doesResultMatch(final String stepNameInput, final String testName
 	if (this.userActionName.equals(USER_ACTION_NOT_PROVIDED)
 			&& this.stepName.equals(stepNameInput)
 			&& this.testName.equals(testNameInput)
-			&& (this.pageTitle.replaceAll("[^a-zA-Z]", "")).equals(pageTitleInput.replaceAll("[^a-zA-Z]", ""))
-			&& (this.url.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", "")).equals(urlInput.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", ""))) {
+			&& areEqual(normalizeTitle(this.pageTitle, "[^a-zA-Z]", EMPTY_STRING), normalizeTitle(pageTitleInput, "[^a-zA-Z]", EMPTY_STRING))
+			&& (this.url.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", EMPTY_STRING)).equals(urlInput.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", EMPTY_STRING))) {
 		return true;
 	} else if (!this.userActionName.equals(USER_ACTION_NOT_PROVIDED)
 			&& this.stepName.equals(stepNameInput)
 			&& this.testName.equals(testNameInput)
-			&& this.pageTitle.equals(pageTitleInput)
+			&& areEqual(this.pageTitle, pageTitleInput)
 			&& this.userActionName.equals(userActionNameInput)) {
 		return true;
 	}
@@ -240,6 +245,10 @@ public String getUrl() {
  */
 public String getUserActionName() {
 	return this.userActionName;
+}
+
+private String normalizeTitle(final String title, final String regex, final String replacement) {
+	return title == null ? null : title.replaceAll(regex, replacement);
 }
 
 /**
