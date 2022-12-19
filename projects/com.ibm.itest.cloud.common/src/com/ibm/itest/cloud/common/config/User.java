@@ -100,18 +100,13 @@ protected User(final String prefix, final String user) {
 	if (this.email == null) {
 		println("Warning: no email has been defined for user "+this.id);
 	}
-	else {
-		// All characters in an email address must be in lower case.
-		this.email = this.email.toLowerCase();
-	}
 }
 
 protected User(final String userId, final String userName, final String pwd, final String mail) {
 	this.id = userId;
 	this.name = userName;
 	this.password = pwd;
-	// All characters in an email address must be in lower case.
-	this.email = (mail != null) ? mail.toLowerCase() : null;
+	this.email = mail;
 }
 
 @Override
