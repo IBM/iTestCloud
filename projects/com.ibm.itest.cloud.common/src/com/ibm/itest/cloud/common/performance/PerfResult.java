@@ -87,7 +87,7 @@ public void addResponseTime(final double serverTime, final double clientTime, fi
 }
 
 private boolean areEqual(final String s, final String t) {
-	return s == null && t == null ? true : s == null ? false : t == null ? false : s.equals(t);
+	return s == null && t == null ? true : s == null ? t.equals(s) : s.equals(t);
 }
 
 /**
