@@ -31,8 +31,8 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import com.ibm.itest.cloud.common.browsers.Browser;
 import com.ibm.itest.cloud.common.config.*;
 import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
-import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
-import com.ibm.itest.cloud.common.scenario.errors.*;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
  * A web browser element found in a {@link Browser} page content.
@@ -1953,19 +1953,7 @@ public String toString() {
  * one is expected.
  */
 public BrowserElement waitForElement(final By locator) {
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		return this.browser.waitForElement(this, locator, true/*fail*/, DEFAULT_TIMEOUT, true/*displayed*/, true/*single*/);
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
-		}
-	}
+	return this.browser.waitForElement(this, locator, true /*fail*/, DEFAULT_TIMEOUT, true /*displayed*/, true /*single*/);
 }
 
 /**
@@ -1980,7 +1968,7 @@ public BrowserElement waitForElement(final By locator) {
  * only one was expected.
  */
 public BrowserElement waitForElement(final By locator, final boolean displayed) {
-	return waitForElement(locator, DEFAULT_TIMEOUT, displayed, true /*single*/);
+	return this.browser.waitForElement(this, locator, false /*fail*/, DEFAULT_TIMEOUT, displayed, true /*single*/);
 }
 
 /**
@@ -1996,7 +1984,7 @@ public BrowserElement waitForElement(final By locator, final boolean displayed) 
  * only one was expected.
  */
 public BrowserElement waitForElement(final By locator, final int timeout) {
-	return waitForElement(locator, timeout, true/*displayed*/, true/*single*/);
+	return this.browser.waitForElement(this, locator, false /*fail*/, timeout, true /*displayed*/, true /*single*/);
 }
 
 /**
@@ -2013,22 +2001,7 @@ public BrowserElement waitForElement(final By locator, final int timeout) {
  * only one was expected.
  */
 public BrowserElement waitForElement(final By locator, final int timeout, final boolean displayed, final boolean single) {
-	if (DEBUG) debugPrintln("		+ waiting for element: ["+locator+"] relatively to "+this);
-
-	// Wait for all elements
-	List<BrowserElement> foundElements = waitForElements(locator, timeout, displayed);
-	if (foundElements == null) return null;
-	int size = foundElements.size();
-	if (size == 0) return null;
-	if (!ScenarioUtils.getParameterBooleanValue("performanceEnabled",false)&&size > 1) {
-		if (single) {
-			throw new MultipleVisibleElementsError(foundElements);
-		}
-		debugPrintln("WARNING: found more than one elements ("+size+"), return the first one!");
-	}
-
-	// Return the found element
-	return foundElements.get(0);
+	return this.browser.waitForElement(this, locator, false /*fail*/, timeout, displayed, single);
 }
 
 /**
@@ -2048,7 +2021,7 @@ public BrowserElement waitForElement(final By locator, final int timeout, final 
  * several elements are found for the same mechanism.
  */
 public BrowserElement waitForElement(final By[] locators, final int timeout) {
-	return this.browser.waitForElement(this, locators, true/*fail*/, timeout);
+	return this.browser.waitForElement(this, locators, false /*fail*/, timeout);
 }
 
 /**
@@ -2067,7 +2040,7 @@ public BrowserElement waitForElement(final By[] locators, final int timeout) {
  * @since 6.0.0
  */
 public List<BrowserElement> waitForElements(final By locator) {
-	return this.browser.waitForElements(this, locator, true/*fail*/, DEFAULT_TIMEOUT, true/*displayed*/);
+	return this.browser.waitForElements(this, locator, true /*fail*/, DEFAULT_TIMEOUT, true/*displayed*/);
 }
 
 /**
@@ -2082,7 +2055,7 @@ public List<BrowserElement> waitForElements(final By locator) {
  * be empty if no element was found before the timeout
  */
 public List<BrowserElement> waitForElements(final By locator, final int timeout) {
-	return waitForElements(locator, timeout, true/*displayed*/);
+	return this.browser.waitForElements(this, locator, false /*fail*/, timeout, true /*displayed*/);
 }
 
 /**
@@ -2097,21 +2070,7 @@ public List<BrowserElement> waitForElements(final By locator, final int timeout)
  * be empty if no element was found before the timeout
  */
 public List<BrowserElement> waitForElements(final By locator, final int timeout, final boolean displayed) {
-	if (DEBUG) debugPrintln("		+ waiting for elements: ["+locator+"] relatively to "+this);
-
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		return this.browser.waitForElements(this, locator, false/*do not fail*/, timeout, displayed);
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
-		}
-	}
+	return this.browser.waitForElements(this, locator, false /*fail*/, timeout, displayed);
 }
 
 /**
@@ -2124,7 +2083,7 @@ public List<BrowserElement> waitForElements(final By locator, final int timeout,
  * </p>
  * @param findBys The mechanisms to find the element in the current page.
  * @return The array of web elements as {@link BrowserElement}
- * @throws ScenarioFailedError if no element was found before the timeout
+ * @throws WaitElementTimeoutError if no element was found before the timeout
  *
  * @see Browser#waitForMultipleElements(BrowserElement, By[], boolean, int)
  * to have more details on how the returned array is filled with found elements
