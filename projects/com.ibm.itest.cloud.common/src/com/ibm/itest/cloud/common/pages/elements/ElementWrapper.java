@@ -617,7 +617,7 @@ public BrowserElement waitForElement(final By locator, final int timeout) {
  * if <code>null</code>, then search in the wrapped element.
  * @param locator The locator to find the element in the current page.
  * @return The web element as {@link BrowserElement}
- * @throws ScenarioFailedError if no element was found before the timeout.
+ * @throws WaitElementTimeoutError if no element was found before the timeout.
  *
  * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
  * TODO Try to get rid off this method by selecting the frame explicitly before
@@ -638,7 +638,7 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * @param locator The locator to use for the search
  * @param timeout Time to wait until giving up if the element is not found
  * @return The found web element as a {@link BrowserElement}.
- * @throws ScenarioFailedError If the element is not found before the given
+ * @throws WaitElementTimeoutError If the element is not found before the given
  * timeout is reached.
  * TODO Try to get rid off this method by selecting the frame explicitly before
  * waiting for an element. Hence, {@link PageElement} waitForElement*
