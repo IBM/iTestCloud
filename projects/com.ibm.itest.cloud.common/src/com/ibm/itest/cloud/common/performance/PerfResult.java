@@ -14,6 +14,7 @@
 package com.ibm.itest.cloud.common.performance;
 
 import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
+import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.EMPTY_STRING;
 
 import java.util.ArrayList;
 
@@ -48,17 +49,20 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public class PerfResult {
 
-// Global Variables
-String stepName = "No step name provided";
-String testName = "No test name provided";
-String url = "No URL provided";
-String pageTitle = "No page title provided";
-String userActionName = "No user action name provided";
-ArrayList<Double> clientTimes, serverTimes, regressionTimes;
-ArrayList<String> timeDateStamps;
-RegressionType regressionType;
+	public enum TimeType { Regression, Client, Server }
 
-public enum TimeType { Regression, Client, Server }
+	// Global Variables
+	String stepName = "No step name provided";
+	String testName = "No test name provided";
+	String url = "No URL provided";
+	String pageTitle = "No page title provided";
+	String userActionName = "No user action name provided";
+
+	ArrayList<Double> clientTimes, serverTimes, regressionTimes;
+
+	ArrayList<String> timeDateStamps;
+
+	RegressionType regressionType;
 
 public PerfResult (final String stepName, final String testName, final String url, final String pageTitle, final String userActionName, final RegressionType regressionType, final double serverTime, final double clientTime, final long timeDateStamp){
 	// Set Variables
@@ -73,6 +77,38 @@ public PerfResult (final String stepName, final String testName, final String ur
 	this.regressionTimes = new ArrayList<Double>();
 	this.timeDateStamps = new ArrayList<String>();
 	addResponseTime(serverTime, clientTime, timeDateStamp);
+}
+
+/**
+ * Get the regression value based off the regression type
+ *
+ * @return The regression value as {@link Double}.
+ */
+public static double getRegressionValue(final double serverTime, final double clientTime, final RegressionType regType) {
+	if (regType==RegressionType.Server) {
+		return serverTime;
+	} else if (regType==RegressionType.Client ) {
+		return serverTime+clientTime;
+	} else {
+		// Valid regression type was not provided
+		return 0;
+	}
+}
+
+/**
+ * Returns the regressionType as a string
+ *
+ * @return The regressionType as {@link String}.
+ */
+public static String regressionTypeToString(final RegressionType regressionType) {
+	switch (regressionType) {
+		case Client:
+			return "Client";
+		case Server:
+			return "Server";
+		default:
+			return "Incorrect type specified";
+	}
 }
 
 /**
@@ -105,26 +141,21 @@ public boolean doesResultMatch(final String stepNameInput, final String testName
 	if (this.userActionName.equals(USER_ACTION_NOT_PROVIDED)
 			&& this.stepName.equals(stepNameInput)
 			&& this.testName.equals(testNameInput)
-			&& (this.pageTitle.replaceAll("[^a-zA-Z]", "")).equals(pageTitleInput.replaceAll("[^a-zA-Z]", ""))
-			&& (this.url.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", "")).equals(urlInput.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", ""))) {
+			&& doTitlesMatch(normalizeTitle(this.pageTitle), normalizeTitle(pageTitleInput))
+			&& (this.url.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", EMPTY_STRING)).equals(urlInput.replaceAll("(_([0-9A-Za-z-_]{22}))|(%[0-9A-F]{2})|[^a-zA-Z]", EMPTY_STRING))) {
 		return true;
 	} else if (!this.userActionName.equals(USER_ACTION_NOT_PROVIDED)
 			&& this.stepName.equals(stepNameInput)
 			&& this.testName.equals(testNameInput)
-			&& this.pageTitle.equals(pageTitleInput)
+			&& doTitlesMatch(this.pageTitle, pageTitleInput)
 			&& this.userActionName.equals(userActionNameInput)) {
 		return true;
 	}
 	return false;
 }
 
-/**
- * Get the last timeDateStamp
- *
- * @return The last time/date stamp as {@link String}.
- */
-public String getLastTimeDateStamp() {
-	return this.timeDateStamps.get(this.timeDateStamps.size()-1);
+private boolean doTitlesMatch(final String title1, final String title2) {
+	return ((title1 == null) && (title2 == null)) ? true : (title1 == null) ? false : title1.equals(title2);
 }
 
 /**
@@ -134,6 +165,15 @@ public String getLastTimeDateStamp() {
  */
 public Double getLastRegressionTime() {
 	return this.regressionTimes.get(this.regressionTimes.size()-1);
+}
+
+/**
+ * Get the last timeDateStamp
+ *
+ * @return The last time/date stamp as {@link String}.
+ */
+public String getLastTimeDateStamp() {
+	return this.timeDateStamps.get(this.timeDateStamps.size()-1);
 }
 
 /**
@@ -152,22 +192,6 @@ public String getPageTitle() {
  */
 public RegressionType getRegressionType() {
 	return this.regressionType;
-}
-
-/**
- * Get the regression value based off the regression type
- *
- * @return The regression value as {@link Double}.
- */
-public static double getRegressionValue(final double serverTime, final double clientTime, final RegressionType regType) {
-	if (regType==RegressionType.Server) {
-		return serverTime;
-	} else if (regType==RegressionType.Client ) {
-		return serverTime+clientTime;
-	} else {
-		// Valid regression type was not provided
-		return 0;
-	}
 }
 
 ArrayList<String> getResults(final TimeType timeType) {
@@ -242,19 +266,7 @@ public String getUserActionName() {
 	return this.userActionName;
 }
 
-/**
- * Returns the regressionType as a string
- *
- * @return The regressionType as {@link String}.
- */
-public static String regressionTypeToString(final RegressionType regressionType) {
-	switch (regressionType) {
-		case Client:
-			return "Client";
-		case Server:
-			return "Server";
-		default:
-			return "Incorrect type specified";
-	}
+private String normalizeTitle(final String title) {
+	return (title != null) ? title.replaceAll("[^a-zA-Z]", EMPTY_STRING) : null;
 }
 }
