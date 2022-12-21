@@ -171,7 +171,7 @@ public BrowserElement getCellElement(final int row, final int column) {
  * @param row The row of the specified cell.
  * @param columnHeaderPattern The column header of the specified cell as {@link Pattern}.
  *
- * @return The specified table cell element as {@link BrowserElement}.
+ * @return The specified table cell element as {@link BrowserElement}, <code>null</code> if no matching column pattern is found.
  */
 public BrowserElement getCellElement(final int row, final Pattern columnHeaderPattern) {
 	if (getHeaderIndex(columnHeaderPattern) < 0) return null;
