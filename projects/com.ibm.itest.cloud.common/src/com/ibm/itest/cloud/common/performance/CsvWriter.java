@@ -15,6 +15,8 @@ package com.ibm.itest.cloud.common.performance;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.LINE_SEPARATOR;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.QUOTE;
+import static com.ibm.itest.cloud.common.utils.CollectionsUtil.getListFromArray;
+import static java.util.Collections.unmodifiableList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,17 +49,7 @@ public CsvWriter (final String filePathName, final char breakCharacter){
  * @param csvArray The array of string to write on the line
  */
 public void writeNext(final String[] csvArray) {
-	try {
-		for (int i = 0; i < csvArray.length; i++) {
-			if (i > 0) this.writer.append(this.breakCharacter);
-			this.writer.append(QUOTE).append(csvArray[i]).append(QUOTE);
-		}
-		this.writer.append(LINE_SEPARATOR);
-		this.writer.flush();
-	} catch (IOException e) {
-		System.out.println("Error occured while writing to csv file.");
-		e.printStackTrace();
-	}
+	writeNext(new ArrayList<>(unmodifiableList(getListFromArray(csvArray))));
 }
 
 /**
