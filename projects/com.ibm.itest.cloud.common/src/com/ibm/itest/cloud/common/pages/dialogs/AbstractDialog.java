@@ -598,7 +598,7 @@ public BrowserElement open(final BrowserElement openElement, final Action postEl
 
 	// Add performance result
 	if (PERFORMANCE_ENABLED) {
-		this.page.addPerfResult(RegressionType.Client, this.page.getTitle()+": Action: "+this.findBy);
+		this.page.addPerfResult(RegressionType.CLIENT, this.page.getTitle()+": Action: "+this.findBy);
 	}
 	// Wait for the dialog to load.
 	waitForLoadingEnd();

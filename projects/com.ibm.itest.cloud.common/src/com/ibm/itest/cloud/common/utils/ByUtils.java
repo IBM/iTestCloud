@@ -43,10 +43,10 @@ public class ByUtils {
 	 * Comparison pattern.
 	 */
 	public enum ComparisonPattern {
-		Equals,
-		StartsWith,
-		EndsWith,
-		Contains,
+		EQUALS,
+		STARTS_WITH,
+		ENDS_WITH,
+		CONTAINS,
 	}
 
 	private static final String NORMALIZE_SPACE_TEXT = "normalize-space(text())";
@@ -186,16 +186,16 @@ public static String xpathCompareWithText(final ComparisonPattern pattern, final
 	// Add the text comparison to xpath builder
 	StringBuilder comparisonBuilder = new StringBuilder();
 	switch (pattern) {
-		case Equals:
+		case EQUALS:
 			comparisonBuilder.append("normalize-space(text())='").append(text).append("'");
 			break;
-		case StartsWith:
+		case STARTS_WITH:
 			comparisonBuilder.append("starts-with(normalize-space(text()),'").append(text).append("')");
 			break;
-		case Contains:
+		case CONTAINS:
 			comparisonBuilder.append("contains(normalize-space(text()),'").append(text).append("')");
 			break;
-		case EndsWith:
+		case ENDS_WITH:
 			comparisonBuilder.append("substring(normalize-space(text()), string-length(normalize-space(text())) - ").append(text.length()-1).append(") = '").append(text).append("'");
 			break;
 		default:
@@ -259,7 +259,7 @@ public static By xpathMatchingItemText(final String xpathPrefix, final Compariso
  * @return The xpath as a {@link By}.
  */
 public static By xpathMatchingItemText(final String xpathPrefix, final String text) {
-	return xpathMatchingTexts(xpathPrefix, ComparisonPattern.Equals, true/*item*/, true/*all*/, text);
+	return xpathMatchingTexts(xpathPrefix, ComparisonPattern.EQUALS, true/*item*/, true/*all*/, text);
 }
 
 /**

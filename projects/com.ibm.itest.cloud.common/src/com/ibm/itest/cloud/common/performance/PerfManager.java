@@ -79,7 +79,7 @@ final ArrayList<PerfResult> perfResults = new ArrayList<PerfResult>();
 String stepName = "Step name not provided";
 String testName = "Test name not provided";
 String userActionName = USER_ACTION_NOT_PROVIDED;
-RegressionType regressionType = RegressionType.Server;
+RegressionType regressionType = RegressionType.SERVER;
 boolean regressionTypeLocked = false;
 Timer clientTimer = new Timer();
 double clientLoadTime = 0;
@@ -91,7 +91,7 @@ final Browser browser;
 final LogWriter debugLogWriter;
 final TaskDataWriter taskDataWriter;
 
-public enum RegressionType { Client, Server }
+public enum RegressionType { CLIENT, SERVER }
 
 /**
  * Create an instance of the performance manager using the given browser.
@@ -317,7 +317,7 @@ public void reset() {
  * Reset the regression type and clear the lock.
  */
 public void resetRegressionType() {
-	this.regressionType = RegressionType.Server;
+	this.regressionType = RegressionType.SERVER;
 	this.regressionTypeLocked = false;
 }
 

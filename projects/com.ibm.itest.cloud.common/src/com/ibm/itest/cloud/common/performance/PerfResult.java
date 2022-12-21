@@ -49,7 +49,7 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public class PerfResult {
 
-	public enum TimeType { Regression, Client, Server }
+	public enum TimeType { REGRESSION, CLIENT, SERVER }
 
 	// Global Variables
 	String stepName = "No step name provided";
@@ -85,9 +85,9 @@ public PerfResult (final String stepName, final String testName, final String ur
  * @return The regression value as {@link Double}.
  */
 public static double getRegressionValue(final double serverTime, final double clientTime, final RegressionType regType) {
-	if (regType==RegressionType.Server) {
+	if (regType==RegressionType.SERVER) {
 		return serverTime;
-	} else if (regType==RegressionType.Client ) {
+	} else if (regType==RegressionType.CLIENT ) {
 		return serverTime+clientTime;
 	} else {
 		// Valid regression type was not provided
@@ -102,9 +102,9 @@ public static double getRegressionValue(final double serverTime, final double cl
  */
 public static String regressionTypeToString(final RegressionType regressionType) {
 	switch (regressionType) {
-		case Client:
+		case CLIENT:
 			return "Client";
-		case Server:
+		case SERVER:
 			return "Server";
 		default:
 			return "Incorrect type specified";
@@ -208,13 +208,13 @@ ArrayList<String> getResults(final TimeType timeType) {
 	// Init time numbers array
 	ArrayList<Double> times = null;
 	switch (timeType) {
-		case Client:
+		case CLIENT:
 			times = this.clientTimes;
 			break;
-		case Server:
+		case SERVER:
 			times = this.serverTimes;
 			break;
-		case Regression:
+		case REGRESSION:
 			times = this.regressionTimes;
 			break;
 		default:

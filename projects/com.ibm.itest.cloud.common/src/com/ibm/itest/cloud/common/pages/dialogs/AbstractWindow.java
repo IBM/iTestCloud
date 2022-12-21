@@ -128,7 +128,7 @@ protected void close(final boolean validate) {
 
 	// Add performance result
 	if (PERFORMANCE_ENABLED) {
-		this.page.addPerfResult(RegressionType.Server, this.page.getTitle());
+		this.page.addPerfResult(RegressionType.SERVER, this.page.getTitle());
 	}
 }
 

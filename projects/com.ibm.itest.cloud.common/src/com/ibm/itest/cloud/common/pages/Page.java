@@ -832,7 +832,7 @@ public BrowserElement click(final BrowserElement parentElement, final By findBy)
 
 	// Add Performance result
 	if (PERFORMANCE_ENABLED) {
-		addPerfResult(RegressionType.Client, pageTitle+ ": Action: " + findBy);
+		addPerfResult(RegressionType.CLIENT, pageTitle+ ": Action: " + findBy);
 	}
 
 	// Return the found element
@@ -996,7 +996,7 @@ public final Page get() {
 
 		// Add performances result
 		if (PERFORMANCE_ENABLED) {
-			addPerfResult(RegressionType.Server, getTitle());
+			addPerfResult(RegressionType.SERVER, getTitle());
 		}
 
 		// Check for loading errors and take an appropriate action in such a situation.
@@ -1043,7 +1043,7 @@ public final Page get() {
 
 	// Add performance result
 	if (PERFORMANCE_ENABLED) {
-		addPerfResult(RegressionType.Server, getTitle());
+		addPerfResult(RegressionType.SERVER, getTitle());
 	}
 
 	// Returned opened page
@@ -3558,7 +3558,7 @@ public BrowserElement waitForTextPresent(final ComparisonPattern pattern, final 
  * @see Browser#waitForText(BrowserElement, boolean, int, String...)
  */
 public BrowserElement waitForTextPresent(final String... texts) {
-	return this.browser.waitForTextPresent(null, true/*fail*/, timeout(), true/*displayed*/, false/*first occurrence*/, ComparisonPattern.StartsWith, texts);
+	return this.browser.waitForTextPresent(null, true/*fail*/, timeout(), true/*displayed*/, false/*first occurrence*/, ComparisonPattern.STARTS_WITH, texts);
 }
 
 /**

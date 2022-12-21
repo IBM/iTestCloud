@@ -280,7 +280,7 @@ private List<BrowserElement> getRowElements() {
 public String getSortedColumn() {
 	List<BrowserElement> headersElement = getHeaderElements();
 	for (BrowserElement hElement: headersElement) {
-		if (getSortMode(hElement) != SortMode.NoSort) {
+		if (getSortMode(hElement) != SortMode.NONE) {
 			return hElement.getText();
 		}
 	}
@@ -316,7 +316,7 @@ protected SortMode getSortMode(final BrowserElement hElement) {
 		//  customDataTable__colWidth30___1cGIz bx--table-sort bx--table-sort--active bx--table-sort--ascending
 		sortAttribute = iconClass.substring(iconClass.lastIndexOf('-') + 1).toUpperCase();
 		if (sortAttribute.equals("ACTIVE"))
-			return SortMode.Descending;
+			return SortMode.DESCENDING;
 		sortAttribute = sortAttribute.substring(0, sortAttribute.indexOf('C') + 1);
 	}
 	return SortMode.fromText(sortAttribute);

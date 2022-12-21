@@ -189,7 +189,7 @@ public void select(final String option) throws NoSuchElementException {
 public void select(final String option, final ComparisonPattern pattern) throws ScenarioFailedError {
 
 	// If pattern is equals, then it's equivalent to select it
-	if (pattern.equals(ComparisonPattern.Equals)) {
+	if (pattern.equals(ComparisonPattern.EQUALS)) {
 		this.select.selectByVisibleText(option);
 		return;
 	}
@@ -205,16 +205,16 @@ public void select(final String option, final ComparisonPattern pattern) throws 
 		String optionText = optionElement.getText();
 		boolean found = false;
 		switch (pattern) {
-			case Equals:
+			case EQUALS:
 				found = optionText.equals(option);
 				break;
-			case StartsWith:
+			case STARTS_WITH:
 				found = optionText.startsWith(option);
 				break;
-			case EndsWith:
+			case ENDS_WITH:
 				found = optionText.endsWith(option);
 				break;
-			case Contains:
+			case CONTAINS:
 				found = optionText.contains(option);
 				break;
 		}

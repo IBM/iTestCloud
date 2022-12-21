@@ -32,21 +32,21 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  */
 public interface ITableElement {
 	/**
-	 * Enum representing the 3 different sorting states: <b>Ascending</b>, <b>Descending</b> and <b>No Sort</b> to return to original sorting.
+	 * Enum representing the 3 different sorting states: <b>ASCENDING</b>, <b>DESCENDING</b> and <b>NONE</b> to return to original sorting.
 	 */
 	public enum SortMode {
 		/**
 		 * Mode used to sort a table column in the ascending order.
 		 */
-		Ascending("ASC"),
+		ASCENDING("ASC"),
 		/**
 		 * Mode used to sort a table column in the descending order.
 		 */
-		Descending("DESC"),
+		DESCENDING("DESC"),
 		/**
 		 * Mode used to specify that a table column in not sorted.
 		 */
-		NoSort("None");
+		NONE("None");
 
 		/**
 		 * Get the enumeration value for the given attribute value.

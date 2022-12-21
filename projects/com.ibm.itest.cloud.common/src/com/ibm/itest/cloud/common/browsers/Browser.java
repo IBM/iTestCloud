@@ -878,7 +878,7 @@ public void dragAndDropBy(final BrowserElement element, final int xOffset, final
  */
 public void dragAndDropViaJavaScript(final BrowserElement sourceElement, final BrowserElement targetElement) {
 	debugPrintln("		+ Drag " + sourceElement + " to " + targetElement);
-	dragAndDropViaJavaScript(sourceElement, targetElement, Position.Top_Left, Position.Top_Left);
+	dragAndDropViaJavaScript(sourceElement, targetElement, Position.TOP_LEFT, Position.TOP_LEFT);
 }
 
 @SuppressWarnings("boxing")

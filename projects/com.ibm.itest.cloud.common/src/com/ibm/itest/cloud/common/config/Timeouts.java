@@ -13,7 +13,7 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.config;
 
-import static com.ibm.itest.cloud.common.config.Timeouts.Performance.Average;
+import static com.ibm.itest.cloud.common.config.Timeouts.Performance.AVERAGE;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterIntValue;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.getParameterValue;
 
@@ -37,9 +37,9 @@ abstract public class Timeouts {
 	 * This enum represents the performance of the application-under-test.
 	 */
 	public enum Performance {
-		Average(1),
-		Slow(2),
-		Snail(3);
+		AVERAGE(1),
+		SLOW(2),
+		SNAIL(3);
 
 		final int multiplier;
 
@@ -58,7 +58,7 @@ abstract public class Timeouts {
 	}
 
 	// Constants
-	public static final Performance PERFORMANCE = Performance.valueOf(getParameterValue("performance", Average.name()));
+	public static final Performance PERFORMANCE = Performance.valueOf(getParameterValue("performance", AVERAGE.name()));
 	private final static int DEFAULT_MAIN_TIMEOUT = 60  * PERFORMANCE.multiplier;
 
 	/**
@@ -84,7 +84,7 @@ abstract public class Timeouts {
 	 * The value is 1 seconds.
 	 * </p>
 	 */
-	static final public int TINY_TIMEOUT = getParameterIntValue("timeoutTiny", (PERFORMANCE == Performance.Slow) ? 1 : 0);
+	static final public int TINY_TIMEOUT = getParameterIntValue("timeoutTiny", (PERFORMANCE == Performance.SLOW) ? 1 : 0);
 
 	/**
 	 * Timeout used to wait for a page to be opened.

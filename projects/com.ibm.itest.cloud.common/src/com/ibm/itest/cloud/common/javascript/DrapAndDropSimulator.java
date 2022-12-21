@@ -162,20 +162,20 @@ public class DrapAndDropSimulator {
 			"simulateHTML5DragAndDrop(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);\r\n";
 
 	public enum Position {
-		Top_Left, Top, Top_Right, Left, Center, Right, Bottom_Left, Bottom, Bottom_Right;
+		TOP_LEFT, TOP, TOP_RIGHT, LEFT, CENTER, RIGHT, BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT;
 		public int getOffset(final int value) {
 			switch(this) {
-				case Top_Left:
-				case Left:
-				case Bottom_Left:
+				case TOP_LEFT:
+				case LEFT:
+				case BOTTOM_LEFT:
 					return 0;
-				case Top:
-				case Center:
-				case Bottom:
+				case TOP:
+				case CENTER:
+				case BOTTOM:
 					return value / 2;
-				case Top_Right:
-				case Right:
-				case Bottom_Right:
+				case TOP_RIGHT:
+				case RIGHT:
+				case BOTTOM_RIGHT:
 					return value - 1;
 				default:
 					return 0;
