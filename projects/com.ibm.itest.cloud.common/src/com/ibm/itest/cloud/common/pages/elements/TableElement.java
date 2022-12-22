@@ -15,6 +15,7 @@ package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
+import static java.util.stream.IntStream.range;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,44 @@ import org.openqa.selenium.*;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
 
 /**
  * Class to handle web element with <code>table</code> tag name.
+ * <p>
+ * This class contains following public methods:
+ * <ul>
+ * <li>{@link #applySortMode(Pattern, SortMode)}: Applies the given sort mode to the given column.</li>
+ * <li>{@link #getCellElement(int, int)}: Returns the specified table cell element of a certain row and column.</li>
+ * <li>{@link #getCellElement(int, Pattern, boolean)}: Returns the specified table cell element of a certain row and column pattern.</li>
+ * <li>{@link #getCellImageSource(int, int)}: Returns the image source from the specified table cell.</li>
+ * <li>{@link #getCellText(int, int)}: Returns the text in the specified table cell of a certain row and column.</li>
+ * <li>{@link #getCellText(int, Pattern, boolean)}: Returns the text in the specified table cell of a certain row and column pattern.</li>
+ * <li>{@link #getCellTextForRow(int)}: Returns all the cell text values for a specified table row.</li>
+ * <li>{@link #getColumnHeader(Pattern)}: Returns the full column header that matches the given column name.</li>
+ * <li>{@link #getColumnHeaders()}: Returns the list of displayed columns.</li>
+ * <li>{@link #getColumnSortMode(Pattern)}: Returns the sort mode of the column matching the given name.</li>
+ * <li>{@link #getRowCount()}: Returns the number of rows in the table.</li>
+ * <li>{@link #getSortedColumn()}: Returns the name of the column which has sorting activated.</li>
+ * <li>{@link #isColumnDisplayed(Pattern)}: Check if the given column is displayed.</li>
+ * <li>{@link #isSelected(int)}: Check if the specified row is selected.</li>
+ * <li>{@link #search(Pattern, boolean, int...)}: Searches the table for a specific pattern.</li>
+ * <li>{@link #search(String, boolean, boolean, boolean, int...)}: Searches the table for a specific text.</li>
+ * <li>{@link #search(String, boolean, int)}: Searches the table for a specific text.</li>
+ * <li>{@link #search(String, StringComparisonCriterion, boolean, int)}: Searches the table for a specific text.</li>
+ * <li>{@link #select(int, boolean)}: Selects or unselects the specified row.</li>
+ * <li>{@link #selectAll(boolean)}: Selects or unselects all rows.</li>
+ * </ul>
+ * </p><p>
+ * This class also defines following protected methods:
+ * <ul>
+ * <li>{@link #getHeaderElement(Pattern)}: Returns the header web element which text is matching the given column name.</li>
+ * <li>{@link #getHeaderElements()}: Returns the list of header web elements.</li>
+ * <li>{@link #getSortMode(BrowserElement)}: Returns the sorting state of the given column header element.</li>
+ * <li>{@link #waitForTableToRefresh()}: Waits for the table to refresh.</li>
+ * </ul>
+ * </p>
  */
 public abstract class TableElement extends ElementWrapper implements ITableElement {
 
@@ -120,7 +155,7 @@ public void applySortMode(final Pattern pattern, final SortMode mode) throws Sce
 }
 
 /**
- * Return the specified table cell element.
+ * Returns the specified table cell element of a certain row and column.
  *
  * @param row The row of the specified cell.
  * @param column The column of the specified cell.
@@ -131,6 +166,25 @@ public BrowserElement getCellElement(final int row, final int column) {
 	return getCellElementsForRow(row).get(column);
 }
 
+/**
+ * Returns the specified table cell element of a certain row and column pattern.
+ *
+ * @param row The row of the specified cell.
+ * @param columnHeaderPattern The column header of the specified cell as {@link Pattern}.
+ * @param fail Specifies whether to fail and throw a {@link WaitElementTimeoutError} if a matching column could not be found.
+ *
+ * @return The specified table cell element as {@link BrowserElement} or <code>null</code> if a matching column pattern could not be found and specified not to fail.
+ * A {@link WaitElementTimeoutError} is thrown if a matching column could not be found and specified to fail.
+ */
+public BrowserElement getCellElement(final int row, final Pattern columnHeaderPattern, final boolean fail) {
+	final int headerIndex = getHeaderIndex(columnHeaderPattern);
+	if (headerIndex < 0) {
+		if(fail) throw new WaitElementTimeoutError("A cell element in row '" + row + "' matching pattern '" + columnHeaderPattern + "' could not be found before timeout");
+		return null;
+	}
+	return getCellElementsForRow(row).get(headerIndex);
+}
+
 private List <BrowserElement> getCellElementsForRow(final int row) {
 	List<BrowserElement> rowElements = getRowElements();
 	return rowElements.get(row).waitForElements(
@@ -138,7 +192,7 @@ private List <BrowserElement> getCellElementsForRow(final int row) {
 }
 
 /**
- * Return the image source from the specified table cell.
+ * Returns the image source from the specified table cell.
  *
  * @param row The row of the specified cell.
  * @param column The column of the specified cell.
@@ -154,7 +208,7 @@ public String getCellImageSource(final int row, final int column) {
 }
 
 /**
- * Return the text in the specified table cell.
+ * Returns the text in the specified table cell of a certain row and column.
  *
  * @param row The row of the specified cell.
  * @param column The column of the specified cell.
@@ -163,6 +217,20 @@ public String getCellImageSource(final int row, final int column) {
  */
 public String getCellText(final int row, final int column) {
 	return getCellText(getCellElement(row, column));
+}
+
+/**
+ * Returns the text in the specified table cell of a certain row and column pattern.
+ *
+ * @param row The row of the specified cell.
+ * @param columnHeaderPattern The column header of the specified cell as {@link Pattern}.
+ * @param fail Specifies whether to fail and throw a {@link WaitElementTimeoutError} if a matching column could not be found.
+ *
+ * @return The text in the specified table cell as {@link String} or <code>null</code> if a matching column pattern could not be found and specified not to fail.
+ * A {@link WaitElementTimeoutError} is thrown if a matching column could not be found and specified to fail.
+ */
+public String getCellText(final int row, final Pattern columnHeaderPattern, final boolean fail) {
+	return getCellText(getCellElement(row, columnHeaderPattern, fail));
 }
 
 private String getCellText(final BrowserElement cellElement) {
@@ -174,7 +242,7 @@ private String getCellText(final BrowserElement cellElement) {
 }
 
 /**
- * Return all the cell text values for a specified table row.
+ * Returns all the cell text values for a specified table row.
  *
  * @param row The table row to be accessed.
  *
@@ -209,7 +277,7 @@ public SortMode getColumnSortMode(final Pattern pattern) throws ScenarioFailedEr
 }
 
 /**
- * Return the full column header that matches the given column name.
+ * Returns the full column header that matches the given column name.
  * <p>
  * Note that this method is setting {@link #headerElement} field.
  * </p>
@@ -225,7 +293,7 @@ public String getColumnHeader(final Pattern pattern) {
 }
 
 /**
- * Return the header web element which text is matching the given column name.
+ * Returns the header web element which text is matching the given column name.
  * <p>
  * Note that this method is setting {@link #headerElement} field.
  * </p>
@@ -244,7 +312,7 @@ protected BrowserElement getHeaderElement(final Pattern pattern) {
 }
 
 /**
- * Return the list of header web elements.
+ * Returns the list of header web elements.
  * <p>
  * By default these are web elements with <code>td</code> tag name and having
  * the <code>@role='columnheader'</code> attribute.
@@ -258,8 +326,15 @@ protected List<BrowserElement> getHeaderElements() {
 	return this.element.waitForElements(By.xpath(".//th | .//div[starts-with(@class,'ReactVirtualized__Table__headerColumn')]"));
 }
 
+private int getHeaderIndex(final Pattern pattern) {
+	List<BrowserElement> headerElemList = getHeaderElements();
+	return range(0, headerElemList.size())
+			.filter(i -> pattern.matcher(headerElemList.get(i).getText()).matches())
+			.findFirst().orElse(-1);
+}
+
 /**
- * Return the number of rows in the table.
+ * Returns the number of rows in the table.
  *
  * @return The number of rows in the table.
  */
@@ -272,7 +347,7 @@ private List<BrowserElement> getRowElements() {
 }
 
 /**
- * Return the name of the column which has sorting activated.
+ * Returns the name of the column which has sorting activated.
  *
  * @return The column name as a {@link String} or <code>null</code>
  * if there's no sorted column in the current table
@@ -288,7 +363,7 @@ public String getSortedColumn() {
 }
 
 /**
- * Return the sorting state of the given column header element.
+ * Returns the sorting state of the given column header element.
  * <p>
  * By default a column is sorted if its header element has the <code>aria-sort</code>
  * attribute equals to one of the attribute value of
@@ -332,7 +407,7 @@ public boolean isColumnDisplayed(final Pattern pattern) {
 }
 
 /**
- * Search the table for a specific pattern.
+ * Searches the table for a specific pattern.
  *
  * @param pattern The pattern to search for.
  * @param fail Specify whether to fail if a possible match is not found.
@@ -359,7 +434,7 @@ public int search(final Pattern pattern, final boolean fail, final int... column
 }
 
 /**
- * Search the table for a specific text.
+ * Searches the table for a specific text.
  *
  * @param searchText The text to search for.
  * @param useCompleteMatch If true, the entire cell contents much match the target text.
@@ -379,7 +454,7 @@ public int search(final String searchText, final boolean useCompleteMatch, final
 }
 
 /**
- * Search the table for a specific text. This method is faster than the search methods that return a row number.
+ * Searches the table for a specific text. This method is faster than the search methods that return a row number.
  *
  * @param searchText The text to search for.
  * @param fail Specify whether to fail if a match is not found.
@@ -393,7 +468,7 @@ public List<BrowserElement> search(final String searchText, final boolean fail, 
 }
 
 /**
- * Search the table for a specific text. This method is faster than the search methods that return a row number.
+ * Searches the table for a specific text. This method is faster than the search methods that return a row number.
  *
  * @param searchText The text to search for.
  * @param comparison The comparison used to match the searchText to the contents of the specified column as {@link StringComparisonCriterion}.
@@ -424,7 +499,7 @@ public List<BrowserElement> search(final String searchText, final StringComparis
 }
 
 /**
- * Is the specified row selected? This works only for tables where the first column is a selection box.
+ * Check if the specified row is selected. This works only for tables where the first column is a selection box.
  *
  * @param row The table row number (0 based) to check for selection.
  *
@@ -435,7 +510,7 @@ public boolean isSelected(final int row) {
 }
 
 /**
- * Select or unselect the specified row. This works only for tables where the first column is a selection box.
+ * Selects or unselects the specified row. This works only for tables where the first column is a selection box.
  *
  * @param row The number (0 based) of the table row to select or unselect.
  * @param selectIt Indicates whether the row should be selected or unselected.
@@ -452,7 +527,7 @@ public void select(final int row, final boolean selectIt) {
 }
 
 /**
- * Select or unselect all rows. This works only for tables where the first column is a selection box.
+ * Selects or unselects all rows. This works only for tables where the first column is a selection box.
  *
  * @param selectIt Indicates whether the select-all box should be selected or unselected.
  */
@@ -469,7 +544,7 @@ public void selectAll(final boolean selectIt) {
 }
 
 /**
- * Wait for the table to refresh.
+ * Waits for the table to refresh.
  * <p>
  * This method is called typically after a sort operation.
  * </p>
