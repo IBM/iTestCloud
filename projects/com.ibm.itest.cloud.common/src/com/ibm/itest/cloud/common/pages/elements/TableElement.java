@@ -26,6 +26,7 @@ import org.openqa.selenium.*;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
 
 /**
@@ -35,10 +36,10 @@ import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
  * <ul>
  * <li>{@link #applySortMode(Pattern, SortMode)}: Applies the given sort mode to the given column.</li>
  * <li>{@link #getCellElement(int, int)}: Returns the specified table cell element of a certain row and column.</li>
- * <li>{@link #getCellElement(int, Pattern)}: Returns the specified table cell element of a certain row and column pattern.</li>
+ * <li>{@link #getCellElement(int, Pattern, boolean)}: Returns the specified table cell element of a certain row and column pattern.</li>
  * <li>{@link #getCellImageSource(int, int)}: Returns the image source from the specified table cell.</li>
  * <li>{@link #getCellText(int, int)}: Returns the text in the specified table cell of a certain row and column.</li>
- * <li>{@link #getCellText(int, Pattern)}: Returns the text in the specified table cell of a certain row and column pattern.</li>
+ * <li>{@link #getCellText(int, Pattern, boolean)}: Returns the text in the specified table cell of a certain row and column pattern.</li>
  * <li>{@link #getCellTextForRow(int)}: Returns all the cell text values for a specified table row.</li>
  * <li>{@link #getColumnHeader(Pattern)}: Returns the full column header that matches the given column name.</li>
  * <li>{@link #getColumnHeaders()}: Returns the list of displayed columns.</li>
@@ -170,12 +171,18 @@ public BrowserElement getCellElement(final int row, final int column) {
  *
  * @param row The row of the specified cell.
  * @param columnHeaderPattern The column header of the specified cell as {@link Pattern}.
+ * @param fail Specifies whether to fail and throw a {@link WaitElementTimeoutError} if a matching column could not be found.
  *
- * @return The specified table cell element as {@link BrowserElement}, <code>null</code> if no matching column pattern is found.
+ * @return The specified table cell element as {@link BrowserElement} or <code>null</code> if a matching column pattern could not be found and specified not to fail.
+ * A {@link WaitElementTimeoutError} is thrown if a matching column could not be found and specified to fail.
  */
-public BrowserElement getCellElement(final int row, final Pattern columnHeaderPattern) {
-	if (getHeaderIndex(columnHeaderPattern) < 0) return null;
-	return getCellElementsForRow(row).get(getHeaderIndex(columnHeaderPattern));
+public BrowserElement getCellElement(final int row, final Pattern columnHeaderPattern, final boolean fail) {
+	final int headerIndex = getHeaderIndex(columnHeaderPattern);
+	if (headerIndex < 0) {
+		if(fail) throw new WaitElementTimeoutError("A cell element in row '" + row + "' matching pattern '" + columnHeaderPattern + "' could not be found before timeout");
+		return null;
+	}
+	return getCellElementsForRow(row).get(headerIndex);
 }
 
 private List <BrowserElement> getCellElementsForRow(final int row) {
@@ -217,11 +224,13 @@ public String getCellText(final int row, final int column) {
  *
  * @param row The row of the specified cell.
  * @param columnHeaderPattern The column header of the specified cell as {@link Pattern}.
+ * @param fail Specifies whether to fail and throw a {@link WaitElementTimeoutError} if a matching column could not be found.
  *
- * @return The text in the specified table cell as {@link String}.
+ * @return The text in the specified table cell as {@link String} or <code>null</code> if a matching column pattern could not be found and specified not to fail.
+ * A {@link WaitElementTimeoutError} is thrown if a matching column could not be found and specified to fail.
  */
-public String getCellText(final int row, final Pattern columnHeaderPattern) {
-	return getCellText(getCellElement(row, columnHeaderPattern));
+public String getCellText(final int row, final Pattern columnHeaderPattern, final boolean fail) {
+	return getCellText(getCellElement(row, columnHeaderPattern, fail));
 }
 
 private String getCellText(final BrowserElement cellElement) {
