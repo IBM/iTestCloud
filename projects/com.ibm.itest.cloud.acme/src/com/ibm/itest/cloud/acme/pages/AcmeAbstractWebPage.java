@@ -403,7 +403,7 @@ protected void performLogin(final User user) {
 
 		BrowserElement[] w3idLoginRelatedElements =
 			this.browser.waitForMultipleElements(
-				null /*parentElement*/, new By[]{By.name("username"), getLoggedUserElementLocator()}, new boolean[]{true,false} /*displayFlags*/, true /*fail*/, timeout());
+				null /*parentElement*/, new By[]{By.name("username"), getLoggedUserElementLocator()}, new boolean[]{true,false} /*displayFlags*/, timeout(), true /*fail*/);
 
 			// If w3id login page is displayed (it will not be displayed if the user already logged on to W3 in the same browser session).
 		if(w3idLoginRelatedElements[0] != null) {

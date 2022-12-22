@@ -43,7 +43,7 @@ private static By getInputElementLocator(final boolean relative) {
 
 public FileUploadElement(final ElementWrapper parent) {
 	super(parent);
-	this.element = this.browser.waitForElement(parent.element, getInputElementLocator(true /*relative*/), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
+	this.element = this.browser.waitForElement(parent.element, getInputElementLocator(true /*relative*/), timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
 }
 
 public FileUploadElement(final Page page) {

@@ -177,7 +177,7 @@ protected List<BrowserElement> getOptionElements(final boolean fail) {
 	final By optionElementLocator = getOptionElementLocator();
 	BrowserElement parentElement = isRelativeLocator(optionElementLocator) ? this.element : null;
 
-	return this.browser.waitForElements(parentElement, optionElementLocator, fail, fail ? timeout() : tinyTimeout(), false /*displayed*/);
+	return this.browser.waitForElements(parentElement, optionElementLocator, fail ? timeout() : tinyTimeout(), fail, false /*displayed*/);
 }
 
 /**
@@ -215,7 +215,7 @@ protected BrowserElement getSelectionElement() {
 	if(this.selectionLocator == null) return null;
 	BrowserElement parentElement = isRelativeLocator(this.selectionLocator) ? this.element : null;
 
-	return this.browser.waitForElement(parentElement, this.selectionLocator, false /*fail*/, 0 /*timeout*/, false /*displayed*/, true /*single*/);
+	return this.browser.waitForElement(parentElement, this.selectionLocator, 0 /*timeout*/, false /*fail*/, false /*displayed*/, true /*single*/);
 }
 
 @Override

@@ -206,7 +206,7 @@ protected By getOptionElementLocator() {
  * @return All the option elements in the drop-down list element.
  */
 protected List<BrowserElement> getOptionElements(final boolean fail) {
-	return this.browser.waitForElements(this.element, getOptionElementLocator(), fail, fail ? timeout() : 1 /*timeout*/, false /*displayed*/);
+	return this.browser.waitForElements(this.element, getOptionElementLocator(), fail ? timeout() : 1 /*timeout*/, fail, false /*displayed*/);
 }
 
 /**

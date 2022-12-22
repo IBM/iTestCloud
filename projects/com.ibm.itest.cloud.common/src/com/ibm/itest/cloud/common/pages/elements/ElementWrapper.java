@@ -179,7 +179,7 @@ protected By[] getBusyIndicatorElementLocators() {
  *
  */
 protected BrowserElement[] getBusyIndicatorElements() {
-	return this.browser.waitForMultipleElements(this.element, getBusyIndicatorElementLocators(), false /*fail*/, tinyTimeout());
+	return this.browser.waitForMultipleElements(this.element, tinyTimeout(), false /*fail*/, getBusyIndicatorElementLocators());
 }
 
 /**
@@ -515,13 +515,13 @@ public BrowserElement typeText(final By locator, final String text, final Keys k
  * @return The web element as {@link BrowserElement}
  * @throws WaitElementTimeoutError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  * TODO Try to get rid off this method by selecting the frame explicitly before
  * waiting for an element. Hence, {@link PageElement} waitForElement*
  * methods could be used instead.
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator) {
-	return this.browser.waitForElement((parentElement != null) ? parentElement : this.element, locator, true /*fail*/, timeout());
+	return this.browser.waitForElement((parentElement != null) ? parentElement : this.element, locator, timeout(), true /*fail*/);
 }
 
 /**
@@ -541,7 +541,7 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * methods could be used instead.
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final int timeout) {
-	return this.browser.waitForElement((parentElement != null) ? parentElement : this.element, locator, true /*fail*/, timeout);
+	return this.browser.waitForElement((parentElement != null) ? parentElement : this.element, locator, timeout, true /*fail*/);
 }
 
 /**
@@ -555,7 +555,7 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * @throws MultipleVisibleElementsError if several elements are found.
  */
 public BrowserElement waitForElement(final By locator) {
-	return this.browser.waitForElement(this.element, locator, true /*fail*/, timeout(), true /*displayed*/, true /*single*/);
+	return this.browser.waitForElement(this.element, locator, timeout(), true /*fail*/, true /*displayed*/, true /*single*/);
 }
 
 /**
@@ -571,7 +571,7 @@ public BrowserElement waitForElement(final By locator) {
  * @throws MultipleVisibleElementsError if several elements are found.
  */
 public BrowserElement waitForElement(final By locator, final boolean displayed) {
-	return this.browser.waitForElement(this.element, locator, true /*fail*/, timeout(), displayed, true /*single*/);
+	return this.browser.waitForElement(this.element, locator, timeout(), true /*fail*/, displayed, true /*single*/);
 }
 
 /**
@@ -588,7 +588,7 @@ public BrowserElement waitForElement(final By locator, final boolean displayed) 
  * @throws MultipleVisibleElementsError if several elements are found.
  */
 public BrowserElement waitForElement(final By locator, final boolean fail, final int timeout) {
-	return this.browser.waitForElement(this.element, locator, fail, timeout, true /*displayed*/, true /*single*/);
+	return this.browser.waitForElement(this.element, locator, timeout, fail, true /*displayed*/, true /*single*/);
 }
 
 /**
@@ -607,7 +607,7 @@ public BrowserElement waitForElement(final By locator, final boolean fail, final
  * @throws MultipleVisibleElementsError if several elements are found.
  */
 public BrowserElement waitForElement(final By locator, final boolean fail, final int timeout, final boolean displayed) {
-	return this.browser.waitForElement(this.element, locator, fail, timeout, displayed, true /*single*/);
+	return this.browser.waitForElement(this.element, locator, timeout, fail, displayed, true /*single*/);
 }
 
 /**
@@ -627,7 +627,7 @@ public BrowserElement waitForElement(final By locator, final boolean fail, final
  * @throws MultipleVisibleElementsError if several elements are found and only single one was expected.
  */
 public BrowserElement waitForElement(final By locator, final boolean fail, final int timeout, final boolean displayed, final boolean single) {
-	return this.browser.waitForElement(this.element, locator, fail, timeout, displayed, single);
+	return this.browser.waitForElement(this.element, locator, timeout, fail, displayed, single);
 }
 
 /**
@@ -645,7 +645,7 @@ public BrowserElement waitForElement(final By locator, final boolean fail, final
  * methods could be used instead.
  */
 public BrowserElement waitForElement(final By locator, final int timeout) {
-	return this.browser.waitForElement(this.element, locator, true /*fail*/, timeout, true /*displayed*/, true /*single*/);
+	return this.browser.waitForElement(this.element, locator, timeout, true /*fail*/, true /*displayed*/, true /*single*/);
 }
 
 /**
@@ -659,7 +659,7 @@ public BrowserElement waitForElement(final By locator, final int timeout) {
  * asked to fail.
  */
 public List<BrowserElement> waitForElements(final By locator) {
-	return this.browser.waitForElements(this.element, locator, true /*fail*/, timeout(), true /*displayed*/);
+	return this.browser.waitForElements(this.element, locator, timeout(), true /*fail*/, true /*displayed*/);
 }
 
 /**
@@ -675,7 +675,7 @@ public List<BrowserElement> waitForElements(final By locator) {
  * asked to fail.
  */
 public List<BrowserElement> waitForElements(final By locator, final boolean fail) {
-	return this.browser.waitForElements(this.element, locator, fail, timeout(), true /*displayed*/);
+	return this.browser.waitForElements(this.element, locator, timeout(), fail, true /*displayed*/);
 }
 
 /**
@@ -692,7 +692,7 @@ public List<BrowserElement> waitForElements(final By locator, final boolean fail
  * asked to fail.
  */
 public List<BrowserElement> waitForElements(final By locator, final boolean fail, final int timeout) {
-	return this.browser.waitForElements(this.element, locator, fail, timeout, true /*displayed*/);
+	return this.browser.waitForElements(this.element, locator, timeout, fail, true /*displayed*/);
 }
 
 /**
@@ -711,7 +711,7 @@ public List<BrowserElement> waitForElements(final By locator, final boolean fail
  * asked to fail.
  */
 public List<BrowserElement> waitForElements(final By locator, final boolean fail, final int timeout, final boolean displayed) {
-	return this.browser.waitForElements(this.element, locator, fail, timeout, displayed);
+	return this.browser.waitForElements(this.element, locator, timeout, fail, displayed);
 }
 
 /**
@@ -725,7 +725,7 @@ public List<BrowserElement> waitForElements(final By locator, final boolean fail
  * @throws WaitElementTimeoutError if no element was found before the timeout.
  */
 public List<BrowserElement> waitForElements(final By locator, final int timeout) {
-	return this.browser.waitForElements(this.element, locator, true /*fail*/, timeout, true /*displayed*/);
+	return this.browser.waitForElements(this.element, locator, timeout, true /*fail*/, true /*displayed*/);
 }
 
 /**
@@ -742,7 +742,7 @@ public List<BrowserElement> waitForElements(final By locator, final int timeout)
  * asked to fail.
  */
 public List<BrowserElement> waitForElements(final By locator, final int timeout, final boolean fail) {
-	return this.browser.waitForElements(this.element, locator, fail, timeout, true /*displayed*/);
+	return this.browser.waitForElements(this.element, locator, timeout, fail, true /*displayed*/);
 }
 
 /**
@@ -774,7 +774,7 @@ public void waitForLoadingEnd() {
  * and it has been asked to fail.
  */
 public BrowserElement[] waitForMultipleElements(final boolean fail, final int timeout, final By... locators) {
-	return this.browser.waitForMultipleElements(this.element, locators, fail, timeout);
+	return this.browser.waitForMultipleElements(this.element, timeout, fail, locators);
 }
 
 /**

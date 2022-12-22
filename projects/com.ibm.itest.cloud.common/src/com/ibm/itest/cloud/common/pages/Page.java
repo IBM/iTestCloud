@@ -2091,12 +2091,12 @@ public <P extends Page> P openPageUsingLink(final BrowserElement parentElement, 
  * @return The web page (as a subclass of {@link Page}) opened after
  * having clicked on the link
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  * @see #openPageUsingLink(BrowserElement, Class, String...)
  * @see BrowserElement#click()
  */
 public <P extends Page> P openPageUsingLink(final BrowserElement parentElement, final By linkBy, final Class<P> openedPageClass, final boolean fail, final int time_out, final String... info) {
-	BrowserElement linkElement = this.browser.waitForElement(parentElement, linkBy, fail, time_out, true/*visible*/, true/*single element expected*/);
+	BrowserElement linkElement = this.browser.waitForElement(parentElement, linkBy, time_out, fail, true/*visible*/, true/*single element expected*/);
 	if (linkElement == null) return null;
 	return openPageUsingLink(linkElement, openedPageClass, info);
 }
@@ -2997,10 +2997,10 @@ protected void verifyPageUser() throws ScenarioFailedError {
  * @return The web element as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By locator) {
-	return this.browser.waitForElement(null, locator, true/* fail */, timeout(), true/* displayed */, true/* single */);
+	return this.browser.waitForElement(null, locator, timeout(), true/* fail */, true/* displayed */, true/* single */);
 }
 
 /**
@@ -3018,10 +3018,10 @@ public BrowserElement waitForElement(final By locator) {
  * @return The web element as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By locator, final boolean displayed) {
-	return this.browser.waitForElement(null, locator, true/*fail*/, timeout(), displayed, true/*single element expected*/);
+	return this.browser.waitForElement(null, locator, timeout(), true/*fail*/, displayed, true/*single element expected*/);
 }
 
 /**
@@ -3037,10 +3037,10 @@ public BrowserElement waitForElement(final By locator, final boolean displayed) 
  * @return The web element as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By locator, final boolean displayed, final boolean single) {
-	return this.browser.waitForElement(null, locator, true/*fail*/, timeout(), displayed, single);
+	return this.browser.waitForElement(null, locator, timeout(), true/*fail*/, displayed, single);
 }
 
 /**
@@ -3064,10 +3064,10 @@ public BrowserElement waitForElement(final By locator, final boolean displayed, 
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By locator, final boolean fail, final int time_out) {
-	return this.browser.waitForElement(null, locator, fail, time_out, true /* displayed */, true /* single */);
+	return this.browser.waitForElement(null, locator, time_out, fail, true /* displayed */, true /* single */);
 }
 
 /**
@@ -3085,10 +3085,10 @@ public BrowserElement waitForElement(final By locator, final boolean fail, final
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By locator, final boolean fail, final int time_out, final boolean displayed) {
-	return this.browser.waitForElement(null, locator, fail, time_out, displayed, true/*single element expected*/);
+	return this.browser.waitForElement(null, locator, time_out, fail, displayed, true/*single element expected*/);
 }
 
 /**
@@ -3105,10 +3105,10 @@ public BrowserElement waitForElement(final By locator, final boolean fail, final
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By locator, final boolean fail, final int time_out, final boolean displayed, final boolean single) {
-	return this.browser.waitForElement(null, locator, fail, time_out, displayed, single);
+	return this.browser.waitForElement(null, locator, time_out, fail, displayed, single);
 }
 
 /**
@@ -3159,11 +3159,11 @@ public BrowserElement waitForElement(final By parentLocator, final By locator) {
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final By parentLocator, final By locator, final boolean fail, final int time_out) {
 	BrowserElement parentElement = parentLocator == null ? null : waitForElement(parentLocator);
-	return this.browser.waitForElement(parentElement, locator, fail, time_out, true/*visible*/, true/*single element expected*/);
+	return this.browser.waitForElement(parentElement, locator, time_out, fail, true/*visible*/, true/*single element expected*/);
 }
 
 /**
@@ -3186,10 +3186,10 @@ public BrowserElement waitForElement(final By parentLocator, final By locator, f
  * @return The web element as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator) {
-	return this.browser.waitForElement(parentElement, locator, true/* fail */, timeout(), true/* visible */, true/* single */);
+	return this.browser.waitForElement(parentElement, locator, timeout(), true/* fail */, true/* visible */, true/* single */);
 }
 
 /**
@@ -3214,10 +3214,10 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * @return The web element as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final boolean displayed) {
-	return this.browser.waitForElement(parentElement, locator, true/* fail */, timeout(), displayed, true/* single */);
+	return this.browser.waitForElement(parentElement, locator, timeout(), true/* fail */, displayed, true/* single */);
 }
 
 /**
@@ -3240,10 +3240,10 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElement(BrowserElement, By, boolean, int, boolean, boolean)
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
 public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final boolean fail, final int time_out) {
-	return this.browser.waitForElement(parentElement, locator, fail, time_out, true/*displayed*/, true/*single element expected*/);
+	return this.browser.waitForElement(parentElement, locator, time_out, fail, true/*displayed*/, true/*single element expected*/);
 }
 
 /**
@@ -3263,10 +3263,10 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
  * @return The web elements list as {@link List} of {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElements(BrowserElement, By, boolean, int, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
 public List<BrowserElement> waitForElements(final By locator) {
-	return this.browser.waitForElements(null, locator, true/*fail*/, timeout(), true/*visible*/);
+	return this.browser.waitForElements(null, locator, timeout(), true/*fail*/, true/*visible*/);
 }
 
 /**
@@ -3284,10 +3284,10 @@ public List<BrowserElement> waitForElements(final By locator) {
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElements(BrowserElement, By, boolean, int, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
 public List<BrowserElement> waitForElements(final By locator, final boolean fail) {
-	return this.browser.waitForElements(null, locator, fail, timeout(), true/*visible*/);
+	return this.browser.waitForElements(null, locator, timeout(), fail, true/*visible*/);
 }
 
 /**
@@ -3306,10 +3306,10 @@ public List<BrowserElement> waitForElements(final By locator, final boolean fail
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForElements(BrowserElement, By, boolean, int, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
 public List<BrowserElement> waitForElements(final By locator, final boolean fail, final int time_out) {
-	return this.browser.waitForElements(null, locator, fail, time_out, true/*visible*/);
+	return this.browser.waitForElements(null, locator, time_out, fail, true/*visible*/);
 }
 
 /**
@@ -3325,10 +3325,10 @@ public List<BrowserElement> waitForElements(final By locator, final boolean fail
  * @return A non-empty web elements list as {@link List} of {@link BrowserElement}.
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElements(BrowserElement, By, boolean, int, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
 public List<BrowserElement> waitForElements(final By locator, final int time_out) {
-	return this.browser.waitForElements(null, locator, true/*fail*/, time_out, true/*visible*/);
+	return this.browser.waitForElements(null, locator, time_out, true/*fail*/, true/*visible*/);
 }
 
 /**
@@ -3346,10 +3346,10 @@ public List<BrowserElement> waitForElements(final By locator, final int time_out
  * @return A non-empty web elements list as {@link List} of {@link BrowserElement}.
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElements(BrowserElement, By, boolean, int, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
 public List<BrowserElement> waitForElements(final By locator, final int time_out, final boolean displayed) {
-	return this.browser.waitForElements(null, locator, true/*fail*/, time_out, displayed);
+	return this.browser.waitForElements(null, locator, time_out, true/*fail*/, displayed);
 }
 
 /**
@@ -3366,10 +3366,10 @@ public List<BrowserElement> waitForElements(final By locator, final int time_out
  * @return A non-empty web elements list as {@link List} of {@link BrowserElement}.
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElements(BrowserElement, By, boolean, int, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
 public List<BrowserElement> waitForElements(final BrowserElement parentElement, final By locator) {
-	return this.browser.waitForElements(parentElement, locator, true/*fail*/, timeout(), true/*visible*/);
+	return this.browser.waitForElements(parentElement, locator, timeout(), true/*fail*/, true/*visible*/);
 }
 
 /**
@@ -3440,11 +3440,11 @@ protected void waitForLoadingPageEnd() {
  * @throws ScenarioFailedError if no element was found before the timeout and
  * asked to fail
  *
- * @see Browser#waitForMultipleElements(BrowserElement, By[], boolean, int)
+ * @see Browser#waitForMultipleElements(BrowserElement, int, boolean, By...)
  * to have more details on how the returned array is filled with found elements
  */
 public BrowserElement[] waitForMultipleElements(final boolean fail, final int time_out, final By... findBys) {
-	return this.browser.waitForMultipleElements(null, findBys, fail, time_out);
+	return this.browser.waitForMultipleElements(null, time_out, fail, findBys);
 }
 
 /**
@@ -3459,11 +3459,11 @@ public BrowserElement[] waitForMultipleElements(final boolean fail, final int ti
  * @return The array of web elements as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout
  *
- * @see Browser#waitForMultipleElements(BrowserElement, By[], boolean, int)
+ * @see Browser#waitForMultipleElements(BrowserElement, int, boolean, By...)
  * to have more details on how the returned array is filled with found elements
  */
 public BrowserElement[] waitForMultipleElements(final By... findBys) {
-	return this.browser.waitForMultipleElements(null, findBys, true/*fail*/, timeout());
+	return this.browser.waitForMultipleElements(null, timeout(), true/*fail*/, findBys);
 }
 
 /**
@@ -3481,11 +3481,11 @@ public BrowserElement[] waitForMultipleElements(final By... findBys) {
  * @return The array of web elements as {@link BrowserElement}
  * @throws ScenarioFailedError if no element was found before the timeout
  *
- * @see Browser#waitForMultipleElements(BrowserElement, By[], boolean, int)
+ * @see Browser#waitForMultipleElements(BrowserElement, int, boolean, By...)
  * to have more details on how the returned array is filled with found elements
  */
 public BrowserElement[] waitForMultipleElements(final BrowserElement parentElement, final By... findBys) {
-	return this.browser.waitForMultipleElements(parentElement, findBys, true/*fail*/, timeout());
+	return this.browser.waitForMultipleElements(parentElement, timeout(), true/*fail*/, findBys);
 }
 
 private void waitForReadyState() {

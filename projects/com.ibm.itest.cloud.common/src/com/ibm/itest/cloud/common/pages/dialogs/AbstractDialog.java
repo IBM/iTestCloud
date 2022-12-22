@@ -220,7 +220,7 @@ protected void close(final boolean validate) {
 @Override
 protected void closeAction(final boolean validate) {
 	BrowserElement buttonElement =
-		this.browser.waitForElement(this.element, By.xpath(getCloseButton(validate)), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
+		this.browser.waitForElement(this.element, By.xpath(getCloseButton(validate)), timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
 	this.browser.clickButton(buttonElement, timeout(), false /*validate*/);
 }
 
@@ -421,7 +421,7 @@ private List<BrowserElement> getMatchingDialogElements(final List<BrowserElement
  * @return The list of opened dialog elements as a {@link List} of {@link BrowserElement}
  */
 protected List<BrowserElement> getOpenedDialogElements(final int seconds) {
-	return this.browser.waitForElements(getParentElement(), this.findBy, false /*fail*/, seconds, true/*visible*/);
+	return this.browser.waitForElements(getParentElement(), this.findBy, seconds, false /*fail*/, true/*visible*/);
 }
 
 /**

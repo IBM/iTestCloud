@@ -167,7 +167,7 @@ public BrowserElement open(final BrowserElement webElement) {
 	}
 
 	// Store the hover element
-	this.element = this.browser.waitForElement(null, this.findBy, true/*fail*/, (int) ((timeout - System.currentTimeMillis())/1000), true/*displayed*/, true/*single expected*/);
+	this.element = this.browser.waitForElement(null, this.findBy, (int) ((timeout - System.currentTimeMillis())/1000), true/*fail*/, true/*displayed*/, true/*single expected*/);
 
 	waitForLoadingEnd();
 

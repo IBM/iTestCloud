@@ -65,7 +65,7 @@ public boolean isExpandable() throws ScenarioFailedError {
 @Override
 public boolean isExpanded() throws ScenarioFailedError {
 	BrowserElement sidebarElement =
-		this.browser.waitForElement(this.element, By.xpath(".//ul[contains(@class,'dropdown-menu')]"), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
+		this.browser.waitForElement(this.element, By.xpath(".//ul[contains(@class,'dropdown-menu')]"), timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
 	return sidebarElement.isDisplayed() && sidebarElement.getAttributeValue("class").contains("open");
 }
 
@@ -100,7 +100,7 @@ public <T extends AcmeAbstractWebPage> T select(final String item, final Class<T
 
 	BrowserElement itemElement =
 		this.browser.waitForElement(this.element,
-			By.xpath(".//li[contains(@class,'dropdown-link') and .//a[text()='" + item + "']]"), true /*fail*/, timeout(), false /*displayed*/, true /*single*/);
+			By.xpath(".//li[contains(@class,'dropdown-link') and .//a[text()='" + item + "']]"), timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
 
 	if(!force && itemElement.getAttributeValue("class").contains("selected")) {
 		debugPrintln("		  -> No need to select '" + item + "' because it is already the currently selected item.");
