@@ -163,7 +163,7 @@ public static String getXpathString(final By by) {
     	throw new ScenarioFailedError("Not implemented!");
     }
 
-	return xpathStr;
+    return xpathStr;
 }
 
 /**
