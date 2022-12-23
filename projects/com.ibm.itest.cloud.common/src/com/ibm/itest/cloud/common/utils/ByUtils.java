@@ -18,6 +18,9 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import java.util.StringTokenizer;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByXPath;
+
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Utility class to create {@link By} locator mechanism.
@@ -28,6 +31,7 @@ import org.openqa.selenium.By;
  * <li>{@link #fixLocator(By)}: Check whether the locator need to be fixed.</li>
  * <li>{@link #isRelativeLocator(By)}: Check whether the given is a relative locator.</li>
  * <li>{@link #getLocatorString(By)}: Return the string content for the given locator.</li>
+ * <li>{@link #getXpathString(By)}: Returns the XPath string for the given locator supported in By.</li>
  * <li>{@link #xpathCompareWithText(ComparisonPattern, String, boolean)}: Return a xpath string to compare the given text using the given pattern.</li>
  * <li>{@link #xpathMatchingItemText(String, ComparisonPattern, String)}: Return a xpath to match the given text using the given prefix and pattern.</li>
  * <li>{@link #xpathMatchingItemText(String, String)}: Return a xpath equals to the given text using the given prefix.</li>
@@ -119,6 +123,47 @@ public static String getCombinedLocatorString(final boolean relative, final Stri
 public static String getLocatorString(final By locator) {
 	String locatorString = locator.toString();
 	return locatorString.substring(locatorString.indexOf(": ")+2);
+}
+
+/**
+ * Returns the XPath string for the given locator supported in <code>By</code>.
+ *
+ * @param by The {@link By} locator to get the XPath string.
+ *
+ * @return the XPath string content as a {@link String}.
+ */
+public static String getXpathString(final By by) {
+	String locatorStr = getLocatorString(by);
+	if (by instanceof ByXPath) return locatorStr;
+
+	String xpathStr;
+    switch (by.getClass().getSimpleName()) {
+    case "ByClassName":
+    	xpathStr = "//*[contains(@class,'" + locatorStr + "')]";
+        break;
+    case "ById":
+    	xpathStr = "//*[@id='" + locatorStr + "']";
+        break;
+    case "ByName":
+    	xpathStr = "//*[@name='" + locatorStr + "']";
+        break;
+    case "ByTagName":
+    	xpathStr = "//" + locatorStr;
+    	break;
+    case "ByLinkText":
+    	xpathStr = "//a[text()='" + locatorStr + "']";
+    	break;
+    case "ByPartialLinkText":
+    	xpathStr = "//a[contains[text(),'" + locatorStr + "')]";
+    	break;
+    case "ByCssSelector":
+    	xpathStr = "css=" + by.toString();
+    	break;
+    default:
+    	throw new ScenarioFailedError("Not implemented!");
+    }
+
+	return xpathStr;
 }
 
 /**

@@ -17,13 +17,13 @@ import static com.ibm.itest.cloud.common.config.Timeouts.DEFAULT_TIMEOUT;
 import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static com.ibm.itest.cloud.common.utils.ByUtils.fixLocator;
-import static com.ibm.itest.cloud.common.utils.ByUtils.getLocatorString;
+import static com.ibm.itest.cloud.common.utils.ByUtils.getXpathString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.By.*;
+import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.interactions.Coordinates;
 import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.remote.UnreachableBrowserException;
@@ -949,36 +949,8 @@ public String getFullPath() {
 	if (this.context instanceof BrowserElement) {
 		xpathBuilder.append(((BrowserElement) this.context).getFullPath());
 	}
-	String locatorString = getLocatorString(this.by);
-	final String currentXpath;
-	if (this.by instanceof ByXPath) {
-		currentXpath = locatorString;
-	}
-	else {
-		String relative = xpathBuilder.length() > 0 ? "." : "";
-		if (this.by instanceof ByClassName) {
-			currentXpath = relative + "//*[contains(@class,'" + locatorString+ "')]";
-		}
-		else if (this.by instanceof ById) {
-			currentXpath = relative + "//*[@id='" + locatorString+ "']";
-		}
-		else if (this.by instanceof ByName) {
-			currentXpath = relative + "//*[@name='" + locatorString+ "']";
-		}
-		else if (this.by instanceof ByTagName) {
-			currentXpath = relative + "//" + locatorString+ "]";
-		}
-		else if (this.by instanceof ByLinkText) {
-			currentXpath = relative + "//a[text()='" + locatorString+ "']";
-		}
-		else if(this.by instanceof ByPartialLinkText) {
-			currentXpath = relative + "//a[contains[text(),'"+locatorString+"')]";
-		} else if (this.by instanceof ByCssSelector) {
-			currentXpath = relative + "css=" + this.by.toString();
-		} else {
-			throw new ScenarioFailedError("Not implemented!");
-		}
-	}
+
+	final String currentXpath = (xpathBuilder.length() > 0 ? "." : "") + getXpathString(this.by);
 	if (xpathBuilder.length() > 0 && currentXpath.length() > 1) {
 		int start = currentXpath.charAt(0) == '(' ? 1 : 0; // Start position depends whether the xpath starts with a '(' or not
 		if (currentXpath.charAt(start) == '.') {
