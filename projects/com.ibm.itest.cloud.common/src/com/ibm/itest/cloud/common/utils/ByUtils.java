@@ -137,30 +137,30 @@ public static String getXpathString(final By by) {
 	if (by instanceof ByXPath) return locatorStr;
 
 	String xpathStr;
-    switch (by.getClass().getSimpleName()) {
-    case "ByClassName":
-    	xpathStr = "//*[contains(@class,'" + locatorStr + "')]";
-        break;
-    case "ById":
-    	xpathStr = "//*[@id='" + locatorStr + "']";
-        break;
-    case "ByName":
-    	xpathStr = "//*[@name='" + locatorStr + "']";
-        break;
-    case "ByTagName":
-    	xpathStr = "//" + locatorStr;
-    	break;
-    case "ByLinkText":
-    	xpathStr = "//a[text()='" + locatorStr + "']";
-    	break;
-    case "ByPartialLinkText":
-    	xpathStr = "//a[contains[text(),'" + locatorStr + "')]";
-    	break;
-    case "ByCssSelector":
-    	xpathStr = "css=" + by.toString();
-    	break;
-    default:
-    	throw new ScenarioFailedError("Not implemented!");
+	switch (by.getClass().getSimpleName()) {
+		case "ByClassName":
+			xpathStr = "//*[contains(@class,'" + locatorStr + "')]";
+			break;
+		case "ById":
+			xpathStr = "//*[@id='" + locatorStr + "']";
+			break;
+		case "ByName":
+			xpathStr = "//*[@name='" + locatorStr + "']";
+			break;
+		case "ByTagName":
+			xpathStr = "//" + locatorStr;
+			break;
+		case "ByLinkText":
+			xpathStr = "//a[text()='" + locatorStr + "']";
+			break;
+		case "ByPartialLinkText":
+			xpathStr = "//a[contains[text(),'" + locatorStr + "')]";
+			break;
+		case "ByCssSelector":
+			xpathStr = "css=" + by.toString();
+			break;
+		default:
+			throw new ScenarioFailedError("Not implemented!");
     }
 
     return xpathStr;
