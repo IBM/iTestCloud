@@ -7,6 +7,25 @@ In general, much of our style and conventions mirror the
 [Code Conventions for the Java Programming Language](http://www.oracle.com/technetwork/java/codeconvtoc-136057.html)
 and [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.html).
 
+## Table of contents
+
+- [Coding style](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#coding-style)
+  - [Formatting](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#formatting)
+  - [Field, class, and method declarations](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#field-class-and-method-declarations)
+  - [Variable naming](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#variable-naming)
+  - [Space pad operators and equals](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#space-pad-operators-and-equals)
+  - [Be explicit about operator precedence](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#be-explicit-about-operator-precedence)
+  - [Empty blocks: may be concise](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#empty-blocks:-may-be-concise)
+  - [Imports](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#imports)
+- [Best practices](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#best-practices)
+  - [Defensive programming](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#defensive-programming)
+  - [Clean code](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#clean-code)
+  - [Use newer/better libraries](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#use-newerbetter-libraries)
+  - [equals() and hashCode()](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#equals-and-hashcode)
+  - [TODOs](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#todos)
+  - [Obey the Law of Demeter](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#obey-the-law-of-demeter-lod)
+  - [Don't Repeat Yourself](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#dont-repeat-yourself-dry)
+  - [Avoid unnecessary code](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#avoid-unnecessary-code)
 
 ## Coding style
 
@@ -416,7 +435,7 @@ Preconditions checks are a good practice, since they serve as a well-defined bar
 input from callers.  As a convention, object parameters to public constructors and methods should
 always be checked against null, unless null is explicitly allowed.
 
-*See also [be wary of null](#be-wary-of-null), [@Nullable](#nullable)*
+*See also [be wary of null](#be-wary-of-null)*
 
 ```Java
 // Bad.
