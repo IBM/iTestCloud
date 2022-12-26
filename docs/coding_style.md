@@ -606,7 +606,7 @@ There are two methods to de-nest the code:
 
 ```Java
 // Bad.
-//   - 4-deep nest code. Not easy to 
+//   - 4-deep nest code. Not easy to apprehend the logic and conditions. 
 int calculate(int bottom, int top) {                          // 1-deep
     if (top > bottom) {                                       // 2-deep
         int sum = 0;
