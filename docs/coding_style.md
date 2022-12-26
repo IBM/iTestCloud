@@ -19,6 +19,7 @@ and [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.ht
   - [Imports](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#imports)
 - [Best practices](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#best-practices)
   - [Defensive programming](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#defensive-programming)
+  - [De-nest when it exceeds 3-deep](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#De-nest-when-it-exceeds-3-deep)
   - [Clean code](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#clean-code)
   - [Use newer/better libraries](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#use-newerbetter-libraries)
   - [equals() and hashCode()](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#equals-and-hashcode)
@@ -588,6 +589,62 @@ if (receivedBadMessage) {
     } finally {
         conn.close();
     }
+}
+```
+
+### De-nest when it exceeds 3-deep
+Nesting code is when you add more inner blocks to a function.  We'll consider each open brace to be
+adding one more depth to the function.  Deeply nesting code will dramatically increase the amount
+of conditions your brain must simultaneously hold.
+
+The nest code beyond 3-deep is discouraging.  In the most cases, the function has more than 3-deep
+nest code suggests a need of code refactoring to de-nest it.
+
+There are two methods to de-nest the code:
+1. Extraction: pull out the part of the code into its own function.
+2. Inversion: flip conditions and switch to an early return.
+
+```Java
+// Bad.
+//   - 4-deep nest code. Not easy to 
+int calculate(int bottom, int top) {                          // 1-deep
+    if (top > bottom) {                                       // 2-deep
+        int sum = 0;
+
+        for (int number = bottom; number <= top; number++) {  // 3-deep
+            if (number % 2 == 0) {                            // 4-deep
+                sum += number;
+            }
+        }
+
+        return sum;
+    } else {
+        return 0;
+    }
+}
+
+// Good.
+//   - Code just has 2-deep nest, flattened by extraction and inversion.
+int filterNumber(int number) {
+    if (number % 2 == 0) {
+        return number;
+    }
+    
+    return 0;
+}
+
+int calculate(int bottom, int top) {
+    if (top < bottom) {
+        return 0;
+    }
+
+    int sum = 0;
+
+    for (int number = bottom; number <= top; number++) {
+        sum += filterNumber(number);
+    }
+
+    return sum;
 }
 ```
 
