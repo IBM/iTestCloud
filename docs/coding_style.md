@@ -672,8 +672,8 @@ All members in the class shall be sorted according to the following order:
 - Constructors
 - Methods
 
-Check the Eclipse members sort order abide by the above rule. The setting is at Eclipse > Settings >
-Java > Appearance > Members Sort Order.
+The Eclipse members sort order shall adhere to the above rule. The setting is at Eclipse >
+Settings > Java > Appearance > Members Sort Order.
 
 After making any changes to the class, use Eclipse > Source > Sort Members to apply the sorting
 rules.
