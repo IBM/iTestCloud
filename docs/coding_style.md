@@ -601,6 +601,7 @@ The nest code beyond 3-deep is discouraging.  In the most cases, the function ha
 nest code suggests a need of code refactoring to de-nest it.
 
 There are two methods to de-nest the code:
+
 1. Extraction: pull out the part of the code into its own function.
 2. Inversion: flip conditions and switch to an early return.
 
@@ -836,12 +837,12 @@ If you override one, you must implement both.
 ### TODOs
 
 #### Leave TODOs
-A TODO isn't a bad thing - it's signaling a future developer (possibly yourself) that a
+A `TODO` isn't a bad thing - it's signaling a future developer (possibly yourself) that a
 consideration was made, but omitted for various reasons.  It can also serve as a useful signal when
 debugging.
 
 #### Leave no TODO unassigned
-TODOs should have owners, otherwise they are unlikely to ever be resolved.
+`TODO`s should have owners, otherwise they are unlikely to ever be resolved.
 
 ```Java
 // Bad.
@@ -854,7 +855,7 @@ TODOs should have owners, otherwise they are unlikely to ever be resolved.
 
 #### Adopt TODOs
 You should adopt an orphan if the owner has left the company/project, or if you make
-modifications to the code directly related to the TODO topic.
+modifications to the code directly related to the `TODO` topic.
 
 ### Obey the Law of Demeter ([LoD](http://en.wikipedia.org/wiki/Law_of_Demeter))
 The Law of Demeter is most obviously violated by breaking the
