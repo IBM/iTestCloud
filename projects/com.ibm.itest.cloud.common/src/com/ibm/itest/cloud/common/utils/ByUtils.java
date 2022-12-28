@@ -18,6 +18,9 @@ import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import java.util.StringTokenizer;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.*;
+
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
 /**
  * Utility class to create {@link By} locator mechanism.
@@ -28,6 +31,7 @@ import org.openqa.selenium.By;
  * <li>{@link #fixLocator(By)}: Check whether the locator need to be fixed.</li>
  * <li>{@link #isRelativeLocator(By)}: Check whether the given is a relative locator.</li>
  * <li>{@link #getLocatorString(By)}: Return the string content for the given locator.</li>
+ * <li>{@link #getNormalizedLocatorString(By)}: Returns the XPath string for the given locator supported in By.</li>
  * <li>{@link #xpathCompareWithText(ComparisonPattern, String, boolean)}: Return a xpath string to compare the given text using the given pattern.</li>
  * <li>{@link #xpathMatchingItemText(String, ComparisonPattern, String)}: Return a xpath to match the given text using the given prefix and pattern.</li>
  * <li>{@link #xpathMatchingItemText(String, String)}: Return a xpath equals to the given text using the given prefix.</li>
@@ -43,10 +47,10 @@ public class ByUtils {
 	 * Comparison pattern.
 	 */
 	public enum ComparisonPattern {
+		CONTAINS,
+		ENDS_WITH,
 		EQUALS,
 		STARTS_WITH,
-		ENDS_WITH,
-		CONTAINS,
 	}
 
 	private static final String NORMALIZE_SPACE_TEXT = "normalize-space(text())";
@@ -111,14 +115,37 @@ public static String getCombinedLocatorString(final boolean relative, final Stri
 }
 
 /**
- * Return the string content for the given locator.
+ * Returns the XPath string for a given locator.
  *
- * @param locator The locator to get the string
- * @return The locator string content as a {@link String}.
+ * @param locator The locator to obtain the XPath string as {@link By}.
+ *
+ * @return the XPath string as {@link String}.
  */
 public static String getLocatorString(final By locator) {
 	String locatorString = locator.toString();
 	return locatorString.substring(locatorString.indexOf(": ")+2);
+}
+
+/**
+ * Returns a generalized the XPath string for a given locator supported in <code>By</code>.
+ *
+ * @param locator The locator to obtain the XPath string as {@link By}.
+ *
+ * @return the generalized XPath string as {@link String}.
+ */
+public static String getNormalizedLocatorString(final By locator) {
+	String locatorString = getLocatorString(locator);
+
+	if (locator instanceof ByXPath) return locatorString;
+	if (locator instanceof ByClassName) return "//*[contains(@class,'" + locatorString + "')]";
+	if (locator instanceof ById) return "//*[@id='" + locatorString+ "']";
+	if (locator instanceof ByName) return "//*[@name='" + locatorString+ "']";
+	if (locator instanceof ByTagName) return "//" + locatorString+ "]";
+	if (locator instanceof ByLinkText) return "//a[text()='" + locatorString+ "']";
+	if (locator instanceof ByPartialLinkText) return "//a[contains[text(),'"+locatorString+"')]";
+	if (locator instanceof ByCssSelector) return "css=" + locator.toString();
+
+	throw new ScenarioFailedError("Locator type '" + locator.getClass().getSimpleName() + "' is not supported by this method.");
 }
 
 /**
