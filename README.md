@@ -13,7 +13,8 @@ The following is the architectural diagram of the iTestCloud framework.
 ## Educational Materials
 1. [iTestCloud Slide Presentation](artifacts/iTestCloud.pptx)
 2. [iTestCloud README](https://github.com/IBM/iTestCloud/blob/master/README.md)
-3. [Javadoc Standards](docs/javadoc_standards.md)
+3. [Coding Standards](docs/coding_style.md)
+4. [Javadoc Standards](docs/javadoc_standards.md)
 
 ## Configuration and Setup
 Please complete the following steps to setup and configure your system for developing automated UI tests using the iTestCloud framework.
