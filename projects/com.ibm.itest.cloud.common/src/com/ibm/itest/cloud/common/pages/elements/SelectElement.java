@@ -146,12 +146,7 @@ public String getText() {
  * @return <code>true</code> if the option is found; <code>false</code> otherwise.
  */
 public boolean hasOption(final String option) {
-	for (String label : getAllLabels()) {
-		if (label.equals(option)) {
-			return true;
-		}
-	}
-	return false;
+	return getAllLabels().contains(option);
 }
 
 /**
@@ -161,12 +156,7 @@ public boolean hasOption(final String option) {
  * @return <code>true</code> if the option is found; <code>false</code> otherwise.
  */
 public boolean hasValue(final String value) {
-	for (String val : getAllValues()) {
-		if (val.equals(value)) {
-			return true;
-		}
-	}
-	return false;
+	return getAllValues().contains(value);
 }
 
 /**
