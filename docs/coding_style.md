@@ -173,8 +173,9 @@ Iterable<Module> modules = ImmutableList.<Module>builder()
     .build();
 ```
 
-#### No tabs (TO BE DISCUSSED)
-An oldie, but goodie.  It is found tab characters cause more harm than good.
+#### Tabs over spaces for indentations
+In iTestCloud project, tabs are exclusively used for indentations. Refrain from using spaces in
+lieu of tabs for indentations.
 
 #### CamelCase for types, camelCase for variables, UPPER_SNAKE for constants
 Sometimes there is more than one reasonable way to convert an English phrase into camel case,
