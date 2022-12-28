@@ -272,7 +272,7 @@ private final String maidenName;
 }
 ```
 
-#### Include units in variable names (NOT SURE, TO BE DISCUSSED)
+#### Include units in variable names
 
 ```Java
 // Bad.
@@ -455,9 +455,9 @@ void readLater(File file, Closure<String> callback) {
 // Good.
 class AsyncFileReader {
 void readLater(File file, Closure<String> callback) {
-    checkNotNull(file);
+    checkNotNull(file, "File must not be null.");
     checkArgument(file.exists() && file.canRead(), "File must exist and be readable.");
-    checkNotNull(callback);
+    checkNotNull(callback, "Callback must not be null.");
 
     scheduledExecutor.schedule(new Runnable() {
         @Override
