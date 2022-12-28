@@ -17,7 +17,7 @@ import static com.ibm.itest.cloud.common.config.Timeouts.DEFAULT_TIMEOUT;
 import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static com.ibm.itest.cloud.common.utils.ByUtils.fixLocator;
-import static com.ibm.itest.cloud.common.utils.ByUtils.getXpathString;
+import static com.ibm.itest.cloud.common.utils.ByUtils.getNormalizedLocatorString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -950,7 +950,7 @@ public String getFullPath() {
 		xpathBuilder.append(((BrowserElement) this.context).getFullPath());
 	}
 
-	final String currentXpath = (xpathBuilder.length() > 0 ? "." : "") + getXpathString(this.by);
+	final String currentXpath = (xpathBuilder.length() > 0 ? "." : "") + getNormalizedLocatorString(this.by);
 	if (xpathBuilder.length() > 0 && currentXpath.length() > 1) {
 		int start = currentXpath.charAt(0) == '(' ? 1 : 0; // Start position depends whether the xpath starts with a '(' or not
 		if (currentXpath.charAt(start) == '.') {
