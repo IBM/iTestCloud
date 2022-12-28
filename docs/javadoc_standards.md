@@ -27,7 +27,7 @@ All `public` and `protected` methods shall be fully defined with Javadoc. The `p
 /**
  * Gets this page content.
  *
- * @return this page instance.
+ * @return this page instance as a {@link Page}.
  */
 public final Page getPage() {
 	...
@@ -44,7 +44,7 @@ This is a protected method:
  * Any frame within another frame (child frames) will not be included by this list.
  * </p>
  *
- * @return a list of frames available in the web page as {@link List}
+ * @return a list of frames available in the web page as a {@link List} of {@link BrowserElement}.
  */
 protected List<BrowserElement> getFrames() {
 	return waitForElements(By.xpath("//iframe"), false /*fail*/, tinyTimeout());
@@ -111,7 +111,7 @@ For example, the following method Javadoc contains some of the above keywords:
  * value of this parameter if the default region should be used.
  * @param plan The plan of the service. <code>null</code> should be specified as the value of this parameter
  * if the default space should be used.
- * @param openedPageClass The class representing the service page that extends from {@link Page}.
+ * @param openedPageClass The class representing the service page as a {@link Page}.
  *
  * <p>
  * For example:
@@ -120,7 +120,7 @@ For example, the following method Javadoc contains some of the above keywords:
  * </code>
  * </p>
  *
- * @return the opened service page that extends from <code>com.ibm.itest.cloud.common.pages.Page</code>.
+ * @return the opened service page as a {@link Page}.
  */
 public <P extends Page> P purchaseService(final String name, final Region region, final String plan,
 	final Class<P> openedPageClass) {
@@ -146,7 +146,7 @@ For example, the following method's description is in 3rd person:
 /**
  * Gets the label associated with the Scoring Data Source Type.
  *
- * @return the label associated with Scoring Data Source Type.
+ * @return the label associated with Scoring Data Source Type as {@link Pattern}.
  */
 public Pattern getLabel() {
 	return Pattern.compile(this.label);
@@ -177,7 +177,7 @@ For example, the following method's description explicitly uses "this" instead o
 /**
  * Gets this page content.
  *
- * @return this page instance.
+ * @return this page instance as a {@link Page}.
  */
 public final Page getPage() {
 	...
