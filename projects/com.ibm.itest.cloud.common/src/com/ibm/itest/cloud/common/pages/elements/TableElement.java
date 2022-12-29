@@ -15,7 +15,6 @@ package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.DEBUG;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
-import static java.util.stream.IntStream.range;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -327,10 +326,13 @@ protected List<BrowserElement> getHeaderElements() {
 }
 
 private int getHeaderIndex(final Pattern pattern) {
-	List<BrowserElement> headerElemList = getHeaderElements();
-	return range(0, headerElemList.size())
-			.filter(i -> pattern.matcher(headerElemList.get(i).getText()).matches())
-			.findFirst().orElse(-1);
+	List<BrowserElement> headerElements = getHeaderElements();
+
+	for (int i = 0; i < headerElements.size(); i++) {
+		if(pattern.matcher(headerElements.get(i).getText()).matches()) return i;
+	}
+
+	return -1;
 }
 
 /**
