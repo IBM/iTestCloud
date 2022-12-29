@@ -2,8 +2,7 @@
 Please complete the following steps to setup and configure Eclipse for developing automated UI tests using the iTestCloud framework. 
 
 1. Download and install the latest Java SDK or JRE 1.8 from the [IBM Java Information Manager](http://w3.hursley.ibm.com/java/jim/jim/index.html). You may also install it via the **Mac@IBM App Store** if you are using a Mac. 
-2. Download and install the latest Java SDK or JRE 15 from the [IBM Java Information Manager](http://w3.hursley.ibm.com/java/jim/jim/index.html). For example [Oracle Mac OS Latest - 15.0.1](http://w3.hursley.ibm.com/java/jim/oraclejdks/latest/oraclemacoslatest/1501/index.html), [Oracle Windows x64 Latest - 15.0.1](http://w3.hursley.ibm.com/java/jim/oraclejdks/latest/oraclewindowsx64latest/1501/index.html), [Oracle Linux x64 Latest - 15.0.1](http://w3.hursley.ibm.com/java/jim/oraclejdks/latest/oraclelinuxx64latest/1501/index.html), ...etc.
-3. Download and install [Eclipse 2020-12 R IDE for Eclipse Committers](https://www.eclipse.org/downloads/packages/release/2020-12/r/eclipse-ide-eclipse-committers)
+3. Download and install [Eclipse 2022-12 R IDE for Eclipse Committers](https://www.eclipse.org/downloads/packages/release/2022-12/r/eclipse-ide-eclipse-committers)
 4. Start Eclipse into a new dedicated workspace for iTestCloud related work. Make sure to use the Java SDK or JRE 15 for Eclipse. This version of Eclipse requires a Java SDK or JRE 11 at minimum.
 5. Open the [iTestCloud preferences](../artifacts/preferences.epf) link, click on the `Raw` button, and save the file into a directory in the local file system by selecting `File -> Save As...` from the menu of the browser.
 6. Import the downloaded preferences file into Eclipse by selecting "File -> Import... -> General -> Preferences". Make sure to import all preferences from the file. 
