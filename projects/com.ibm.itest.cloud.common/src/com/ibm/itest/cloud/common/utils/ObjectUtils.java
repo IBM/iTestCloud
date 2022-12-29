@@ -13,6 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.utils;
 
+import java.util.regex.Pattern;
+
 import junit.framework.AssertionFailedError;
 
 /**
@@ -20,6 +22,7 @@ import junit.framework.AssertionFailedError;
  * <p>
  * This class contains following API methods:
  * <ul>
+ * <li>{@link #matches(Pattern, String)}: Attempts to match the given text against the pattern.</li>
  * <li>{@link #requireNonNull(Object, String)}: Check that the given object reference is not {@code null}
  * and throw a customized {@link NullPointerException} if it is</li>
  * <li>{@link #requireNonNull(Object, AssertionFailedError)}: Check that the given object reference is not
@@ -28,6 +31,22 @@ import junit.framework.AssertionFailedError;
  * </p>
  */
 public final class ObjectUtils {
+
+/**
+ * Attempts to match the given text against the pattern.
+ *
+ * @param pattern the pattern to compare the text against as {@link Pattern}.
+ * @param text the text to compare.
+ *
+ * @return  <tt>true</tt> if the given text matches the pattern or <code>false</code> otherwise.
+ *
+ * @throws NullPointerException if the given pattern is <code>null</code>.
+ */
+public static boolean matches(final Pattern pattern, final String text) {
+	requireNonNull(pattern, "The 'pattern' parameter must not be null.");
+
+	return (text != null) && pattern.matcher(text).matches();
+}
 
 /**
  * Check that the given object reference is not {@code null} and throw a customized {@link NullPointerException}

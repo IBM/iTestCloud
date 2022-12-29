@@ -15,6 +15,7 @@ package com.ibm.itest.cloud.common.pages.dialogs;
 
 import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.utils.ObjectUtils.matches;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -510,9 +511,7 @@ protected boolean isTitleExpected() {
  * or vice-versa, <code>false</code> otherwise.
  */
 protected boolean matchTitle() {
-	String title = getTitle();
-
-	return (title != null) && (getExpectedTitle().matcher(title).matches());
+	return matches(getExpectedTitle(), getTitle());
 }
 
 @Override

@@ -14,6 +14,7 @@
 package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.debugPrintln;
+import static com.ibm.itest.cloud.common.utils.ObjectUtils.matches;
 
 import java.util.regex.Pattern;
 
@@ -137,9 +138,7 @@ protected boolean isTitleExpected() {
  * or vice-versa, <code>false</code> otherwise.
  */
 public boolean matchTitle() {
-	String title = getTitle();
-
-	return (title != null) && (getExpectedTitle().matcher(title).matches());
+	return matches(getExpectedTitle(), getTitle());
 }
 
 /**

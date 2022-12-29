@@ -19,6 +19,7 @@ import static com.ibm.itest.cloud.common.pages.Page.ClickType.CLICK;
 import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
+import static com.ibm.itest.cloud.common.utils.ObjectUtils.matches;
 import static java.util.regex.Pattern.DOTALL;
 
 import java.io.File;
@@ -43,8 +44,8 @@ import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.*;
 import com.ibm.itest.cloud.common.topology.Application;
 import com.ibm.itest.cloud.common.topology.Topology;
-import com.ibm.itest.cloud.common.utils.FileUtil;
 import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
+import com.ibm.itest.cloud.common.utils.FileUtil;
 
 /**
  * The abstract class for any web page connected to a {@link Browser}.
@@ -1727,7 +1728,7 @@ public boolean matchTitle() {
 	String title = getTitle();
 	Pattern pattern = Pattern.compile(getExpectedTitle(), DOTALL);
 
-	return (title != null) && (pattern.matcher(title).matches() || title.equalsIgnoreCase(getExpectedTitle()));
+	return matches(pattern, title) || title.equalsIgnoreCase(getExpectedTitle());
 }
 
 public boolean needLogin(final User user){
