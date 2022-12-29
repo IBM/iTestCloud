@@ -20,7 +20,6 @@ import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENA
 import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static com.ibm.itest.cloud.common.utils.ObjectUtils.matches;
-import static java.util.regex.Pattern.DOTALL;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -1135,7 +1134,7 @@ public String[] getData() {
  * @throw ScenarioMissingImplementationError If a subclass expects a title
  * and does not override this method.
  */
-protected abstract String getExpectedTitle();
+protected abstract Pattern getExpectedTitle();
 
 /**
  * Return a list of frames available in the web page.
@@ -1695,10 +1694,7 @@ public boolean matchPage() {
  * or vice-versa, <code>false</code> otherwise.
  */
 public boolean matchTitle() {
-	String title = getTitle();
-	Pattern pattern = Pattern.compile(getExpectedTitle(), DOTALL);
-
-	return matches(pattern, title) || title.equalsIgnoreCase(getExpectedTitle());
+	return matches(getExpectedTitle(), getTitle());
 }
 
 public boolean needLogin(final User user){
@@ -3323,7 +3319,7 @@ protected void waitForExpectedTitle() {
 	if (isTitleExpected()) {
 		long timeoutMillis = openTimeout() * 1000 + System.currentTimeMillis();
 		if (!matchTitle()) {
-			debugPrintln("		+ Wait for expected title '"+getExpectedTitle()+"' (current is '"+getTitle()+"')");
+			debugPrintln("		+ Wait for expected title '" + getExpectedTitle() + "' (current is '" + getTitle() + "')");
 			while (!matchTitle()) {
 				if (System.currentTimeMillis() > timeoutMillis) {
 					throw new IncorrectTitleError("Current page title '" + getTitle() + "' does not match the expected one: '" + getExpectedTitle() + "' before timeout '" + openTimeout() + "' seconds");

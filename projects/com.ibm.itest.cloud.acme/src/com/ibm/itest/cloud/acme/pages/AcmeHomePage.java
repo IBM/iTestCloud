@@ -13,6 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.pages;
 
+import java.util.regex.Pattern;
+
 import com.ibm.itest.cloud.acme.config.AcmeConfig;
 import com.ibm.itest.cloud.common.config.User;
 
@@ -36,7 +38,7 @@ public AcmeHomePage(final String url, final AcmeConfig config, final User user) 
 }
 
 @Override
-protected String getExpectedTitle() {
+protected Pattern getExpectedTitle() {
 	return null;
 }
 }
