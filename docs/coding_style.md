@@ -13,6 +13,7 @@ and [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.ht
   - [Formatting](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#formatting)
   - [Field, class, and method declarations](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#field-class-and-method-declarations)
   - [Variable naming](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#variable-naming)
+  - [Method naming](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#method-naming)
   - [Space pad operators and equals](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#space-pad-operators-and-equals)
   - [Be explicit about operator precedence](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#be-explicit-about-operator-precedence)
   - [Empty blocks: may be concise](https://github.com/IBM/iTestCloud/tree/master/docs/coding_style.md#empty-blocks:-may-be-concise)
@@ -173,8 +174,9 @@ Iterable<Module> modules = ImmutableList.<Module>builder()
     .build();
 ```
 
-#### No tabs (TO BE DISCUSSED)
-An oldie, but goodie.  It is found tab characters cause more harm than good.
+#### Tabs over spaces for indentations
+In iTestCloud project, tabs are exclusively used for indentations. Refrain from using spaces in
+lieu of tabs for indentations.
 
 #### CamelCase for types, camelCase for variables, UPPER_SNAKE for constants
 Sometimes there is more than one reasonable way to convert an English phrase into camel case,
@@ -317,6 +319,19 @@ String mValue;
 // Good.
 String value;
 ```
+
+### Method naming
+
+#### Boolean method naming
+
+Naming a method could never be an easy thing, sometimes, especially for the methods returning `boolean` values. According to Java source code, the naming convention seems to follow some rules listed below. Highly suggest following the same rules as Java, when writing up your own `boolean` methods.
+
+**1**: (Very often used) A widely-used convention `isAdjective` or `hasNoun`, even past tense `wasAdjective` (nevertheless rare). For example, `Thread.isAlive`, `TimeZone.hasSameRules`, `ResultSet.wasNull`.<br />
+**2**: (Often used) Use single verb, if possible. For example, `Arrays.equals`.<br />
+**3**: (Often used) Use verb + object, if needed, or clearer in meaning. For example, `TimeZone.useDaylightTime`.<br />
+**4**: (Rarely used) Use preposition. For example, `Calendar.before`.<br />
+**5**: (Very rarely used) Use subject + verb in past participle. For example, `ResultSet.rowDeleted`.<br />
+**6**: For all nouns in above rules, they are inclined in singular form if possible, instead of plural. However, for the verb, the other way around - only a few verbs, Java tends to use singular form, such as, `equals`, `intersects`, `matches`, and `contains`; otherwise, in the verb’s base form, for example, `getSelected`, `offerFirst`, etc.
 
 ### Space pad operators and equals.
 
