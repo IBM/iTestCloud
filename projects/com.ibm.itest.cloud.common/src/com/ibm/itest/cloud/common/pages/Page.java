@@ -1122,7 +1122,7 @@ public String[] getData() {
 }
 
 /**
- * Return the expected title for the current web page.
+ * Returns a pattern matching the expected title for the current web page.
  * <p>
  * Note that subclasses which do not expect a title in their page should have
  * the {@link #getExpectedTitle()} method to return <code>null</code>.
@@ -1130,9 +1130,10 @@ public String[] getData() {
  * Otherwise, subclasses which are expecting a title have to override this method
  * to avoid having a {@link ScenarioFailedError} error thrown.
  * </p>
- * @return The page title as a {@link String}
- * @throw ScenarioMissingImplementationError If a subclass expects a title
- * and does not override this method.
+ *
+ * @return The page title as {@link Pattern}.
+ *
+ * @throw ScenarioMissingImplementationError if a subclass expects a title and does not override this method.
  */
 protected abstract Pattern getExpectedTitle();
 
