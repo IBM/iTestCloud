@@ -85,15 +85,6 @@ public abstract class Page implements IPage {
 
 	private final static String VERIFY_PAGE_USER_ARGUMENT = "verifyPageUser";
 	// Pages cache
-//	private final static Map<String, WebPage> CLM_PAGES = new WeakHashMap<String, WebPage>();
-	// TODO Following block should be activated when moving page creation and cache to WebBrowser
-	/*
-	private final static ThreadLocal<Map<String, WebPage>> CLM_PAGES = new ThreadLocal<Map<String,WebPage>>();
-	static {
-		CLM_PAGES.set(new WeakHashMap<String, WebPage>());
-	}
-	private final static ThreadLocal<WebPage> CURRENT_PAGE = new ThreadLocal<WebPage>();
-	*/
 	private final static ThreadLocal<List<Page>> PAGES_HISTORY = new ThreadLocal<List<Page>>();
 
 	static {
@@ -1132,25 +1123,6 @@ public String[] getData() {
 }
 
 /**
- * Return a list of files in the download directory.
- *
- * @return A list of files in the download directory as {@link List}.
- *
- * @deprecated Use {@link Browser#getDownloadDirContents()} instead.
- */
-@Deprecated
-protected List<File> getDownloadDirContents() {
-	return this.browser.getDownloadDirContents();
-}
-
-//protected String getExpectedTitle() {
-//	if (isTitleExpected()) {
-//		throw new ScenarioMissingImplementationError(getClassSimpleName(getClass())+".getExpectedTitle() method");
-//	}
-//	return null;
-//}
-
-/**
  * Return the expected title for the current web page.
  * <p>
  * Note that subclasses which do not expect a title in their page should have
@@ -1424,10 +1396,8 @@ protected boolean isLoaded() {
 	for (BrowserElement frameElement : getFrames()) {
 		this.browser.selectFrame(frameElement);
 		boolean isLoading = getBusyIndicatorElements() != null;
-//		WebBrowserElement errorPageContentElement = getErrorPageContainerElement();
 		this.browser.resetFrame();
 
-//		if (errorPageContentElement != null) throw new ApsPortalServerMessageError(this, errorPageContentElement);
 		if (isLoading) return false;
 	}
 
@@ -2226,20 +2196,9 @@ public <P extends Page> P openPageUsingLink(final BrowserElement linkElement, fi
 	long stimeout = urlChangeTimeout *1000 + System.currentTimeMillis();
 	int count = 0;
 	while (currentUrl.equals(browserUrl = getUrl()) || !isValidUrl(browserUrl)) {
-//		if (count == 0) {
-//			println("================================================================================");
-//			println("WARNING: Browser URL hasn't changed after having clicked on "+linkString);
-//			println("	- current URL: "+currentUrl);
-//			println("	- expected URL: "+linkUrl);
-//			println("	- stack trace:");
-//			printStackTrace(1);
-//			println("	- browser URL: "+browserUrl);
-//		}
 		if (System.currentTimeMillis() > stimeout) {
 			println("	Browser URL still stays the same after " + urlChangeTimeout + " seconds...");
-//			println("	=> Workaround is to open page directly setting browser URL with: "+linkUrl);
 			println("================================================================================");
-//			return WebPage.openPage(linkUrl, getConfig(), user, openedPageClass, pageData);
 			throw new BrowserUrlUnchangedError("Browser URL remains unchanged after " + urlChangeTimeout + " seconds.");
 		}
 		count++;
@@ -2608,24 +2567,6 @@ public void startPerfManagerServerTimer() throws ScenarioFailedError {
 		throw new ScenarioFailedError("Performances are not enabled for the scenario execution. Use -DperformanceEnabled=true to avoid this failure.");
 	}
 }
-
-///**
-// * Close the current browser session and open a new one at the same page.
-// */
-//public void startNewBrowserSession() {
-//	this.browser = getConfig().openNewBrowser();
-//	this.driver = this.browser.driver;
-//
-//	// Clear page cache except for current page object
-//	getPagesHistory().clear();
-//	getPagesHistory().add(this);
-//
-//	//Clear login data
-//	getTopology().logoutApplications();
-//
-//	// Reopen current page in browser
-//	this.browser.get(this.location);
-//}
 
 /**
  * Takes a failure snapshot.
