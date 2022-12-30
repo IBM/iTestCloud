@@ -1392,14 +1392,14 @@ protected boolean isLoaded() {
 	// If such an element exists, then the page is still loading.
 	if(getBusyIndicatorElements() != null) return false;
 
-	// Checking iFrames
-	for (BrowserElement frameElement : getFrames()) {
-		this.browser.selectFrame(frameElement);
-		boolean isLoading = getBusyIndicatorElements() != null;
-		this.browser.switchToMainWindow();
-
-		if (isLoading) return false;
-	}
+//	// Checking iFrames
+//	for (BrowserElement frameElement : getFrames()) {
+//		this.browser.selectFrame(frameElement);
+//		boolean isLoading = getBusyIndicatorElements() != null;
+//		this.browser.switchToMainWindow();
+//
+//		if (isLoading) return false;
+//	}
 
 	return true;
 }
