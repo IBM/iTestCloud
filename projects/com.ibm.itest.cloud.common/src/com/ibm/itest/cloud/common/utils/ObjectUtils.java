@@ -43,8 +43,6 @@ public final class ObjectUtils {
  * @throws NullPointerException if the given pattern is <code>null</code>.
  */
 public static boolean matches(final Pattern pattern, final String text) {
-	requireNonNull(pattern, "The 'pattern' parameter must not be null.");
-
 	return (text != null) && pattern.matcher(text).matches();
 }
 
