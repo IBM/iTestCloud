@@ -49,7 +49,7 @@ public RichHoverElement(final Page page) {
 protected void closeAction(final boolean cancel) {
 
 	// Get the close link element
-	resetFrame();
+	switchToMainWindow();
 	BrowserElement closeLinkElement = this.browser.findElement(By.xpath(getCloseButton(cancel)), false/*no recovery*/);
 
 	// Click on the link element

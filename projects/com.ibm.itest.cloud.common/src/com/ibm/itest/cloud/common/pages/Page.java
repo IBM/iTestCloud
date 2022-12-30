@@ -485,83 +485,6 @@ public void addPerfResult(final RegressionType regressionType, final String page
 }
 
 /**
- * Set on the check-box found in the page using the given mechanism.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if the check-box is not found before {@link #timeout()} seconds</li>
- * <li>if the check-box is already checked, then nothing happen</li>
- * <li>validate that the check-box is well checked after having clicked on it</li>
- * </p>
- * @param findBy The mechanism to find the check-box element in the current
- * page
- * @return The check-box web element (as a {@link BrowserElement}) found
- * in the page
- *
- * @see #waitForElement(By)
- * @see Browser#check(BrowserElement, int, boolean)
- */
-protected BrowserElement check(final By findBy) {
-	BrowserElement element = waitForElement(findBy);
-	this.browser.check(element, 1/*on*/, true/*validate*/);
-	return element;
-}
-
-/**
- * Set or unset the check-box found inside the current page using the given locator.
- * <p>
- * The result of the check operation will be verified.
- * </p><p>
- * Note that this method can also be used to 'select' a radio button, i.e.,
- * when the argument 'on' is <code>true</code>.  Technically, there is no way to
- * 'unselect' a radio button (without selecting some other radio button), so this
- * method should not be used with a radio button and <code>false</code>.
- * </p><p>
- * Note that it will fail:
- * <ul>
- * <li>if the check-box is not found before {@link #timeout()} seconds</li>
- * <li>if the check-box is not in the expected state after the operation</li>
- * </p>
- * @param locator The locator to find the check-box element in the current page
- * @param on Tells whether the check-box should be set or unset.
- * @return The check-box web element (as a {@link BrowserElement}) found in the page
- *
- * @see #waitForElement(BrowserElement, By)
- * @see Browser#check(BrowserElement, int, boolean)
- */
-protected BrowserElement check(final By locator, final boolean on) {
-	return check(locator, on, true/*validate*/);
-}
-
-/**
- * Set or unset the check-box found inside the current page using the given locator
- * and checking the result if specified.
- * <p>
- * Note that this method can also be used to 'select' a radio button, i.e.,
- * when the argument 'on' is <code>true</code>.  Technically, there is no way to
- * 'unselect' a radio button (without selecting some other radio button), so this
- * method should not be used with a radio button and <code>false</code>.
- * </p><p>
- * Note that it will fail:
- * <ul>
- * <li>if the check-box is not found before {@link #timeout()} seconds</li>
- * <li>if the check-box is not in the expected state after the operation</li>
- * </p>
- * @param locator The locator to find the check-box element in the current page
- * @param on Tells whether the check-box should be set or unset.
- * @param validate Tells whether the validate check-box after the operation or not
- * @return The check-box web element (as a {@link BrowserElement}) found in the page
- *
- * @see #waitForElement(BrowserElement, By)
- * @see Browser#check(BrowserElement, int, boolean)
- */
-protected BrowserElement check(final By locator, final boolean on, final boolean validate) {
-	BrowserElement element = waitForElement(locator);
-	this.browser.check(element, on ? 1 : -1, validate);
-	return element;
-}
-
-/**
  * Set on the given check-box web element.
  * <p>
  * Note that:
@@ -653,6 +576,83 @@ protected BrowserElement check(final BrowserElement parentElement, final By find
 }
 
 /**
+ * Set on the check-box found in the page using the given mechanism.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the check-box is not found before {@link #timeout()} seconds</li>
+ * <li>if the check-box is already checked, then nothing happen</li>
+ * <li>validate that the check-box is well checked after having clicked on it</li>
+ * </p>
+ * @param findBy The mechanism to find the check-box element in the current
+ * page
+ * @return The check-box web element (as a {@link BrowserElement}) found
+ * in the page
+ *
+ * @see #waitForElement(By)
+ * @see Browser#check(BrowserElement, int, boolean)
+ */
+protected BrowserElement check(final By findBy) {
+	BrowserElement element = waitForElement(findBy);
+	this.browser.check(element, 1/*on*/, true/*validate*/);
+	return element;
+}
+
+/**
+ * Set or unset the check-box found inside the current page using the given locator.
+ * <p>
+ * The result of the check operation will be verified.
+ * </p><p>
+ * Note that this method can also be used to 'select' a radio button, i.e.,
+ * when the argument 'on' is <code>true</code>.  Technically, there is no way to
+ * 'unselect' a radio button (without selecting some other radio button), so this
+ * method should not be used with a radio button and <code>false</code>.
+ * </p><p>
+ * Note that it will fail:
+ * <ul>
+ * <li>if the check-box is not found before {@link #timeout()} seconds</li>
+ * <li>if the check-box is not in the expected state after the operation</li>
+ * </p>
+ * @param locator The locator to find the check-box element in the current page
+ * @param on Tells whether the check-box should be set or unset.
+ * @return The check-box web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(BrowserElement, By)
+ * @see Browser#check(BrowserElement, int, boolean)
+ */
+protected BrowserElement check(final By locator, final boolean on) {
+	return check(locator, on, true/*validate*/);
+}
+
+/**
+ * Set or unset the check-box found inside the current page using the given locator
+ * and checking the result if specified.
+ * <p>
+ * Note that this method can also be used to 'select' a radio button, i.e.,
+ * when the argument 'on' is <code>true</code>.  Technically, there is no way to
+ * 'unselect' a radio button (without selecting some other radio button), so this
+ * method should not be used with a radio button and <code>false</code>.
+ * </p><p>
+ * Note that it will fail:
+ * <ul>
+ * <li>if the check-box is not found before {@link #timeout()} seconds</li>
+ * <li>if the check-box is not in the expected state after the operation</li>
+ * </p>
+ * @param locator The locator to find the check-box element in the current page
+ * @param on Tells whether the check-box should be set or unset.
+ * @param validate Tells whether the validate check-box after the operation or not
+ * @return The check-box web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(BrowserElement, By)
+ * @see Browser#check(BrowserElement, int, boolean)
+ */
+protected BrowserElement check(final By locator, final boolean on, final boolean validate) {
+	BrowserElement element = waitForElement(locator);
+	this.browser.check(element, on ? 1 : -1, validate);
+	return element;
+}
+
+/**
  * Check the hover title of the given link element.
  * <p>
  * This check opens the hover by positioning the mouse pointer over
@@ -739,48 +739,6 @@ public <RH extends RichHoverElement<? extends Page>> RH checkRichHover(final Bro
 }
 
 /**
- * Click on the web element found in the current page using the given mechanism.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * </p>
- * @param findBy The mechanism to find the element in the current page
- * @return The web element (as a {@link BrowserElement}) found in the page
- *
- * @see #waitForElement(By)
- * @see BrowserElement#click()
- */
-protected BrowserElement click(final By findBy) {
-	return click((By)null, findBy);
-}
-
-/**
- * Click on the web element found relatively to the parent web element found
- * using the respective given mechanisms.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if either the parent or the element are not found before
- * {@link #timeout()} seconds</li>
- * </p>
- * @param parentBy The mechanism to find the parent element in the current
- * page, if <code>null</code>, the element will be searched in the entire page
- * content
- * @param findBy The mechanism to find the element in the current page or
- * from the given parent element if not <code>null</code>
- * @return The web element (as a {@link BrowserElement}) found in the page
- *
- * @see #waitForElement(By, By)
- * @see BrowserElement#click()
- */
-protected BrowserElement click(final By parentBy, final By findBy) {
-	if (DEBUG) debugPrintln("		+ Click on "+(parentBy==null ? "" : parentBy+"//")+findBy);
-	BrowserElement parentElement = parentBy == null ? null : waitForElement(parentBy);
-	return click(parentElement, findBy);
-}
-
-/**
  * Click on the web element found using the given mechanism relatively to
  * the given parent web element.
  * <p>
@@ -828,6 +786,110 @@ public BrowserElement click(final BrowserElement parentElement, final By findBy)
 
 	// Return the found element
 	return element;
+}
+
+/**
+ * Click on the web element found in the current page using the given mechanism.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * </p>
+ * @param findBy The mechanism to find the element in the current page
+ * @return The web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(By)
+ * @see BrowserElement#click()
+ */
+protected BrowserElement click(final By findBy) {
+	return click((By)null, findBy);
+}
+
+/**
+ * Click on the web element found relatively to the parent web element found
+ * using the respective given mechanisms.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if either the parent or the element are not found before
+ * {@link #timeout()} seconds</li>
+ * </p>
+ * @param parentBy The mechanism to find the parent element in the current
+ * page, if <code>null</code>, the element will be searched in the entire page
+ * content
+ * @param findBy The mechanism to find the element in the current page or
+ * from the given parent element if not <code>null</code>
+ * @return The web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(By, By)
+ * @see BrowserElement#click()
+ */
+protected BrowserElement click(final By parentBy, final By findBy) {
+	if (DEBUG) debugPrintln("		+ Click on "+(parentBy==null ? "" : parentBy+"//")+findBy);
+	BrowserElement parentElement = parentBy == null ? null : waitForElement(parentBy);
+	return click(parentElement, findBy);
+}
+
+/**
+ * Click on the given button.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * </p>
+ * @param button The button in the current page
+ * @param check Tells whether to check the button turns disabled after having
+ * been clicked or not.
+ * @return The web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see Browser#clickButton(BrowserElement, int, boolean)
+ */
+protected BrowserElement clickButton(final BrowserElement button, final boolean check) {
+	return this.browser.clickButton(button, timeout(), check);
+}
+
+/**
+ * Click on the button found relatively to the given parent web element.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * <li>there's no verification that the button turns to enable after having clicked
+ * on it</li>
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param buttonBy The mechanism to find the button in the current page
+ * @return The web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(BrowserElement, By)
+ * @see Browser#clickButton(BrowserElement, int, boolean)
+ */
+public BrowserElement clickButton(final BrowserElement parentElement, final By buttonBy) {
+	BrowserElement button = waitForElement(parentElement, buttonBy);
+	return this.browser.clickButton(button, timeout(), false);
+}
+
+/**
+ * Click on the button found relatively to the given parent web element.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param buttonBy The mechanism to find the button in the current page
+ * @param check Tells whether to check the button turns disabled after having
+ * been clicked or not.
+ * @return The web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(BrowserElement, By)
+ * @see Browser#clickButton(BrowserElement, int, boolean)
+ */
+protected BrowserElement clickButton(final BrowserElement parentElement, final By buttonBy, final boolean check) {
+	BrowserElement button = waitForElement(parentElement, buttonBy);
+	return this.browser.clickButton(button, timeout(), check);
 }
 
 /**
@@ -891,68 +953,6 @@ public BrowserElement clickButton(final By buttonBy, final boolean check) {
 protected BrowserElement clickButton(final By buttonBy, final int time_out) {
 	BrowserElement button = waitForElement(buttonBy, true/*fail*/, time_out);
 	return this.browser.clickButton(button, time_out, false);
-}
-
-/**
- * Click on the given button.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * </p>
- * @param button The button in the current page
- * @param check Tells whether to check the button turns disabled after having
- * been clicked or not.
- * @return The web element (as a {@link BrowserElement}) found in the page
- *
- * @see Browser#clickButton(BrowserElement, int, boolean)
- */
-protected BrowserElement clickButton(final BrowserElement button, final boolean check) {
-	return this.browser.clickButton(button, timeout(), check);
-}
-
-/**
- * Click on the button found relatively to the given parent web element.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * <li>there's no verification that the button turns to enable after having clicked
- * on it</li>
- * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param buttonBy The mechanism to find the button in the current page
- * @return The web element (as a {@link BrowserElement}) found in the page
- *
- * @see #waitForElement(BrowserElement, By)
- * @see Browser#clickButton(BrowserElement, int, boolean)
- */
-public BrowserElement clickButton(final BrowserElement parentElement, final By buttonBy) {
-	BrowserElement button = waitForElement(parentElement, buttonBy);
-	return this.browser.clickButton(button, timeout(), false);
-}
-
-/**
- * Click on the button found relatively to the given parent web element.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param buttonBy The mechanism to find the button in the current page
- * @param check Tells whether to check the button turns disabled after having
- * been clicked or not.
- * @return The web element (as a {@link BrowserElement}) found in the page
- *
- * @see #waitForElement(BrowserElement, By)
- * @see Browser#clickButton(BrowserElement, int, boolean)
- */
-protected BrowserElement clickButton(final BrowserElement parentElement, final By buttonBy, final boolean check) {
-	BrowserElement button = waitForElement(parentElement, buttonBy);
-	return this.browser.clickButton(button, timeout(), check);
 }
 
 @Override
@@ -1195,7 +1195,6 @@ protected File getNewFileInDownloadDir(final List<File> initialFiles) {
  * @return The root element as a {@link BrowserElement}.
  */
 protected final BrowserElement getRootElement() {
-	this.browser.resetFrame();
 	return waitForElement(getRootElementLocator());
 }
 
@@ -1389,14 +1388,15 @@ protected boolean isLoaded() {
 		}
 	}
 
-	// Finally, check if at least one spinner/loading element is visible in both main page and all iFrames.
+	// Finally, check if at least one spinner/loading element is visible in both main page.
 	// If such an element exists, then the page is still loading.
 	if(getBusyIndicatorElements() != null) return false;
+
 	// Checking iFrames
 	for (BrowserElement frameElement : getFrames()) {
 		this.browser.selectFrame(frameElement);
 		boolean isLoading = getBusyIndicatorElements() != null;
-		this.browser.resetFrame();
+		this.browser.switchToMainWindow();
 
 		if (isLoading) return false;
 	}
@@ -1748,35 +1748,6 @@ public <P extends Page> P openAndWaitForPage(final String pageLocation, final IC
 /**
  * Click on the given link assuming that will open a new element.
  *
- * @param linkBy The link locator on which to click.
- * @param findBy The locator of the element opened after clicking on the link element.
- * @param elementClass The class associated with the opened element.
- * @param elementData Additional information to store in the element when opening it.
- *
- * @return The element (as a subclass of {@link ElementWrapper}) opened after
- * having clicked on the link.
- */
-public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final By findBy, final Class<P> elementClass, final String... elementData) {
-	return openElementUsingLink(waitForElement(linkBy), findBy, elementClass, elementData);
-}
-
-/**
- * Click on the given link assuming that will open a new element.
- *
- * @param linkBy The link locator on which to click.
- * @param elementClass The class associated with the opened element.
- * @param elementData Additional information to store in the element when opening it.
- *
- * @return The element (as a subclass of {@link ElementWrapper}) opened after
- * having clicked on the link.
- */
-public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final Class<P> elementClass, final String... elementData) {
-	return openElementUsingLink(waitForElement(linkBy), elementClass, elementData);
-}
-
-/**
- * Click on the given link assuming that will open a new element.
- *
  * @param linkElement The link on which to click.
  * @param findBy The locator of the element opened after clicking on the link element.
  * @param elementClass The class associated with the opened element.
@@ -1882,6 +1853,35 @@ public <P extends ElementWrapper> P openElementUsingLink(final BrowserElement li
 }
 
 /**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkBy The link locator on which to click.
+ * @param findBy The locator of the element opened after clicking on the link element.
+ * @param elementClass The class associated with the opened element.
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link ElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final By findBy, final Class<P> elementClass, final String... elementData) {
+	return openElementUsingLink(waitForElement(linkBy), findBy, elementClass, elementData);
+}
+
+/**
+ * Click on the given link assuming that will open a new element.
+ *
+ * @param linkBy The link locator on which to click.
+ * @param elementClass The class associated with the opened element.
+ * @param elementData Additional information to store in the element when opening it.
+ *
+ * @return The element (as a subclass of {@link ElementWrapper}) opened after
+ * having clicked on the link.
+ */
+public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final Class<P> elementClass, final String... elementData) {
+	return openElementUsingLink(waitForElement(linkBy), elementClass, elementData);
+}
+
+/**
  * Retrieve the existing page for the browser current URL. Create it if it's the first
  * time the page is requested.
  *
@@ -1939,80 +1939,6 @@ public <P extends Page> P openPageUsingHoverTitle(final RichHoverElement<? exten
 
 	// Open, wait for, and return the opened page
 	return openAndWaitForPage(openedPageClass, true, pageData);
-}
-
-/**
- * Click on the link found using the given mechanism assuming that will open
- * a new {@link Page page}.
- * <p>
- * The opened page URL is got from the application which usually takes it from
- * the <code>href</code> attribute of the link web element (see
- * {@link Topology#getPageUrl(String)}.
- * </p><p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * <li>no additional info is provided to the opened page</li>
- * </p>
- * @param linkBy The mechanism to find the link element in the current page
- * @param openedPageClass The class associated with the opened page
- * @return The web page (as a subclass of {@link Page}) opened after
- * having clicked on the link
- *
- * @see #openPageUsingLink(BrowserElement, By, Class, boolean, int, String...)
- */
-public <P extends Page> P openPageUsingLink(final By linkBy, final Class<P> openedPageClass) {
-	return openPageUsingLink(null, linkBy, openedPageClass, true/*fail*/, timeout());
-}
-
-/**
- * Click on the link found using the given mechanism assuming that will open
- * a new {@link Page page}.
- * <p>
- * The opened page URL is got from the application which usually takes it from
- * the <code>href</code> attribute of the link web element (see
- * {@link Topology#getPageUrl(String)}.
- * </p><p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * <li>no additional info is provided to the opened page</li>
- * </p>
- * @param linkBy The mechanism to find the link element in the current page
- * @param openedPageClass The class associated with the opened page
- * @param timeOut Seconds to wait before giving up if the web element is not
- * found.
- * @return The web page (as a subclass of {@link Page}) opened after
- * having clicked on the link
- *
- * @see #openPageUsingLink(BrowserElement, By, Class, boolean, int, String...)
- */
-public <P extends Page> P openPageUsingLink(final By linkBy, final Class<P> openedPageClass, final int timeOut) {
-	return openPageUsingLink(null, linkBy, openedPageClass, false/*do not fail*/, timeOut);
-}
-
-/**
- * Click on the link found using the given mechanism assuming that will open
- * a new {@link Page page}.
- * <p>
- * The opened page URL is got from the application which usually takes it from
- * the <code>href</code> attribute of the link web element (see
- * {@link Topology#getPageUrl(String)}.
- * </p><p>
- * Note that:
- * <ul>
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * </p>
- * @param linkBy The mechanism to find the link element in the current page
- * @param openedPageClass The class associated with the opened page
- * @param info Provide additional information to store in the page when opening it
- * @return The web page (as a subclass of {@link Page}) opened after
- * having clicked on the link
- *
- * @see #openPageUsingLink(BrowserElement, By, Class, boolean, int, String...)
- */
-public <P extends Page> P openPageUsingLink(final By linkBy, final Class<P> openedPageClass, final String... info) {
-	return openPageUsingLink(null, linkBy, openedPageClass, true/*fail*/, timeout(), info);
 }
 
 /**
@@ -2254,6 +2180,80 @@ public <P extends Page> P openPageUsingLink(final BrowserElement linkElement, fi
 	return openPageUsingLink(linkElement, user, openedPageClass, null /*prePageOpenAction*/, pageData);
 }
 
+/**
+ * Click on the link found using the given mechanism assuming that will open
+ * a new {@link Page page}.
+ * <p>
+ * The opened page URL is got from the application which usually takes it from
+ * the <code>href</code> attribute of the link web element (see
+ * {@link Topology#getPageUrl(String)}.
+ * </p><p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * <li>no additional info is provided to the opened page</li>
+ * </p>
+ * @param linkBy The mechanism to find the link element in the current page
+ * @param openedPageClass The class associated with the opened page
+ * @return The web page (as a subclass of {@link Page}) opened after
+ * having clicked on the link
+ *
+ * @see #openPageUsingLink(BrowserElement, By, Class, boolean, int, String...)
+ */
+public <P extends Page> P openPageUsingLink(final By linkBy, final Class<P> openedPageClass) {
+	return openPageUsingLink(null, linkBy, openedPageClass, true/*fail*/, timeout());
+}
+
+/**
+ * Click on the link found using the given mechanism assuming that will open
+ * a new {@link Page page}.
+ * <p>
+ * The opened page URL is got from the application which usually takes it from
+ * the <code>href</code> attribute of the link web element (see
+ * {@link Topology#getPageUrl(String)}.
+ * </p><p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * <li>no additional info is provided to the opened page</li>
+ * </p>
+ * @param linkBy The mechanism to find the link element in the current page
+ * @param openedPageClass The class associated with the opened page
+ * @param timeOut Seconds to wait before giving up if the web element is not
+ * found.
+ * @return The web page (as a subclass of {@link Page}) opened after
+ * having clicked on the link
+ *
+ * @see #openPageUsingLink(BrowserElement, By, Class, boolean, int, String...)
+ */
+public <P extends Page> P openPageUsingLink(final By linkBy, final Class<P> openedPageClass, final int timeOut) {
+	return openPageUsingLink(null, linkBy, openedPageClass, false/*do not fail*/, timeOut);
+}
+
+/**
+ * Click on the link found using the given mechanism assuming that will open
+ * a new {@link Page page}.
+ * <p>
+ * The opened page URL is got from the application which usually takes it from
+ * the <code>href</code> attribute of the link web element (see
+ * {@link Topology#getPageUrl(String)}.
+ * </p><p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * </p>
+ * @param linkBy The mechanism to find the link element in the current page
+ * @param openedPageClass The class associated with the opened page
+ * @param info Provide additional information to store in the page when opening it
+ * @return The web page (as a subclass of {@link Page}) opened after
+ * having clicked on the link
+ *
+ * @see #openPageUsingLink(BrowserElement, By, Class, boolean, int, String...)
+ */
+public <P extends Page> P openPageUsingLink(final By linkBy, final Class<P> openedPageClass, final String... info) {
+	return openPageUsingLink(null, linkBy, openedPageClass, true/*fail*/, timeout(), info);
+}
+
 @SuppressWarnings("unchecked")
 public <P extends IPage> P openPageUsingLink2(final BrowserElement parentElement, final By linkBy, final Class<P> openedPageClass) {
 	return (P) openPageUsingLink(parentElement, linkBy, (Class<? extends Page>) openedPageClass, true/*fail*/, timeout());
@@ -2407,39 +2407,6 @@ public <RH extends TextHoverElement> RH richHoverOverLink(final BrowserElement l
 }
 
 /**
- * Select the given item in the list element found using the given search
- * mechanism.
- * <p>
- * The items of the found list are supposed to be found using <code>by.xpath("./option")</code>
- * search mechanism.
- * </p>
- * @param findBy The mechanism to find the list element in the current page.
- * @param selection The item to select in the list, assuming that text matches
- * @return The selected element as {@link BrowserElement}.
- * @throws ScenarioFailedError if no item matches the expected selection.
- */
-public BrowserElement select(final By findBy, final String selection) {
-	return select(findBy, Pattern.compile(Pattern.quote(selection)));
-}
-
-/**
- * Select the given item in the list element found using the given search
- * mechanism.
- * <p>
- * The items of the found list are supposed to be found using <code>by.xpath("./option")</code>
- * search mechanism.
- * </p>
- * @param findBy The mechanism to find the list element in the current page.
- * @param pattern A pattern matching the item to select in the list, assuming that text matches
- * @return The selected element as {@link BrowserElement}.
- * @throws ScenarioFailedError if no item matches the expected selection.
- */
-public BrowserElement select(final By findBy, final Pattern pattern) {
-	BrowserElement listElement = waitForElement(findBy);
-	return select(listElement, pattern);
-}
-
-/**
  * Select the given item in the given list element found.
  * <p>
  * The items of the selection list are supposed to be found using
@@ -2468,6 +2435,39 @@ public BrowserElement select(final BrowserElement listElement, final Pattern pat
  */
 public BrowserElement select(final BrowserElement listElement, final String selection) {
 	return select(listElement, Pattern.compile(Pattern.quote(selection)));
+}
+
+/**
+ * Select the given item in the list element found using the given search
+ * mechanism.
+ * <p>
+ * The items of the found list are supposed to be found using <code>by.xpath("./option")</code>
+ * search mechanism.
+ * </p>
+ * @param findBy The mechanism to find the list element in the current page.
+ * @param pattern A pattern matching the item to select in the list, assuming that text matches
+ * @return The selected element as {@link BrowserElement}.
+ * @throws ScenarioFailedError if no item matches the expected selection.
+ */
+public BrowserElement select(final By findBy, final Pattern pattern) {
+	BrowserElement listElement = waitForElement(findBy);
+	return select(listElement, pattern);
+}
+
+/**
+ * Select the given item in the list element found using the given search
+ * mechanism.
+ * <p>
+ * The items of the found list are supposed to be found using <code>by.xpath("./option")</code>
+ * search mechanism.
+ * </p>
+ * @param findBy The mechanism to find the list element in the current page.
+ * @param selection The item to select in the list, assuming that text matches
+ * @return The selected element as {@link BrowserElement}.
+ * @throws ScenarioFailedError if no item matches the expected selection.
+ */
+public BrowserElement select(final By findBy, final String selection) {
+	return select(findBy, Pattern.compile(Pattern.quote(selection)));
 }
 
 /**
@@ -2566,6 +2566,25 @@ public void startPerfManagerServerTimer() throws ScenarioFailedError {
 }
 
 /**
+ * Selects either the first frame on the page, or the main document when a page contains iframes.
+ *
+ * @see Browser#switchToMainWindow()
+ */
+protected void switchToMainWindow() {
+	this.browser.switchToMainWindow();
+}
+
+/**
+ * Change focus to the parent context.
+ * <p>
+ * If the current context is the top level browsing context, the context remains unchanged.
+ * </p>
+ */
+protected void switchToParentFrame() {
+	this.browser.switchToParentFrame();
+}
+
+/**
  * Takes a failure snapshot.
  *
  * @param fileName The name of the snapshot file.
@@ -2637,6 +2656,88 @@ public String toString() {
  */
 public void typePassword(final BrowserElement element, final IUser user) {
 	this.browser.typePassword(element, timeout(), user);
+}
+
+/**
+ * Type a text into an input web element found inside the given parent web element
+ * using the given mechanism.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if the input field is not found before {@link #timeout()} seconds</li>
+ * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
+ * seconds</li>
+ * <li>the input element will be cleared prior entering the given text</li>
+ * </ul>
+ * </p><p>
+ * Note also that a {@link Keys#TAB} is hit after having entered the text in the
+ * input field in order to trigger the 'keyEvent' and makes the javascript associated
+ * with the filed working properly.
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param findBy The mechanism to find the input web element in the current
+ * page
+ * @param text The text to type in the input element
+ * @return The text web element (as a {@link BrowserElement}) found
+ * in the page
+ *
+ * @see #waitForElement(BrowserElement, By)
+ * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
+ */
+public BrowserElement typeText(final BrowserElement parentElement, final By findBy, final String text) {
+	BrowserElement element = waitForElement(parentElement, findBy);
+	this.browser.typeText(element, text, Keys.TAB, true/*clear*/, timeout());
+	return element;
+}
+
+/**
+ * Type a text into the given input web element found.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
+ * seconds</li>
+ * <li>the input element will be cleared prior entering the given text</li>
+ * </ul>
+ * </p><p>
+ * Note also that a {@link Keys#TAB} is hit after having entered the text in the
+ * input field in order to trigger the 'keyEvent' and makes the javascript associated
+ * with the filed working properly.
+ * </p>
+ * @param inputElement The web element to enter the text in
+ * @param text The text to type in the input element
+ *
+ * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
+ */
+public void typeText(final BrowserElement inputElement, final String text) {
+	this.browser.typeText(inputElement, text, Keys.TAB, true/*clear*/, timeout());
+}
+
+/**
+ * Type a text into the given input web element found.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
+ * seconds</li>
+ * <li>the input element will be cleared prior entering the given text</li>
+ * </ul>
+ * </p><p>
+ * Note also that a {@link Keys#TAB} is hit after having entered the text in the
+ * input field in order to trigger the 'keyEvent' and makes the javascript associated
+ * with the filed working properly.
+ * </p>
+ * @param inputElement The web element to enter the text in
+ * @param text The text to type in the input element
+ * @param key The key to hit after having entered the text in the input field.
+ * If <code>null</code> is provided as the value of this parameter, a key will not
+ * be hit after having entered the text in the input field.
+ *
+ * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
+ */
+public void typeText(final BrowserElement inputElement, final String text, final Keys key) {
+	this.browser.typeText(inputElement, text, key, true/*clear*/, timeout());
 }
 
 /**
@@ -2800,88 +2901,6 @@ public BrowserElement typeText(final By findBy, final String text, final Keys ke
 }
 
 /**
- * Type a text into an input web element found inside the given parent web element
- * using the given mechanism.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if the input field is not found before {@link #timeout()} seconds</li>
- * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
- * seconds</li>
- * <li>the input element will be cleared prior entering the given text</li>
- * </ul>
- * </p><p>
- * Note also that a {@link Keys#TAB} is hit after having entered the text in the
- * input field in order to trigger the 'keyEvent' and makes the javascript associated
- * with the filed working properly.
- * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param findBy The mechanism to find the input web element in the current
- * page
- * @param text The text to type in the input element
- * @return The text web element (as a {@link BrowserElement}) found
- * in the page
- *
- * @see #waitForElement(BrowserElement, By)
- * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
- */
-public BrowserElement typeText(final BrowserElement parentElement, final By findBy, final String text) {
-	BrowserElement element = waitForElement(parentElement, findBy);
-	this.browser.typeText(element, text, Keys.TAB, true/*clear*/, timeout());
-	return element;
-}
-
-/**
- * Type a text into the given input web element found.
- * <p>
- * Note that:
- * <ul>
- * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
- * seconds</li>
- * <li>the input element will be cleared prior entering the given text</li>
- * </ul>
- * </p><p>
- * Note also that a {@link Keys#TAB} is hit after having entered the text in the
- * input field in order to trigger the 'keyEvent' and makes the javascript associated
- * with the filed working properly.
- * </p>
- * @param inputElement The web element to enter the text in
- * @param text The text to type in the input element
- *
- * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
- */
-public void typeText(final BrowserElement inputElement, final String text) {
-	this.browser.typeText(inputElement, text, Keys.TAB, true/*clear*/, timeout());
-}
-
-/**
- * Type a text into the given input web element found.
- * <p>
- * Note that:
- * <ul>
- * <li>if will fail if the input field does not turn enabled before {@link #timeout()}
- * seconds</li>
- * <li>the input element will be cleared prior entering the given text</li>
- * </ul>
- * </p><p>
- * Note also that a {@link Keys#TAB} is hit after having entered the text in the
- * input field in order to trigger the 'keyEvent' and makes the javascript associated
- * with the filed working properly.
- * </p>
- * @param inputElement The web element to enter the text in
- * @param text The text to type in the input element
- * @param key The key to hit after having entered the text in the input field.
- * If <code>null</code> is provided as the value of this parameter, a key will not
- * be hit after having entered the text in the input field.
- *
- * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
- */
-public void typeText(final BrowserElement inputElement, final String text, final Keys key) {
-	this.browser.typeText(inputElement, text, key, true/*clear*/, timeout());
-}
-
-/**
  * Verify that page user matches the expected one.
  * <p>
  * Check that user name displayed in the User Profile matches the current page user name.
@@ -2917,6 +2936,86 @@ protected void verifyPageUser() throws ScenarioFailedError {
 	} else {
 		if (DEBUG) debugPrintln("		  -> OK");
 	}
+}
+
+/**
+ * Wait until have found the web element using the given mechanism relatively
+ * to the given parent element.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if:
+ * <ol>
+ * <li>the element is not found before {@link #timeout()} seconds</li>
+ * <li>there's more than one element found</li>
+ * </ol></li>
+ * <li>hidden element will be ignored</li>
+ * </ul>
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param locator The locator to find the element in the current page.
+ * @return The web element as {@link BrowserElement}
+ * @throws ScenarioFailedError if no element was found before the timeout.
+ *
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
+ */
+public BrowserElement waitForElement(final BrowserElement parentElement, final By locator) {
+	return this.browser.waitForElement(parentElement, locator, timeout(), true/* fail */, true/* visible */, true/* single */);
+}
+
+/**
+ * Wait until have found the web element using the given mechanism relatively
+ * to the given parent element.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if:
+ * <ol>
+ * <li>the element is not found before {@link #timeout()} seconds</li>
+ * <li>there's more than one element found</li>
+ * </ol></li>
+ * <li>hidden element will be ignored</li>
+ * </ul>
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param locator The locator to find the element in the current page.
+ * @param displayed If <code>true</code> then only displayed element can be returned.
+ * If <code>false</code> then the returned element can be either displayed or hidden.
+ * @return The web element as {@link BrowserElement}
+ * @throws ScenarioFailedError if no element was found before the timeout.
+ *
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
+ */
+public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final boolean displayed) {
+	return this.browser.waitForElement(parentElement, locator, timeout(), true/* fail */, displayed, true/* single */);
+}
+
+/**
+ * Wait until have found the web element using the given mechanism relatively
+ * to the given parent element.
+ * <p>
+ * <ul>
+ * Note that:
+ * </ul>
+ * <li>it will fail if there's more than one element found</li>
+ * <li>hidden element will be ignored</li>
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param locator The locator to find the element in the current page.
+ * @param fail Tells whether to fail if none of the elements is find before timeout
+ * @param time_out The time to wait before giving up the research
+ * @return The web element as {@link BrowserElement} or <code>null</code>
+ * if no element was found before the timeout and asked not to fail
+ * @throws ScenarioFailedError if no element was found before the timeout and
+ * asked to fail
+ *
+ * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
+ */
+public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final boolean fail, final int time_out) {
+	return this.browser.waitForElement(parentElement, locator, time_out, fail, true/*displayed*/, true/*single element expected*/);
 }
 
 /**
@@ -3106,83 +3205,23 @@ public BrowserElement waitForElement(final By parentLocator, final By locator, f
 }
 
 /**
- * Wait until have found the web element using the given mechanism relatively
- * to the given parent element.
+ * Wait until have found some elements (ie. at least one) web elements using
+ * the given mechanism.
  * <p>
  * Note that:
  * <ul>
- * <li>it will fail if:
- * <ol>
- * <li>the element is not found before {@link #timeout()} seconds</li>
- * <li>there's more than one element found</li>
- * </ol></li>
  * <li>hidden element will be ignored</li>
- * </ul>
  * </p>
  * @param parentElement The parent element where to start to search from,
  * if <code>null</code>, then search in the entire page content
  * @param locator The locator to find the element in the current page.
- * @return The web element as {@link BrowserElement}
+ * @return A non-empty web elements list as {@link List} of {@link BrowserElement}.
  * @throws ScenarioFailedError if no element was found before the timeout.
  *
- * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
+ * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
  */
-public BrowserElement waitForElement(final BrowserElement parentElement, final By locator) {
-	return this.browser.waitForElement(parentElement, locator, timeout(), true/* fail */, true/* visible */, true/* single */);
-}
-
-/**
- * Wait until have found the web element using the given mechanism relatively
- * to the given parent element.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if:
- * <ol>
- * <li>the element is not found before {@link #timeout()} seconds</li>
- * <li>there's more than one element found</li>
- * </ol></li>
- * <li>hidden element will be ignored</li>
- * </ul>
- * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param locator The locator to find the element in the current page.
- * @param displayed If <code>true</code> then only displayed element can be returned.
- * If <code>false</code> then the returned element can be either displayed or hidden.
- * @return The web element as {@link BrowserElement}
- * @throws ScenarioFailedError if no element was found before the timeout.
- *
- * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
- */
-public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final boolean displayed) {
-	return this.browser.waitForElement(parentElement, locator, timeout(), true/* fail */, displayed, true/* single */);
-}
-
-/**
- * Wait until have found the web element using the given mechanism relatively
- * to the given parent element.
- * <p>
- * <ul>
- * Note that:
- * </ul>
- * <li>it will fail if there's more than one element found</li>
- * <li>hidden element will be ignored</li>
- * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param locator The locator to find the element in the current page.
- * @param fail Tells whether to fail if none of the elements is find before timeout
- * @param time_out The time to wait before giving up the research
- * @return The web element as {@link BrowserElement} or <code>null</code>
- * if no element was found before the timeout and asked not to fail
- * @throws ScenarioFailedError if no element was found before the timeout and
- * asked to fail
- *
- * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
- */
-public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final boolean fail, final int time_out) {
-	return this.browser.waitForElement(parentElement, locator, time_out, fail, true/*displayed*/, true/*single element expected*/);
+public List<BrowserElement> waitForElements(final BrowserElement parentElement, final By locator) {
+	return this.browser.waitForElements(parentElement, locator, timeout(), true/*fail*/, true/*visible*/);
 }
 
 /**
@@ -3292,26 +3331,6 @@ public List<BrowserElement> waitForElements(final By locator, final int time_out
 }
 
 /**
- * Wait until have found some elements (ie. at least one) web elements using
- * the given mechanism.
- * <p>
- * Note that:
- * <ul>
- * <li>hidden element will be ignored</li>
- * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param locator The locator to find the element in the current page.
- * @return A non-empty web elements list as {@link List} of {@link BrowserElement}.
- * @throws ScenarioFailedError if no element was found before the timeout.
- *
- * @see Browser#waitForElements(BrowserElement, By, int, boolean, boolean)
- */
-public List<BrowserElement> waitForElements(final BrowserElement parentElement, final By locator) {
-	return this.browser.waitForElements(parentElement, locator, timeout(), true/*fail*/, true/*visible*/);
-}
-
-/**
  * Wait for the expected title to appear.
  *
  * @throws ScenarioFailedError if the current page title does not match the expected one.
@@ -3387,25 +3406,6 @@ public BrowserElement[] waitForMultipleElements(final boolean fail, final int ti
 }
 
 /**
- * Wait until have found at least one of the elements using the given mechanisms.
- * <p>
- * Note that:
- * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
- * <li>hidden element will be ignored</li>
- * <ul>
- * </p>
- * @param findBys The mechanisms to find the element in the current page.
- * @return The array of web elements as {@link BrowserElement}
- * @throws ScenarioFailedError if no element was found before the timeout
- *
- * @see Browser#waitForMultipleElements(BrowserElement, int, boolean, By...)
- * to have more details on how the returned array is filled with found elements
- */
-public BrowserElement[] waitForMultipleElements(final By... findBys) {
-	return this.browser.waitForMultipleElements(null, timeout(), true/*fail*/, findBys);
-}
-
-/**
  * Wait until have found at least one of the elements relatively to the given
  * parent element using the given mechanisms.
  * <p>
@@ -3425,6 +3425,25 @@ public BrowserElement[] waitForMultipleElements(final By... findBys) {
  */
 public BrowserElement[] waitForMultipleElements(final BrowserElement parentElement, final By... findBys) {
 	return this.browser.waitForMultipleElements(parentElement, timeout(), true/*fail*/, findBys);
+}
+
+/**
+ * Wait until have found at least one of the elements using the given mechanisms.
+ * <p>
+ * Note that:
+ * <li>it will fail if the element is not found before {@link #timeout()} seconds</li>
+ * <li>hidden element will be ignored</li>
+ * <ul>
+ * </p>
+ * @param findBys The mechanisms to find the element in the current page.
+ * @return The array of web elements as {@link BrowserElement}
+ * @throws ScenarioFailedError if no element was found before the timeout
+ *
+ * @see Browser#waitForMultipleElements(BrowserElement, int, boolean, By...)
+ * to have more details on how the returned array is filled with found elements
+ */
+public BrowserElement[] waitForMultipleElements(final By... findBys) {
+	return this.browser.waitForMultipleElements(null, timeout(), true/*fail*/, findBys);
 }
 
 private void waitForReadyState() {

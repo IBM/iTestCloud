@@ -328,32 +328,20 @@ private void catchWebDriverException(final WebDriverException wde, final String 
 public void clear() {
 	if (DEBUG) debugPrintln("			(clearing "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
+	int count = 0;
+	while (true) {
+		try {
+			this.webElement.clear();
+			// In case, the webElement.clear() method may not work at times, clear the element as a
+			// user would via an appropriate key combination based on the OS where the tests are run.
+			this.webElement.sendKeys((isMacOs() ? Keys.COMMAND : Keys.CONTROL) + "a");
+			this.webElement.sendKeys(Keys.DELETE);
 
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				this.webElement.clear();
-				// In case, the webElement.clear() method may not work at times, clear the element as a
-				// user would via an appropriate key combination based on the OS where the tests are run.
-				this.webElement.sendKeys((isMacOs() ? Keys.COMMAND : Keys.CONTROL) + "a");
-				this.webElement.sendKeys(Keys.DELETE);
-
-				if (DEBUG) debugPrintln("			 ( -> done.)");
-				return;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "clearing", count++, true);
-			}
+			if (DEBUG) debugPrintln("			 ( -> done.)");
+			return;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "clearing", count++, true);
 		}
 	}
 }
@@ -396,31 +384,19 @@ public void click() {
 public void click(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(clicking on "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				this.webElement.click();
-				if (DEBUG) debugPrintln("			 ( -> done.)");
-				return;
-			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					catchWebDriverException(wde, "clicking", count++, true);
-				} else {
-					throw wde;
-				}
-			}
+	int count = 0;
+	while (true) {
+		try {
+			this.webElement.click();
+			if (DEBUG) debugPrintln("			 ( -> done.)");
+			return;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			if (recovery) {
+				catchWebDriverException(wde, "clicking", count++, true);
+			} else {
+				throw wde;
+			}
 		}
 	}
 }
@@ -549,43 +525,31 @@ public BrowserElement findElement(final By locator, final BrowserFrame webFrame,
 	// Fix locator if necessary
 	By fixedLocator = fixLocator(locator);
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		// Find element
-		int count = 0;
-		while (true) {
-			try {
-				BrowserElement webPageElement = new BrowserElement(this.browser, webFrame, this, fixedLocator);
-				if (DEBUG) debugPrintln("			(  -> found "+webPageElement+")");
-				return webPageElement;
-			}
-			catch (NoSuchElementException nsee) {
+	// Find element
+	int count = 0;
+	while (true) {
+		try {
+			BrowserElement webPageElement = new BrowserElement(this.browser, webFrame, this, fixedLocator);
+			if (DEBUG) debugPrintln("			(  -> found "+webPageElement+")");
+			return webPageElement;
+		}
+		catch (NoSuchElementException nsee) {
+			return null;
+		}
+		catch (UnhandledAlertException uae) {
+			this.browser.purgeAlerts("Finding element '"+fixedLocator+"'");
+			if (!recovery) {
 				return null;
 			}
-			catch (UnhandledAlertException uae) {
-				this.browser.purgeAlerts("Finding element '"+fixedLocator+"'");
-				if (!recovery) {
-					return null;
-				}
-			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					catchWebDriverException(wde, "finding element '"+fixedLocator+")", count, recovery);
-				} else {
-					if (DEBUG) debugPrintException(wde);
-					return null;
-				}
-				count++;
-			}
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			if (recovery) {
+				catchWebDriverException(wde, "finding element '"+fixedLocator+")", count, recovery);
+			} else {
+				if (DEBUG) debugPrintException(wde);
+				return null;
+			}
+			count++;
 		}
 	}
 }
@@ -650,61 +614,49 @@ public List<WebElement> findElements(final By locator, final boolean displayed, 
 	// Fix locator if necessary
 	By fixedLocator = fixLocator(locator);
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
 	// Find elements
-	try{
-		int count = 0;
-		while (true) {
-			try {
-				List<WebElement> foundElements = this.webElement.findElements(fixedLocator);
-				final int size = foundElements.size();
-				List<WebElement> pageElements = new ArrayList<WebElement>(size);
-				for (int idx=0; idx<size; idx++) {
-					WebElement foundElement = foundElements.get(idx);
-	//				if (foundElement.isDisplayed() || !displayed) {
-					if (!displayed || foundElement.isDisplayed()) {
-						BrowserElement webPageElement = new BrowserElement(this.browser, this.frame, this, fixedLocator, foundElement, size, idx);
-						pageElements.add(webPageElement);
-						if (DEBUG) {
-							debugPrint("			  (-> found '"+webPageElement);
-	//						if (foundElement.isDisplayed()) {
-								debugPrintln(")");
-	//						} else {
-	//							debugPrintln(" - not displayed)");
-	//						}
-						}
-					} else {
-						if (DEBUG) debugPrintln("			  (-> element not displayed)");
+	int count = 0;
+	while (true) {
+		try {
+			List<WebElement> foundElements = this.webElement.findElements(fixedLocator);
+			final int size = foundElements.size();
+			List<WebElement> pageElements = new ArrayList<WebElement>(size);
+			for (int idx=0; idx<size; idx++) {
+				WebElement foundElement = foundElements.get(idx);
+//				if (foundElement.isDisplayed() || !displayed) {
+				if (!displayed || foundElement.isDisplayed()) {
+					BrowserElement webPageElement = new BrowserElement(this.browser, this.frame, this, fixedLocator, foundElement, size, idx);
+					pageElements.add(webPageElement);
+					if (DEBUG) {
+						debugPrint("			  (-> found '"+webPageElement);
+//						if (foundElement.isDisplayed()) {
+							debugPrintln(")");
+//						} else {
+//							debugPrintln(" - not displayed)");
+//						}
 					}
+				} else {
+					if (DEBUG) debugPrintln("			  (-> element not displayed)");
 				}
-				return pageElements;
 			}
-			catch (NoSuchElementException nsee) {
+			return pageElements;
+		}
+		catch (NoSuchElementException nsee) {
+			return Browser.NO_ELEMENT_FOUND;
+		}
+		catch (UnhandledAlertException uae) {
+			this.browser.purgeAlerts("Finding element '"+fixedLocator+"'");
+			if (!recovery) {
 				return Browser.NO_ELEMENT_FOUND;
 			}
-			catch (UnhandledAlertException uae) {
-				this.browser.purgeAlerts("Finding element '"+fixedLocator+"'");
-				if (!recovery) {
-					return Browser.NO_ELEMENT_FOUND;
-				}
-			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					catchWebDriverException(wde, "finding elements '"+fixedLocator+")", count++, recovery);
-				} else {
-					if (DEBUG) debugPrintException(wde);
-					return Browser.NO_ELEMENT_FOUND;
-				}
-			}
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			if (recovery) {
+				catchWebDriverException(wde, "finding elements '"+fixedLocator+")", count++, recovery);
+			} else {
+				if (DEBUG) debugPrintException(wde);
+				return Browser.NO_ELEMENT_FOUND;
+			}
 		}
 	}
 }
@@ -743,33 +695,21 @@ public String getAttribute(final String name) {
 private String getAttribute(final String name, final boolean fail) throws ScenarioFailedError {
 	if (DEBUG) debugPrintln("			(getting attribute '"+name+"' for "+this+", fail="+fail+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				String attribute = this.webElement.getAttribute(name);
-				if (DEBUG) debugPrintln("			 ( -> \""+attribute+"\")");
-				if (attribute == null || attribute.isEmpty()) {
-					if(fail) {
-						throw new ScenarioFailedError("Cannot find attribute '"+name+"' in web element "+this);
-					}
-					return null;
+	int count = 0;
+	while (true) {
+		try {
+			String attribute = this.webElement.getAttribute(name);
+			if (DEBUG) debugPrintln("			 ( -> \""+attribute+"\")");
+			if (attribute == null || attribute.isEmpty()) {
+				if(fail) {
+					throw new ScenarioFailedError("Cannot find attribute '"+name+"' in web element "+this);
 				}
-				return attribute;
+				return null;
 			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting attribute '"+name+")", count++, true);
-			}
+			return attribute;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting attribute '"+name+")", count++, true);
 		}
 	}
 }
@@ -868,27 +808,15 @@ public List<BrowserElement> getChildren(final String tag) {
 public Coordinates getCoordinates() {
 	if (DEBUG) debugPrintln("			(getting coordinates for "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				Coordinates coord = ((Locatable) this.webElement).getCoordinates();
-				if (DEBUG) debugPrintln("			 ( -> "+coord+")");
-				return coord;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting coordinates", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			Coordinates coord = ((Locatable) this.webElement).getCoordinates();
+			if (DEBUG) debugPrintln("			 ( -> "+coord+")");
+			return coord;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting coordinates", count++, true);
 		}
 	}
 }
@@ -904,27 +832,15 @@ public Coordinates getCoordinates() {
 public String getCssValue(final String propertyName) {
 	if (DEBUG) debugPrintln("			(getting CSS value of '"+propertyName+"' for "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				String value = this.webElement.getCssValue(propertyName);
-				if (DEBUG) debugPrintln("			 ( -> \""+value+"\")");
-				return value;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting CSS value of '"+propertyName+")", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			String value = this.webElement.getCssValue(propertyName);
+			if (DEBUG) debugPrintln("			 ( -> \""+value+"\")");
+			return value;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting CSS value of '"+propertyName+")", count++, true);
 		}
 	}
 }
@@ -997,27 +913,15 @@ private JavascriptExecutor getJavascriptExecutor() {
 public Point getLocation() {
 	if (DEBUG) debugPrintln("			(getting location of "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				Point location = this.webElement.getLocation();
-				if (DEBUG) debugPrintln("			 ( -> "+location+")");
-				return location;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting location", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			Point location = this.webElement.getLocation();
+			if (DEBUG) debugPrintln("			 ( -> "+location+")");
+			return location;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting location", count++, true);
 		}
 	}
 }
@@ -1101,27 +1005,15 @@ public <X> X getScreenshotAs(final OutputType<X> target) throws WebDriverExcepti
 public Dimension getSize() {
 	if (DEBUG) debugPrintln("			(getting size of "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				Dimension size = this.webElement.getSize();
-				if (DEBUG) debugPrintln("			 ( -> "+size+")");
-				return size;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting size", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			Dimension size = this.webElement.getSize();
+			if (DEBUG) debugPrintln("			 ( -> "+size+")");
+			return size;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting size", count++, true);
 		}
 	}
 }
@@ -1137,27 +1029,15 @@ public Dimension getSize() {
 public String getTagName() {
 	if (DEBUG) debugPrintln("			(getting tag name of "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				String tagName= this.webElement.getTagName();
-				if (DEBUG) debugPrintln("			 ( -> \""+tagName+"\")");
-				return tagName;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting tag name", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			String tagName= this.webElement.getTagName();
+			if (DEBUG) debugPrintln("			 ( -> \""+tagName+"\")");
+			return tagName;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting tag name", count++, true);
 		}
 	}
 }
@@ -1198,53 +1078,41 @@ public String getText() {
 public String getText(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(getting text for "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
+	int count = 0;
+	while (true) {
+		try {
+			String text;
 
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				String text;
-
-				if(this.isDisplayed()) {
-					text = this.webElement.getText();
-				}
-				else {
-					text = getAttribute("textContent");
-				}
-
-				if (DEBUG) debugPrintln("			 ( -> \""+text+"\")");
-				return text;
+			if(this.isDisplayed()) {
+				text = this.webElement.getText();
 			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					try{
-						catchWebDriverException(wde, "getting text", count++, true);
-					}
-					catch (WebDriverException wde2) {
-						if (DEBUG) {
-							debugPrintln("			(WORKAROUND: exception "+wde2.getMessage()+" has been caught...");
-							debugPrintln("			 -> return empty string \"\" instead)");
-						}
-						return EMPTY_STRING;
-					}
-				} else {
-	//				if (DEBUG) debugPrintException(wde);
+			else {
+				text = getAttribute("textContent");
+			}
+
+			if (DEBUG) debugPrintln("			 ( -> \""+text+"\")");
+			return text;
+		}
+		catch (WebDriverException wde) {
+			if (recovery) {
+				try{
+					catchWebDriverException(wde, "getting text", count++, true);
+				}
+				catch (WebDriverException wde2) {
 					if (DEBUG) {
-						debugPrintln("			(WORKAROUND: exception "+wde.getMessage()+" has been caught...");
+						debugPrintln("			(WORKAROUND: exception "+wde2.getMessage()+" has been caught...");
 						debugPrintln("			 -> return empty string \"\" instead)");
 					}
 					return EMPTY_STRING;
 				}
+			} else {
+//				if (DEBUG) debugPrintException(wde);
+				if (DEBUG) {
+					debugPrintln("			(WORKAROUND: exception "+wde.getMessage()+" has been caught...");
+					debugPrintln("			 -> return empty string \"\" instead)");
+				}
+				return EMPTY_STRING;
 			}
-		}
-	}
-	finally {
-		if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
 		}
 	}
 }
@@ -1309,50 +1177,38 @@ public boolean isDisplayed() {
 public boolean isDisplayed(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(getting displayed state for "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				boolean state = this.webElement.isDisplayed();
-				if (DEBUG) debugPrintln("			 ( -> "+state+")");
-				return state;
-			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					try{
-						catchWebDriverException(wde, "getting displayed state", count++, true);
-					}
-					catch (WebDriverException wde2) {
-						if (DEBUG) {
-							debugPrintln("			(WORKAROUND: exception "+wde2.getMessage()+" has been caught...");
-							debugPrintln("			 -> return false instead)");
-						}
-						return false;
-					}
-				} else {
-	//				if (DEBUG) debugPrintException(wde);
+	int count = 0;
+	while (true) {
+		try {
+			boolean state = this.webElement.isDisplayed();
+			if (DEBUG) debugPrintln("			 ( -> "+state+")");
+			return state;
+		}
+		catch (WebDriverException wde) {
+			if (recovery) {
+				try{
+					catchWebDriverException(wde, "getting displayed state", count++, true);
+				}
+				catch (WebDriverException wde2) {
 					if (DEBUG) {
-						debugPrintln("			(WORKAROUND: exception "+wde.getMessage()+" has been caught...");
+						debugPrintln("			(WORKAROUND: exception "+wde2.getMessage()+" has been caught...");
 						debugPrintln("			 -> return false instead)");
 					}
 					return false;
 				}
-			}
-			// A NullPointerException may be thrown if org.openqa.selenium.remote.RemoteWebElement.isDisplayed invoked immediately before a dialog disappears from the DOM in FireFox.
-			catch (NullPointerException npe) {
-				// If reached here, it implies that the element is still visible.
-				return true;
+			} else {
+//				if (DEBUG) debugPrintException(wde);
+				if (DEBUG) {
+					debugPrintln("			(WORKAROUND: exception "+wde.getMessage()+" has been caught...");
+					debugPrintln("			 -> return false instead)");
+				}
+				return false;
 			}
 		}
-	}
-	finally {
-		if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		// A NullPointerException may be thrown if org.openqa.selenium.remote.RemoteWebElement.isDisplayed invoked immediately before a dialog disappears from the DOM in FireFox.
+		catch (NullPointerException npe) {
+			// If reached here, it implies that the element is still visible.
+			return true;
 		}
 	}
 }
@@ -1388,38 +1244,26 @@ public boolean isEnabled() {
 public boolean isEnabled(final boolean recovery) {
 	if (DEBUG) debugPrintln("			(getting enabled state for "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				boolean state = this.webElement.isEnabled();
-				if (DEBUG) debugPrintln("			 ( -> "+state+")");
-				return state;
-			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					try{
-						catchWebDriverException(wde, "getting enabled state", count++, true);
-					}
-					catch (WebDriverException wde2) {
-						if (DEBUG) debugPrintln("Workaround exceptions by simulating a false return to isEnabled() call!");
-						return false;
-					}
-				} else {
-					if (DEBUG) debugPrintException(wde);
+	int count = 0;
+	while (true) {
+		try {
+			boolean state = this.webElement.isEnabled();
+			if (DEBUG) debugPrintln("			 ( -> "+state+")");
+			return state;
+		}
+		catch (WebDriverException wde) {
+			if (recovery) {
+				try{
+					catchWebDriverException(wde, "getting enabled state", count++, true);
+				}
+				catch (WebDriverException wde2) {
+					if (DEBUG) debugPrintln("Workaround exceptions by simulating a false return to isEnabled() call!");
 					return false;
 				}
+			} else {
+				if (DEBUG) debugPrintException(wde);
+				return false;
 			}
-		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
 		}
 	}
 }
@@ -1443,27 +1287,15 @@ private boolean isMacOs() {
 public boolean isSelected() {
 	if (DEBUG) debugPrintln("			(getting selected state for "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				boolean state = this.webElement.isSelected();
-				if (DEBUG) debugPrintln("			 ( -> "+state+")");
-				return state;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "getting selected state", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			boolean state = this.webElement.isSelected();
+			if (DEBUG) debugPrintln("			 ( -> "+state+")");
+			return state;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "getting selected state", count++, true);
 		}
 	}
 }
@@ -1533,27 +1365,15 @@ public void moveToElement() {
 public void moveToElement(final boolean entirelyVisible) {
 	if (DEBUG) debugPrintln("			(move to "+this+", entirelyVisible="+entirelyVisible+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				this.browser.moveToElement(this, entirelyVisible);
-				if (DEBUG) debugPrintln("			 ( -> done.)");
-				return;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "move to element", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			this.browser.moveToElement(this, entirelyVisible);
+			if (DEBUG) debugPrintln("			 ( -> done.)");
+			return;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "move to element", count++, true);
 		}
 	}
 }
@@ -1573,138 +1393,100 @@ private boolean recover(final int n) {
 		}
 	}
 
-	// Select the frame again if necessary
-	BrowserFrame browserFrame = this.browser.getCurrentFrame();
-	if (this.frame != browserFrame) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
+	debugPrint("		  -> find element {"+this.by+"}");
+	WebElement recoveredElement = null;
+	if (this.parentListSize == 0) {
 
-	// 	Try to find again the web element
-	try {
-		debugPrint("		  -> find element {"+this.by+"}");
-		WebElement recoveredElement = null;
-		if (this.parentListSize == 0) {
-
-			// Single element expected
-			if (this.context instanceof BrowserElement) {
-				debugPrintln(" as single element in parent element...");
-				try {
-					recoveredElement = ((BrowserElement) this.context).webElement.findElement(this.by);
-				}
-				catch (NoSuchElementException nsee) {
-					if (n == MAX_RECOVERY_ATTEMPTS) {
-						debugPrintln("Workaround: recovery cannot find the element again, try with any possible frame");
-						recoveredElement = this.browser.findElementInFrames(this.by).webElement;
-						if (recoveredElement == null) {
-							debugPrintln("	-> recovery cannot find the element even in other frame, give up...");
-							throw nsee;
-						}
-						this.frame = this.browser.getCurrentFrame();
-					}
-				}
-			} else {
-				debugPrintln(" as single element in web driver...");
-				try {
-					recoveredElement = this.context.findElement(this.by);
-				}
-				catch (NoSuchElementException nsee) {
-					if (n == MAX_RECOVERY_ATTEMPTS) {
-						recoveredElement = this.browser.findElementInFrames(this.by);
-						if (recoveredElement == null) {
-							debugPrintln("	-> recovery cannot find the element even in other frame, give up...");
-							throw nsee;
-						}
-						this.frame = this.browser.getCurrentFrame();
-					}
-				}
-			}
+		// Single element expected
+		if (this.context instanceof BrowserElement) {
+			debugPrintln(" as single element in parent element...");
+			recoveredElement = ((BrowserElement) this.context).webElement.findElement(this.by);
 		} else {
-			// Multiple element expected
-			List<WebElement> foundElements;
-			if (this.context instanceof BrowserElement) {
-				debugPrintln(" as multiple elements in parent element...");
-				foundElements = ((BrowserElement) this.context).webElement.findElements(this.by);
-			} else {
-				debugPrintln(" as multiple elements in web driver...");
-				foundElements = this.context.findElements(this.by);
-			}
-
-			// If no element was found, give up now
-			final int size = foundElements.size();
-			debugPrintln("		  -> found "+size+" elements:");
-			if (size == 0) {
-				debugPrintln("		  -> no element found => cannot recover, hence give up");
-				return false;
-			}
-
-			// Check the element position
-			int idx = 0;
-			WebElement tempElement = null;
-			boolean canRecover = true;
-			for (WebElement foundElement: foundElements) {
-				if (foundElement.isDisplayed()) {
-					if (size == this.parentListSize && idx == this.parentListIndex) {
-						debugPrintln("		  -> an element is visible at the same place int the list ("+idx+") => use it to recover.");
-						recoveredElement = foundElement;
-						break;
-					}
-					if (tempElement == null) {
-						debugPrintln("		  -> an element is visible at the a different place in the list ("+idx+") => store it in case it will be the only one...");
-						tempElement = foundElement;
-					} else {
-						debugPrintln("		  -> more than one element is visible at the a different place in the list ("+idx+") => if none is found at the same index, we'll try to recover with the first one...");
-						canRecover = false;
-					}
-				} else {
-					if (size == this.parentListSize && idx == this.parentListIndex) {
-						debugPrintln("		  -> an element is hidden at the same place int the list ("+idx+") => it to recover.");
-						tempElement = foundElement;
-					} else {
-						debugPrintln("		  -> an element is hidden at the a different place in the list ("+idx+") => it won't be stored...");
-					}
-				}
-				idx++;
-			}
-
-			// If element position does not match exactly the expected one, try to use
-			// the better found one, if any.
-			if (recoveredElement == null) {
-				if (canRecover) {
-					if (tempElement == null) {
-						debugPrintln("		  -> no visible element was found to recover!");
-					} else if (n == MAX_RECOVERY_ATTEMPTS) {
-						debugPrintln("		  -> last try, hence use possible element found.");
-						recoveredElement = tempElement;
-					}
-				} else if (n == MAX_RECOVERY_ATTEMPTS) {
-					debugPrintln("		  -> last try, hence use possible element found.");
-					recoveredElement = tempElement;
-				} else {
-					debugPrintln("		  -> several visible elements were found to recover but not at the same index!");
-				}
-			}
+			debugPrintln(" as single element in web driver...");
+			recoveredElement = this.context.findElement(this.by);
+		}
+	} else {
+		// Multiple element expected
+		List<WebElement> foundElements;
+		if (this.context instanceof BrowserElement) {
+			debugPrintln(" as multiple elements in parent element...");
+			foundElements = ((BrowserElement) this.context).webElement.findElements(this.by);
+		} else {
+			debugPrintln(" as multiple elements in web driver...");
+			foundElements = this.context.findElements(this.by);
 		}
 
-		// Give up if no element was found
-		if (recoveredElement == null) {
-			debugPrintln("WARNING: Cannot recover web element for "+this.by+"!");
+		// If no element was found, give up now
+		final int size = foundElements.size();
+		debugPrintln("		  -> found "+size+" elements:");
+		if (size == 0) {
+			debugPrintln("		  -> no element found => cannot recover, hence give up");
 			return false;
 		}
 
-		// Store the recovered element
-		this.webElement = recoveredElement;
+		// Check the element position
+		int idx = 0;
+		WebElement tempElement = null;
+		boolean canRecover = true;
+		for (WebElement foundElement: foundElements) {
+			if (foundElement.isDisplayed()) {
+				if (size == this.parentListSize && idx == this.parentListIndex) {
+					debugPrintln("		  -> an element is visible at the same place int the list ("+idx+") => use it to recover.");
+					recoveredElement = foundElement;
+					break;
+				}
+				if (tempElement == null) {
+					debugPrintln("		  -> an element is visible at the a different place in the list ("+idx+") => store it in case it will be the only one...");
+					tempElement = foundElement;
+				} else {
+					debugPrintln("		  -> more than one element is visible at the a different place in the list ("+idx+") => if none is found at the same index, we'll try to recover with the first one...");
+					canRecover = false;
+				}
+			} else {
+				if (size == this.parentListSize && idx == this.parentListIndex) {
+					debugPrintln("		  -> an element is hidden at the same place int the list ("+idx+") => it to recover.");
+					tempElement = foundElement;
+				} else {
+					debugPrintln("		  -> an element is hidden at the a different place in the list ("+idx+") => it won't be stored...");
+				}
+			}
+			idx++;
+		}
 
-		// Check element type
-		if (this.webElement instanceof BrowserElement) {
-			throw new ScenarioFailedError("Web element should not be a WebBrowserElement!");
+		// If element position does not match exactly the expected one, try to use
+		// the better found one, if any.
+		if (recoveredElement == null) {
+			if (canRecover) {
+				if (tempElement == null) {
+					debugPrintln("		  -> no visible element was found to recover!");
+				} else if (n == MAX_RECOVERY_ATTEMPTS) {
+					debugPrintln("		  -> last try, hence use possible element found.");
+					recoveredElement = tempElement;
+				}
+			} else if (n == MAX_RECOVERY_ATTEMPTS) {
+				debugPrintln("		  -> last try, hence use possible element found.");
+				recoveredElement = tempElement;
+			} else {
+				debugPrintln("		  -> several visible elements were found to recover but not at the same index!");
+			}
 		}
-		return true;
 	}
-	finally {
-		if (browserFrame != this.frame) {
-			this.browser.selectFrame();
-		}
+
+	// Give up if no element was found
+	if (recoveredElement == null) {
+		debugPrintln("WARNING: Cannot recover web element for "+this.by+"!");
+		return false;
 	}
+
+	// Store the recovered element
+	this.webElement = recoveredElement;
+
+	// Check element type
+	if (this.webElement instanceof BrowserElement) {
+		throw new ScenarioFailedError("Web element should not be a WebBrowserElement!");
+	}
+
+	return true;
 }
 
 /**
@@ -1718,20 +1500,7 @@ public void removeViaJavaScript() {
  * Performs a right click action on the element.
  */
 public void rightClick() {
-
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		this.browser.getActions().contextClick(this.webElement).perform();
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
-		}
-	}
+	this.browser.getActions().contextClick(this.webElement).perform();
 }
 
 /**
@@ -1774,36 +1543,24 @@ private void sendKeys(final boolean recovery, final boolean password, final Char
 		debugPrintln("			(sending "+printedText+" to "+this+")");
 	}
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				this.webElement.sendKeys(keysToSend);
-				if (DEBUG) debugPrintln("			 ( -> done.)");
+	int count = 0;
+	while (true) {
+		try {
+			this.webElement.sendKeys(keysToSend);
+			if (DEBUG) debugPrintln("			 ( -> done.)");
+			return;
+		}
+		catch (WebDriverException wde) {
+			if (recovery) {
+				catchWebDriverException(wde, "sending keys '"+keysToSend+")", count++, true);
+			} else {
+//				if (DEBUG) debugPrintException(wde);
+				if (DEBUG) {
+					debugPrintln("			(WORKAROUND: exception "+wde.getMessage()+" has been caught...");
+					debugPrintln("			 -> DO Nothing instead!)");
+				}
 				return;
 			}
-			catch (WebDriverException wde) {
-				if (recovery) {
-					catchWebDriverException(wde, "sending keys '"+keysToSend+")", count++, true);
-				} else {
-	//				if (DEBUG) debugPrintException(wde);
-					if (DEBUG) {
-						debugPrintln("			(WORKAROUND: exception "+wde.getMessage()+" has been caught...");
-						debugPrintln("			 -> DO Nothing instead!)");
-					}
-					return;
-				}
-			}
-		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
 		}
 	}
 }
@@ -1854,27 +1611,15 @@ private void setVisible(final boolean visible) {
 public void submit() {
 	if (DEBUG) debugPrintln("			(submitting on "+this+")");
 
-	// Select the frame again if necessary
-	if (this.frame != this.browser.getFrame()) {
-		this.browser.selectFrame(this.frame, false/*store*/);
-	}
-
-	try {
-		int count = 0;
-		while (true) {
-			try {
-				this.webElement.submit();
-				if (DEBUG) debugPrintln("			 ( -> done.)");
-				return;
-			}
-			catch (WebDriverException wde) {
-				catchWebDriverException(wde, "submitting", count++, true);
-			}
+	int count = 0;
+	while (true) {
+		try {
+			this.webElement.submit();
+			if (DEBUG) debugPrintln("			 ( -> done.)");
+			return;
 		}
-	}
-	finally {
-	if (this.frame != this.browser.getFrame()) {
-			this.browser.selectFrame();
+		catch (WebDriverException wde) {
+			catchWebDriverException(wde, "submitting", count++, true);
 		}
 	}
 }

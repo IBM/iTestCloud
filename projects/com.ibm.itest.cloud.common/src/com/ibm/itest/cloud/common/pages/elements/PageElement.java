@@ -15,8 +15,6 @@ package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.pause;
 
-import org.openqa.selenium.By;
-
 import com.ibm.itest.cloud.common.browsers.Browser;
 import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.config.User;
@@ -33,12 +31,10 @@ import com.ibm.itest.cloud.common.topology.Topology;
  * <p>
  * There's no public actions at this root level, only common operations for subclasses usage:
  * <ul>
- * <li>{@link #findElementInFrames(By)}: Find an element inside a frame of the window using the given mechanism.</li>
- * <li>{@link #resetFrame()}: Reset the current frame for the current window.</li>
  * <li>{@link #selectFrame()}: Select the frame in which the current window is expected to be found.</li>
  * <li>{@link #storeBrowserFrame()}: Store the browser the frame.</li>
- * <li>{@link #switchToBrowserFrame()}: Switch to initial browser frame.</li>
- * <li>{@link #switchToStoredFrame()}: Switch to stored frame.</li>
+ * <li>{@link #switchToMainWindow()}: Selects either the first frame on the page, or the main document when a page contains iframes.</li>
+ * <li>{@link #switchToParentFrame()}: Change focus to the parent context.</li>
  * </ul>
  * </p>
  */
@@ -126,30 +122,6 @@ public PageElement(final Page page, final BrowserFrame frame) {
 }
 
 /**
- * Find an element inside a frame of the window using the given mechanism.
- * <p>
- * TODO Try to get rid off this method by selecting the frame explicitly before
- * looking for an element.
- * </p>
- * @param by The mechanism use to find the element
- * @return The found web element as {@link BrowserElement} or
- * <code>null</code> if the element is not found.
- */
-protected BrowserElement findElementInFrames(final By by) {
-
-	// Get the element in the appropriate frame
-	BrowserElement foundElement = this.browser.findElementInFrames(by);
-
-	// Assign the found frame to current window
-	if (foundElement != null) {
-		this.frames[2] = this.browser.getCurrentFrame();
-	}
-
-	// Store the browser frame
-	return foundElement;
-}
-
-/**
  * @see Page#getApplication()
  */
 protected Application getApplication() {
@@ -213,17 +185,6 @@ protected int openTimeout() {
 }
 
 /**
- * Reset the current frame for the current window.
- *
- * @see Browser#resetFrame()
- */
-protected void resetFrame() {
-	this.frames[2] = null;
-	this.browser.resetFrame();
-	pause(100);
-}
-
-/**
  * Reset current timeout.
  */
 protected void resetTimeout() {
@@ -232,13 +193,11 @@ protected void resetTimeout() {
 
 /**
  * Select the frame in which the current window is expected to be found.
- *
- * @see Browser#selectFrame(int)
  */
 protected void selectFrame() {
 	if (this.frames[2] != this.frames[1]) { // == is intentional
 		this.frames[2] = this.frames[1];
-		this.browser.selectFrame(this.frames[2]);
+		this.frames[2].switchTo();
 		pause(250);
 	}
 }
@@ -278,22 +237,22 @@ protected void storeBrowserFrame() {
 }
 
 /**
- * Switch to initial browser frame.
+ * Selects either the first frame on the page, or the main document when a page contains iframes.
+ *
+ * @see Browser#switchToMainWindow()
  */
-protected void switchToBrowserFrame() {
-	switchToFrame(0);
-}
-
-private void switchToFrame(final int idx) {
-	this.browser.selectFrame(this.frames[idx]);
-	this.frames[2] = this.frames[idx];
+protected void switchToMainWindow() {
+	this.browser.switchToMainWindow();
 }
 
 /**
- * Switch to element frame.
+ * Change focus to the parent context.
+ * <p>
+ * If the current context is the top level browsing context, the context remains unchanged.
+ * </p>
  */
-protected void switchToStoredFrame() {
-	switchToFrame(1);
+protected void switchToParentFrame() {
+	this.browser.switchToParentFrame();
 }
 
 /**

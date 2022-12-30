@@ -40,7 +40,8 @@ import com.ibm.itest.cloud.common.javascript.DrapAndDropSimulator;
 import com.ibm.itest.cloud.common.javascript.DrapAndDropSimulator.Position;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
-import com.ibm.itest.cloud.common.pages.frames.*;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
+import com.ibm.itest.cloud.common.pages.frames.ElementFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager;
 import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.scenario.errors.*;
@@ -150,49 +151,6 @@ public abstract class Browser implements SearchContext {
 		FramesScanner() {
 		    this.targetLocator = Browser.this.driver.switchTo();
 	    }
-
-		/**
-		 * Find the elements matching the given locator in the current browser page
-		 * or in any of its visible frames, even if they are embedded.
-		 *
-		 * @param locator The elements locator
-		 * @return The list of found element as a {@link List} of {@link BrowserElement}
-		 * or <code>null</code> if none was found.
-		 */
-		List<BrowserElement> findElements(final By locator) {
-			if (DEBUG) debugPrintln("		+ Find elements in frames");
-
-			// Try to find the element in current frame
-			int frameIndex = getCurrentFrame() == null ? -1 : getCurrentFrame().getIndex();
-			if (DEBUG) debugPrintln("		  -> find element in current frame: "+frameIndex);
-			selectFrame();
-			List<WebElement> elements = Browser.this.findElements(locator, false/*no recovery*/);
-			if (elements.size() > 0) return BrowserElement.getList(elements);
-
-			// Get frames info
-			getFrames();
-
-			// Scan discovered frames
-			if (DEBUG) debugPrintln("		  -> scan frames to find elements");
-			for (int level=0; level<this.maxDepth; level++) {
-				if (DEBUG) debugPrintln("			+ level "+level);
-				for (int index=0; index<this.maxIndexes[level]; index++) {
-					if (DEBUG) debugPrintln("				* index "+index);
-					selectParentFrame(level);
-					this.targetLocator.frame(index);
-					final IndexedFrame webFrame = new IndexedFrame(Browser.this, index);
-					elements = Browser.this.findElements(locator, true/*displayed*/, webFrame, false/*no recovery*/);
-					if (elements.size() > 0) {
-						if (DEBUG) debugPrintln("				-> found "+elements.size()+" elements");
-						setCurrentFrame(webFrame);
-						return BrowserElement.getList(elements);
-					}
-				}
-			}
-
-			// No element was found in any frame, give up
-			return null;
-		}
 
 		/**
 		 * Get all frames displayed in the current browser page.
@@ -1003,45 +961,6 @@ public BrowserElement findElement(final By locator, final BrowserFrame webFrame,
 }
 
 /**
- * Find an element with the given locator in the current browser page or one of
- * its visible frame, even if there are some embedded ones.
- * <p>
- * If an element is found in one of this frame, it becomes the current browser
- * frame. In case no element is found, the browser has no frame selected when
- * returning from this method.
- * </p><p>
- * Note that this method allow recovery while trying to find the element
- * (see {@link #findElements(By, boolean)} for details on recovery). So, if an
- * exception occurs during the operation it will retry it {@link ScenarioUtils#MAX_RECOVERY_TRIES}
- * times before giving up and actually raise the exception...
- * </p>
- * @param locator The locator to find the element in the page (see {@link By}).
- * @return The found element as {@link BrowserElement}.
- * TODO Try to get rid off this method as its has a high performance cost.
- * Frames should be explicitly handled...
- */
-public BrowserElement findElementInFrames(final By locator) {
-	if (DEBUG) debugPrintln("		+ Find frame element");
-
-	// Find elements
-	List<BrowserElement> foundElements = findElementsInFrames(locator);
-	if (foundElements == null) return null;
-	int size = foundElements.size();
-	if (size == 0) return null;
-
-	// Warn if several are found
-	if (size > 1) {
-//		if (single) {
-//			throw new MultipleVisibleElementsError("Unexpected multiple elements found.");
-//		}
-		debugPrintln("WARNING: found more than one elements ("+size+"), return the first one!");
-	}
-
-	// Return the found element
-	return foundElements.get(0);
-}
-
-/**
  * Find elements in the current browser page for the given locator.
  * <p>
  * Note that this method allow recovery while trying to find the element
@@ -1176,37 +1095,6 @@ public List<WebElement> findElements(final By locator, final boolean displayed, 
 			}
 		}
 	}
-}
-
-/**
- * Find elements with the given locator in the current browser page or one of
- * its visible frame, even if there are some embedded ones.
- * <p>
- * If elements are found in one of this frame, it becomes the current browser
- * frame. In case no element is found, the browser has no frame selected when
- * returning from this method.
- * </p><p>
- * Note that this method allow recovery while trying to find the element
- * (see {@link #findElements(By, boolean)} for details on recovery). So, if an
- * exception occurs during the operation it will retry it {@link ScenarioUtils#MAX_RECOVERY_TRIES}
- * times before giving up and actually raise the exception...
- * </p>
- * @param locator The locator to find the element in the page (see {@link By}).
- * @return The found element as {@link BrowserElement}.
- * TODO Try to get rid off this method as its has a high performance cost.
- * Frames should be explicitly handled...
- */
-public List<BrowserElement> findElementsInFrames(final By locator) {
-	if (DEBUG) debugPrintln("		+ Find frame elements");
-
-	// Check that no popup is opened
-	if (hasPopupWindow()) {
-		throw new ScenarioFailedError("An element cannot be found by looking in page frames when there's an opened popup window!");
-	}
-
-	// Return found elements
-	FramesScanner scanner = new FramesScanner();
-	return scanner.findElements(locator);
 }
 
 /**
@@ -1446,7 +1334,7 @@ private BrowserElement getVisibleFrame(final int retries) throws ScenarioFailedE
 	debugPrintln("		+ Get visible frame");
 
 	// Reset frame
-	resetFrame();
+	switchToMainWindow();
 
 	// Get all page frames
 	List<BrowserElement> frames = waitForElements(null, By.tagName("iframe"), 10/*sec*/, true, false);
@@ -1826,60 +1714,6 @@ public void refresh() {
 }
 
 /**
- * Reset the current browser embedded frame.
- * <p>
- * If the current browser is not an embedded frame (ie; {@link EmbeddedFrame})
- * then nothing is done on the current browser frame.
- * </p>
- */
-public void resetEmbeddedFrame() {
-    BrowserFrame currentFrame = getCurrentFrame();
-	if (DEBUG) debugPrintln("		+ Reset embedded frame "+currentFrame);
-	if (currentFrame instanceof EmbeddedFrame) {
-		EmbeddedFrame embeddedFrame = (EmbeddedFrame) currentFrame;
-		ElementFrame parentFrame = embeddedFrame.switchToParent();
-		if (hasPopupWindow()) {
-			this.framePopup = parentFrame;
-		} else {
-			this.frame = parentFrame;
-		}
-	}
-}
-
-/**
- * Reset the current browser frame.
- * <p>
- * After this operation no frame will be selected in the browser.
- * </p>
- */
-public void resetFrame() {
-	resetFrame(true/*store*/);
-}
-
-/**
- * Reset the current browser frame.
- * <p>
- * <b>WARNING</b>: When caller used a <code>false</code>value to not store
- * the reset, it's strongly recommended to call {@link #selectFrame()} after
- * in order to resynchronize the browser instance with its window.
- * </p>
- *
- * @param store Tells whether the reset frame should be stored in the browser or not.
- */
-public void resetFrame(final boolean store) {
-	if (DEBUG) debugPrintln("		+ Reset frame "+getCurrentFrame());
-	try {
-		this.driver.switchTo().defaultContent();
-	}
-	finally {
-		if (store) {
-			this.frame = null;
-			this.framePopup = null;
-		}
-	}
-}
-
-/**
  * Right click on the given element at an offset from the top-left corner of the element.
  *
  * @param element element to right-click.
@@ -1987,173 +1821,6 @@ public BrowserElement[] select(final BrowserElement listElement, final By entrie
 	return selectedElements;
 }
 
-///**
-// * Select items in elements list got from the given list element and the given
-// * locator to find its children.
-// * <p>
-// * If  useControl is set to true, it holds the {@link Keys#CONTROL} key
-// * to perform a multi-selection. Of course, that works only if the list web element
-// * allow multiple selection.
-// * </p><p>
-// * If the expected entries are not found, {@link WebBrowserElement#MAX_RECOVERY_ATTEMPTS}
-// * attempts are done before raising a {@link ScenarioFailedError}. Note that a sleep
-// * of 2 seconds is done between each attempt.
-// * </p>
-// * @param listElement The element which children are the elements list to
-// * consider for selection.
-// * @param entriesBy The way to find the children
-// * @param useControl should hold control while selecting multiple elements
-// * @param expected The items to select in the list, assuming that text matches
-// * @return The array of the selected elements as {@link WebBrowserElement}.
-// * @throws ScenarioFailedError if not all elements to select were found after
-// * having retried {@link WebBrowserElement#MAX_RECOVERY_ATTEMPTS} times.
-// */
-//public WebBrowserElement[] select(final WebBrowserElement listElement, final By entriesBy, final boolean useControl, final StringComparisonCriterion comparisonCriterion, final String... expected) {
-//	return select(listElement, entriesBy, useControl, new StringComparisonCriterion[]{comparisonCriterion}, expected);
-//}
-//
-///**
-// * Select items in elements list got from the given list element and the given
-// * locator to find its children.
-// * <p>
-// * If  useControl is set to true, it holds the {@link Keys#CONTROL} key
-// * to perform a multi-selection. Of course, that works only if the list web element
-// * allow multiple selection.
-// * </p><p>
-// * If the expected entries are not found, {@link WebBrowserElement#MAX_RECOVERY_ATTEMPTS}
-// * attempts are done before raising a {@link ScenarioFailedError}. Note that a sleep
-// * of 2 seconds is done between each attempt.
-// * </p>
-// * @param listElement The element which children are the elements list to
-// * consider for selection.
-// * @param entriesBy The way to find the children
-// * @param useControl should hold control while selecting multiple elements
-// * @param comparisonCriteria A list of criteria to determine how to match an item in the
-// * elements list to the expected/given option
-// * @param expected The items to select in the list, assuming that text matches
-// * @return The array of the selected elements as {@link WebBrowserElement}.
-// * @throws ScenarioFailedError if not all elements to select were found after
-// * having retried {@link WebBrowserElement#MAX_RECOVERY_ATTEMPTS} times.
-// */
-//public WebBrowserElement[] select(final WebBrowserElement listElement, final By entriesBy, final boolean useControl, final StringComparisonCriterion[] comparisonCriteria, final String... expected) {
-//
-//	// Init array to return
-//	final int length = expected.length;
-//	WebBrowserElement[] selectedElements = new WebBrowserElement[length];
-//	int selected = 0;
-//
-//	// Select elements with possible recovery
-//	String selectedOptions = "no option";
-//	recoveryLoop: for (int recovery=1; recovery<=MAX_RECOVERY_ATTEMPTS; recovery++) {
-//
-//		// Get the elements list
-//		List<WebElement> listElements = listElement.findElements(entriesBy, true/*displayed*/, false/*no recovery*/);
-//		final int size = listElements.size();
-//		if (size < length) {
-//			debugPrintln("Workaround ("+recovery+"): only "+size+" items were found ("+length+" expected at least...), retry to get the elements...");
-//			sleep(recovery);
-//			continue;
-//		}
-//
-//		// Look for requirements in the list
-//		selected = 0;
-//		Iterator<WebElement> optionsListIterator = listElements.iterator();
-//		optionsLoop: while (optionsListIterator.hasNext()) {
-//
-//			// Get the option element text
-//			WebBrowserElement optionElement = (WebBrowserElement) optionsListIterator.next();
-//			String optionText = optionElement.getText();
-//			if (optionText.isEmpty()) {
-//				optionText = optionElement.getAttribute("aria-label");
-//				if (optionText.isEmpty()) {
-//					optionText = optionElement.getAttribute("value");
-//					if (optionText.isEmpty()) {
-//						throw new ScenarioFailedError("Cannot find text for option '"+optionElement+"' of selection '"+listElement+"'");
-//					}
-//				}
-//			}
-//
-//			// First wait while the list content is loaded
-//			int loadTimeout = 0;
-//			while (optionText.equals("Loading...")) {
-//				if (loadTimeout++ > 10) { // 10 seconds
-//					debugPrintln("Workaround ("+recovery+"): list items are still loading after 10 seconds, retry to get the elements...");
-//					continue recoveryLoop;
-//				}
-//				sleep(1);
-//			}
-//
-//			// Check for the requested selections
-//			for (int i=0; i<length; i++) {
-//				// Compare a candidate to select by relying on the given list of
-//				// comparison criteria
-//				for (StringComparisonCriterion comparisonCriterion : comparisonCriteria) {
-//					if (comparisonCriterion.compare(optionText, expected[i])) {
-//						selectedElements[i] = optionElement;
-//						if (++selected == length) {
-//							if (useControl) {
-//								try {
-//									// Hold control while selecting
-//									Actions selectAction = new Actions(this.driver);
-//									selectAction = selectAction.keyDown(Keys.CONTROL);
-//									// Select elements
-//									for (WebBrowserElement element: selectedElements) {
-//										selectAction = selectAction.click(element);
-//									}
-//									selectAction = selectAction.keyUp(Keys.CONTROL);
-//									selectAction.build().perform();
-//								}
-//								catch (StaleElementReferenceException sere) {
-//									continue recoveryLoop;
-//								}
-//							} else {
-//								for (WebBrowserElement element: selectedElements) {
-//									element.click();
-//								}
-//							}
-//
-//							// Return the selected elements
-//							return selectedElements;
-//						}
-//						// A matching element has been found. Therefore, return to the
-//						// optionsLoop to continue with searching for the remaining elements.
-//						continue optionsLoop;
-//					}
-//                }
-//			}
-//		}
-//
-//		// We missed at least one item to select, try again
-//		if (selected == 0) {
-//			selectedOptions = "no option";
-//		} else {
-//			selectedOptions = "only "+selected+" option";
-//			if (selected > 1) {
-//				selectedOptions += "s";
-//			}
-//		}
-//		final StringBuffer message = new StringBuffer("Workaround (")
-//			.append(recovery)
-//			.append("): ")
-//			.append(selectedOptions)
-//			.append(" selected although we expected ")
-//			.append(length)
-//			.append(", try again...");
-//		debugPrintln(message.toString());
-//		sleep(2);
-//	}
-//
-//	// Fail as not all elements were selected
-//	final StringBuffer message = new StringBuffer("After ")
-//		.append(MAX_RECOVERY_ATTEMPTS)
-//		.append(" attempts, there are still ")
-//		.append(selectedOptions)
-//		.append(" selected although we expected ")
-//		.append(length)
-//		.append(", give up");
-//	throw new WaitElementTimeoutError(message.toString());
-//}
-
 /**
  * Select items in elements list got from the given list element and the given
  * locator to find its children.
@@ -2230,112 +1897,6 @@ public BrowserElement[] select(final BrowserElement listElement, final By entrie
 }
 
 /**
- * Set the current browser frame to the given web element.
- *
- * @param frameElement The frame element to select.
- */
-public void selectEmbeddedFrame(final BrowserElement frameElement, final BrowserFrame browserFrame) {
-	selectEmbeddedFrame(frameElement, browserFrame, true /*store*/);
-}
-
-/**
- * Set the current browser frame to the given web element.
- *
- * @param frameElement The frame element to select.
- */
-public void selectEmbeddedFrame(final BrowserElement frameElement, final BrowserFrame browserFrame, final boolean store) {
-	if (DEBUG) {
-		debugPrintln("		+ Select embedded frame "+frameElement);
-		debugPrintln("		  -> current frame: "+getCurrentFrame());
-	}
-	if (browserFrame == null) {
-		selectFrame(frameElement, true/*force*/, store);
-	} else {
-		final EmbeddedFrame newFrame = new EmbeddedFrame(this, browserFrame, frameElement);
-		newFrame.switchTo();
-		if (store) {
-			setCurrentFrame(newFrame);
-		}
-	}
-}
-
-/**
- * Select the current stored frame.
- * <p>
- * That can be necessary in case of desynchronization between the browser
- * instance and the real browser...
- * </p>
- */
-public void selectFrame() {
-
-	if (getCurrentFrame() == null) {
-		if (DEBUG) debugPrintln("		+ Select no frame ");
-		this.driver.switchTo().defaultContent();
-	} else {
-		if (DEBUG) debugPrintln("		+ Select current frame "+getCurrentFrame());
-		getCurrentFrame().switchTo();
-	}
-}
-
-/**
- * Set the current browser frame to the given web element.
- *
- * @param frameElement The frame element to select.
- * @see org.openqa.selenium.WebDriver.TargetLocator#frame(WebElement)
- */
-public void selectFrame(final BrowserElement frameElement) {
-	selectFrame(frameElement, true);
-}
-
-/**
- * Set the current browser frame to the given web element.
- *
- * @param frameElement The frame element to select.
- * @param force Tells whether the frame should be set even if it's already the
- * current browser one
- * @see org.openqa.selenium.WebDriver.TargetLocator#frame(WebElement)
- */
-public void selectFrame(final BrowserElement frameElement, final boolean force) {
-	selectFrame(frameElement, force, true/*store*/);
-}
-
-/**
- * Set the current browser frame to the given web element.
- *
- * @param frameElement The frame element to select.
- * @param force Tells whether the frame should be set even if it's already the
- * current browser one
- * @param store Tells whether the new frame should be store in the browser or not.
- * Setting this argument to <code>false</code>  should be done cautiously as that
- * will imply a desynchronization between the browser instance and the window.
- * @see org.openqa.selenium.WebDriver.TargetLocator#frame(WebElement)
- */
-public void selectFrame(final BrowserElement frameElement, final boolean force, final boolean store) {
-	if (DEBUG) {
-		debugPrintln("		+ select frame "+frameElement);
-		debugPrintln("		  -> current frame: "+getCurrentFrame());
-	}
-	try {
-		if (frameElement == null) {
-			if (getCurrentFrame() != null || force) {
-				resetFrame();
-			}
-		} else if (force || getCurrentFrame() == null || !getCurrentFrame().getElement().equals(frameElement)) {
-			final ElementFrame newFrame = new ElementFrame(this, frameElement);
-			newFrame.switchTo();
-			if (store) {
-				setCurrentFrame(newFrame);
-			}
-		}
-	}
-	catch (NoSuchFrameException nsfe) {
-		// Workaround
-		debugPrintln("Workaround: cannot select given frame elment "+frameElement+", hence get back to the previous one: "+getCurrentFrame());
-		selectFrame();
-	}
-}
-
-/**
  * Set the current browser frame to a given web element.
  *
  * @param parentElement The element from where the search must start.
@@ -2344,35 +1905,16 @@ public void selectFrame(final BrowserElement frameElement, final boolean force, 
  * @param timeout The time in seconds to wait before giving up the research.
  */
 public void selectFrame(final BrowserElement parentElement, final By locator, final int timeout) {
-	if (DEBUG) {
-		debugPrintln("		+ select frame " + locator);
-		debugPrintln("		  -> current frame: "+getCurrentFrame());
-	}
 	this.driver.switchTo().frame(waitForElement(parentElement, locator, timeout, true /*fail*/).getWebElement());
 }
 
-public void selectFrame(final BrowserFrame webFrame) {
-	selectFrame(webFrame, true /*store*/);
-}
-
-public void selectFrame(final BrowserFrame webFrame, final boolean store) {
-	if (DEBUG) debugPrintln("		+ Select frame "+webFrame);
-	debugPrintln("		  -> current frame:"+getCurrentFrame());
-	try {
-		if (webFrame == null) {
-			this.driver.switchTo().defaultContent();
-		} else {
-			webFrame.switchTo();
-		}
-		if (store) {
-			setCurrentFrame(webFrame);
-		}
-	}
-	catch (NoSuchFrameException nsfe) {
-		// Workaround
-		debugPrintln("Workaround: cannot select given frame name '"+webFrame+"', hence get back to the previous one: "+getCurrentFrame());
-		selectFrame();
-	}
+/**
+ * Set the current browser frame to a given web element.
+ *
+ * @param frameElement The frame element to be selected as {@link BrowserElement}.
+ */
+public void selectFrame(final BrowserElement frameElement) {
+	this.driver.switchTo().frame(frameElement.getWebElement());
 }
 
 /**
@@ -2382,85 +1924,7 @@ public void selectFrame(final BrowserFrame webFrame, final boolean store) {
  * @param timeout The time in seconds to wait before giving up the research.
  */
 public void selectFrame(final By locator, final int timeout) {
-	if (DEBUG) {
-		debugPrintln("		+ select frame " + locator);
-		debugPrintln("		  -> current frame: "+getCurrentFrame());
-	}
 	this.driver.switchTo().frame(waitForElement(locator, timeout).getWebElement());
-}
-
-/**
- * Set the current browser frame to the given index.
- *
- * @param index The index of the frame to select.
- */
-public void selectFrame(final int index) {
-	if (DEBUG) {
-		debugPrintln("		+ select frame index to "+index);
-		debugPrintln("		  -> current frame: "+getCurrentFrame());
-	}
-	try {
-		if (index < 0) {
-			resetFrame();
-		} else {
-			final IndexedFrame newFrame = new IndexedFrame(this, index);
-			newFrame.switchTo();
-			setCurrentFrame(newFrame);
-		}
-	}
-	catch (NoSuchFrameException nsfe) {
-		// Workaround
-		debugPrintln("Workaround: cannot select given frame index "+index+", hence get back to the previous one: "+getCurrentFrame());
-		selectFrame();
-	}
-}
-
-/**
- * Set the current browser frame to the given name.
- * <p>
- * Note that nothing happen if the given frame is null. To reset the frame,
- * caller has to use the explicit method {@link #resetFrame()}.
- * </p>
- * @param frameName The name of the frame to select. That can be either a real
- * name for the frame or an index value.
- * @param force Force the frame selection. If not set and the browser frame
- * is the same than the given one, then nothing is done.
- * @throws NoSuchFrameException If the given frame name or index does not
- * exist in the web page content.
- */
-public void selectFrame(final String frameName, final boolean force) {
-	if (DEBUG) {
-		debugPrintln("		+ Select frame to '"+frameName+"' (force="+force+")");
-		debugPrintln("		  -> current frame:"+getCurrentFrame());
-	}
-	if (frameName != null || force) {
-		try {
-			try {
-				int frameIndex = Integer.parseInt(frameName);
-				if ((getCurrentFrame().getIndex() == frameIndex) && !force) {
-					if (DEBUG) debugPrintln("		  -> nothing to do.");
-				} else {
-					final IndexedFrame newFrame = new IndexedFrame(this, frameIndex);
-					newFrame.switchTo();
-					setCurrentFrame(newFrame);
-				}
-			}
-			catch (NumberFormatException nfe) {
-				if (getCurrentFrame() != null && getCurrentFrame().getName().equals(frameName) && !force) {
-					if (DEBUG) debugPrintln("		  -> nothing to do");
-				} else {
-					final NamedFrame newFrame = new NamedFrame(this, frameName);
-					newFrame.switchTo();
-					setCurrentFrame(newFrame);
-				}
-			}
-		}
-		catch (NoSuchFrameException nsfe) {
-			// Workaround
-			debugPrintln("Workaround: cannot select given frame name '"+frameName+"', hence get back to the previous one: "+getCurrentFrame());
-			selectFrame();
-		}
-	}
 }
 
 /**
@@ -2666,41 +2130,6 @@ public void switchToNewWindow(final boolean close) throws NoSuchWindowException 
 public void switchToParentFrame() {
 	this.driver.switchTo().parentFrame();
 }
-
-///**
-// * Switch to popup window.
-// *
-// * @throws NoSuchWindowException When popup is transient and closed before
-// * being able to switch to it.
-// */
-//public void switchToPopupWindow() throws NoSuchWindowException {
-//	if (DEBUG) debugPrintln("		+ Switch to popup window");
-//
-//	// Check that a popup exist
-//	long timeout = 10000 + System.currentTimeMillis(); // Timeout 10 seconds
-//	while (!hasPopupWindow()) {
-//		if (System.currentTimeMillis() > timeout) {
-//			throw new NoSuchWindowException("Popup window never comes up.");
-//		}
-//	}
-//
-//	// Switch to the popup window
-//	if (DEBUG) debugPrintln("		  -> main window handle "+this.mainWindowHandle);
-//	Iterator<String> iterator = getWindowHandles().iterator();
-//	while (iterator.hasNext()) {
-//		String handle = iterator.next();
-//		if (!handle.equals(this.mainWindowHandle) && !handle.equals(this.driver.getWindowHandle())) {
-//			if (DEBUG) debugPrintln("		  -> switch to window handle "+handle);
-//			this.driver.switchTo().window(handle);
-//			break;
-//		}
-//	}
-//
-//	// Accept certificate
-//	if (isInternetExplorer()) {
-//		acceptInternetExplorerCertificate();
-//	}
-//}
 
 /**
  * Switch to a given window.

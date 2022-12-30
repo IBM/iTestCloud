@@ -138,7 +138,7 @@ public P clickOnTitle() {
 	if (DEBUG) debugPrintln("		+ Click on hover title to open "+getTitlePageClass().getName());
 
 	// Reset frame as title and close button element are in default frame
-	resetFrame();
+	switchToMainWindow();
 
 	// Reopen if closed
 	if (!this.element.isDisplayed(false)) {

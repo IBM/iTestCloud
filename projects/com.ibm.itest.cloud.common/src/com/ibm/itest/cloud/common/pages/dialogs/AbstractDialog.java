@@ -626,7 +626,7 @@ public BrowserElement opened() {
  * Sets the current browser frame to this dialog's frame.
  */
 protected void selectDialogFrame() {
-	this.browser.selectFrame(getFrame());
+	getFrame().switchTo();
 }
 
 /**

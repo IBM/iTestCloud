@@ -49,17 +49,6 @@ protected void closeAction(final boolean cancel) {
 /**
  * {@inheritDoc}
  * <p>
- * This method should not be used for framed dialog, it throws a {@link ScenarioFailedError}.
- * </p>
- */
-@Override
-protected BrowserElement findElementInFrames(final By by) {
-	throw new ScenarioFailedError("Should not find element in frames in framed dialog.");
-}
-
-/**
- * {@inheritDoc}
- * <p>
  * Select the frame before looking for opened dialogs.
  * </p>
  */

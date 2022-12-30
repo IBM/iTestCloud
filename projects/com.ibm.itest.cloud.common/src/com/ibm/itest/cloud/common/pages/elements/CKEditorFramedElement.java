@@ -217,7 +217,7 @@ public void fillInsertedTable(final String[][] content, final int index) {
 		fillTable(content, rowsSize, columnsSize);
 	}
 	finally {
-		resetFrame();
+		switchToMainWindow();
 	}
 }
 
@@ -304,7 +304,7 @@ private String getContent(final boolean isHtml) {
 }
 
 private String getEditorScriptRoot() {
-	resetFrame(); // CKEDITOR singleton is only available in main document...
+	switchToMainWindow(); // CKEDITOR singleton is only available in main document...
 	return "CKEDITOR.instances['" + this.editorInstance + "']";
 }
 
@@ -379,7 +379,7 @@ private String[][] getInsertedTableContent(final BrowserElement tableElement) {
 	}
 
 	// Reset frame
-	resetFrame();
+	switchToMainWindow();
 
 	// Return table content
 	return tableContent;
@@ -399,7 +399,7 @@ private List<BrowserElement> getInsertedTableElements() {
 		return waitForElements(By.xpath(".//table"));
 	}
 	finally {
-		resetFrame();
+		switchToMainWindow();
 	}
 }
 
