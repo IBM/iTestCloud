@@ -17,7 +17,7 @@ import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENA
 
 import org.openqa.selenium.By;
 
-import com.ibm.itest.cloud.common.*;
+import com.ibm.itest.cloud.common.Constants;
 import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.*;
@@ -53,7 +53,7 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * </ul>
  * </p>
  */
-abstract public class AbstractWindow extends ElementWrapper implements Window, Constants {
+abstract public class AbstractWindow extends TitledElementWrapper implements Window, Constants {
 
 	/**
 	 *  The mechanism to find the opened window in the web page.
@@ -64,11 +64,6 @@ abstract public class AbstractWindow extends ElementWrapper implements Window, C
 	 * The maximum number of attempts while searching the window.
 	 */
 	final int max;
-
-	/**
-	 * A set of data to be passed to the window for initialization.
-	 */
-	protected String[] data;
 
 public AbstractWindow(final Page page, final By findBy) {
 	this(page, findBy, (String[]) null);
@@ -83,10 +78,9 @@ public AbstractWindow(final Page page, final By findBy, final String frame) {
 }
 
 public AbstractWindow(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
-	super(page, frame);
+	super(page, frame, data);
 	this.findBy = findBy;
 	this.max = BrowserElement.MAX_RECOVERY_ATTEMPTS;
-	this.data = data;
 }
 
 @Override

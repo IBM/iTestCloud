@@ -212,6 +212,7 @@ public P clickOnTitle() {
  *
  * @return The title as a {@link String}.
  */
+@Override
 public String getTitle() {
 	if (this.title == null) {
 		// Title is stored while getting the title element

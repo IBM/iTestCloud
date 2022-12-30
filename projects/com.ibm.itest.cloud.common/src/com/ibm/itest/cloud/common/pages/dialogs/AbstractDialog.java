@@ -15,11 +15,9 @@ package com.ibm.itest.cloud.common.pages.dialogs;
 
 import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENABLED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.utils.ObjectUtils.matches;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
@@ -28,7 +26,8 @@ import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
-import com.ibm.itest.cloud.common.scenario.errors.*;
+import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
+import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
 /**
  * Abstract class for any window opened as a dialog in a browser page.
@@ -377,13 +376,6 @@ public <T extends Page> T closeByOpeningPage(final Class<T> pageClass, final Str
  */
 protected abstract By getContentElementLocator();
 
-/**
- * Return a pattern matching the expected title for the current dialog.
- *
- * @return The title of the dialog as a {@link String}
- */
-protected abstract Pattern getExpectedTitle();
-
 private List<BrowserElement> getMatchingDialogElements(final int timeout) {
 	List<BrowserElement> matchingDialogElements;
 	long timeoutMillis = timeout * 1000 + System.currentTimeMillis();
@@ -424,25 +416,6 @@ private List<BrowserElement> getMatchingDialogElements(final List<BrowserElement
 protected List<BrowserElement> getOpenedDialogElements(final int seconds) {
 	return this.browser.waitForElements(getParentElement(), this.findBy, seconds, false /*fail*/, true/*visible*/);
 }
-
-/**
- * Return the title of the dialog.
- *
- * @return The title of the dialog as {@link String}.
- */
-public String getTitle() {
-	if(!isTitleExpected()) {
-		return null;
-	}
-	return this.element.waitForElement(getTitleElementLocator()).getText();
-}
-
-/**
- * Return the locator for the title element of the current dialog.
- *
- * @return The title element locator as a {@link By}.
- */
-protected abstract By getTitleElementLocator();
 
 /**
  * Handle possible confirmation popup dialog.
@@ -493,25 +466,6 @@ public boolean isOpened(final int timeout) {
 	catch (NoSuchWindowException e) {
 		return false;
 	}
-}
-
-/**
- * Specifies if a title is expected for the element.
- *
- * @return <code>true</code> if a title is expected or <code>false</code> otherwise.
- */
-protected boolean isTitleExpected() {
-	return (getExpectedTitle() != null) && (getTitleElementLocator() != null);
-}
-
-/**
- * Returns whether the dialog title matches the expected one.
- *
- * @return <code>true</code> if the title is part of the expected dialog title
- * or vice-versa, <code>false</code> otherwise.
- */
-protected boolean matchTitle() {
-	return matches(getExpectedTitle(), getTitle());
 }
 
 @Override
@@ -685,32 +639,10 @@ protected BrowserElement waitForContentElement() {
 	return this.element.waitForElement(getContentElementLocator());
 }
 
-/**
- * Wait for the expected title to appear.
- *
- * @throws ScenarioFailedError if the current dialog title does not match the expected one.
- */
-protected void waitForExpectedTitle() {
-	if (isTitleExpected()) {
-		long timeoutMillis = timeout() * 1000 + System.currentTimeMillis();
-		if (!matchTitle()) {
-			debugPrintln("		+ Wait for expected title '"+getExpectedTitle()+"' (current is '"+getTitle()+"')");
-			while (!matchTitle()) {
-				if (System.currentTimeMillis() > timeoutMillis) {
-					throw new IncorrectTitleError("Current dialog title '" + getTitle() + "' does not match the expected one: '" + getExpectedTitle() + "' before timeout '" + timeout() + "' seconds");
-				}
-			}
-		}
-	}
-}
-
 @Override
 public void waitForLoadingEnd() {
 	// Wait for loading to finish.
 	super.waitForLoadingEnd();
-
-	// Wait for the expected title to appear.
-	waitForExpectedTitle();
 
 	// Wait for the content element to be loaded.
 	waitForContentElement();

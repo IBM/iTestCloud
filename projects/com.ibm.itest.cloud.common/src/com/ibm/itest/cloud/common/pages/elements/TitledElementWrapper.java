@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.IncorrectTitleError;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
@@ -61,6 +62,20 @@ public TitledElementWrapper(final Page page) {
 	this(page, (String[]) null);
 }
 
+public TitledElementWrapper(final Page page, final BrowserElement element) {
+	this(page, element, (String[]) null);
+}
+
+public TitledElementWrapper(final Page page, final BrowserElement element, final String... data) {
+	super(page, element);
+	this.data = data;
+}
+
+protected TitledElementWrapper(final Page page, final BrowserFrame frame, final String... data) {
+	super(page, frame);
+	this.data = data;
+}
+
 public TitledElementWrapper(final Page page, final By findBy) {
 	this(page, findBy, (String[]) null);
 }
@@ -72,15 +87,6 @@ public TitledElementWrapper(final Page page, final By findBy, final String... da
 
 public TitledElementWrapper(final Page page, final String... data) {
 	super(page);
-	this.data = data;
-}
-
-public TitledElementWrapper(final Page page, final BrowserElement element) {
-	this(page, element, (String[]) null);
-}
-
-public TitledElementWrapper(final Page page, final BrowserElement element, final String... data) {
-	super(page, element);
 	this.data = data;
 }
 

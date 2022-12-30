@@ -334,13 +334,13 @@ private void handleAlert(final FrameworkMethod frameworkMethod, final WebDriverE
 	takeSnapshotWarning(); // take a snapshot just to notify the warning
 }
 
-private void handleBrowserError(final Statement statement, final FrameworkMethod frameworkMethod, final Object target, final boolean isNotRerunnable, final long start, final BrowserError be) throws Throwable {
+private void handleBrowserError(final Statement statement, final FrameworkMethod frameworkMethod, final Object target, final boolean isNotRerunnable, final long start, final Throwable e) throws Throwable {
 	this.blemishes.browserErrors++;
 	Page currentPage = Page.getCurrentPage();
-	manageFailure(start, be, isNotRerunnable && (currentPage != null));
+	manageFailure(start, e, isNotRerunnable && (currentPage != null));
 	if (this.blemishes.browserErrors >= this.browserErrorsThreshold) {
 		println("Too many browser errors occurred during scenario execution, give up.");
-		takeSnapshotInfo(be.toString());
+		takeSnapshotInfo(e.toString());
 		this.shouldStop = this.stopOnFailure || this.mandatoryTests.contains(frameworkMethod);
 		// Restart the browser in case that can help for next test to proceed properly.
 		// However, restarting the browser may not be possible if the tests are executed on a remote host
@@ -356,7 +356,7 @@ private void handleBrowserError(final Statement statement, final FrameworkMethod
 				currentPage.startNewBrowserSession();
 			}
 		}
-		logTestFailure(be);
+		logTestFailure(e);
 	}
 	println("WORKAROUND: Try to run the test again in case this was a transient issue...");
 	takeSnapshotWarning();
@@ -611,7 +611,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	catch (StaleElementReferenceException sere) {
 		// Handle the StaleElementReferenceException as a BrowserError.
 		println(BrowserUrlUnchangedError.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
-		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(sere));
+		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, sere);
 	}
 	catch (WebDriverException wde) {
 		String message = wde.getMessage();
@@ -655,7 +655,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	catch (IncorrectTitleError ite) {
 		// Handle the IncorrectTitleError as a BrowserError.
 		println(BrowserUrlUnchangedError.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
-		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(ite));
+		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, ite);
 	}
 	catch (WaitElementTimeoutError wete) {
 		Page currentPage = Page.getCurrentPage();
@@ -686,14 +686,14 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 				// If the current web page is not in the context of the application, it implies that the current page can be
 				// some type of error page. Therefore, handle the WaitElementTimeoutError as a BrowserError.
 				println("Web page was out of scope/context of application after refreshing browser. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
-				handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(wete));
+				handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, wete);
 			}
 		}
 		else {
 			// If the current web page is not in the context of the application, it implies that the current page can be
 			// some type of error page. Therefore, handle the WaitElementTimeoutError as a BrowserError.
 			println(WaitElementTimeoutError.class.getSimpleName() + " occurred since web page was out of scope/context of application. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
-			handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(wete));
+			handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, wete);
 		}
 	}
 	catch (InvocationTargetException ite) {
@@ -777,12 +777,12 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	catch (BrowserUrlUnchangedError buue) {
 		// Handle the BrowserUrlUnchangedError as a BrowserError.
 		println(BrowserUrlUnchangedError.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
-		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(buue));
+		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, buue);
 	}
 	catch (ClassCastException cce) {
 		// Handle the ClassCastException as a BrowserError.
 		println(ClassCastException.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
-		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, new BrowserError(cce));
+		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, cce);
 	}
 	catch (BrowserError be) {
 		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, be);
