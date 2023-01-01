@@ -16,7 +16,6 @@ package com.ibm.itest.cloud.common.pages.elements;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 
 /**
  * Abstract class to manage web page content areas.
@@ -30,32 +29,16 @@ public ContentAreaElement(final ElementWrapper parent, final By selectBy) {
 	super(parent, selectBy);
 }
 
-public ContentAreaElement(final ElementWrapper parent, final BrowserElement element, final BrowserFrame frame) {
-	super(parent, element, frame);
-}
-
 public ContentAreaElement(final ElementWrapper parent, final BrowserElement element) {
 	super(parent, element);
-}
-
-public ContentAreaElement(final Page page, final By findBy, final BrowserFrame frame) {
-	super(page, findBy, frame);
 }
 
 public ContentAreaElement(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
-public ContentAreaElement(final Page page, final BrowserElement element, final BrowserFrame frame) {
-	super(page, element, frame);
-}
-
 public ContentAreaElement(final Page page, final BrowserElement element) {
 	super(page, element);
-}
-
-public ContentAreaElement(final Page page, final BrowserFrame frame) {
-	super(page, frame);
 }
 
 public ContentAreaElement(final Page page) {

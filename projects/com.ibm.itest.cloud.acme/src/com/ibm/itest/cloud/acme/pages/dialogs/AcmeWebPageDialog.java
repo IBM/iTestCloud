@@ -18,7 +18,6 @@ import org.openqa.selenium.By;
 import com.ibm.itest.cloud.acme.pages.AcmeAbstractWebPage;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.dialogs.AbstractDialog;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 
 /**
  * This class represents a generic dialog and manages all its common actions.
@@ -41,14 +40,6 @@ public AcmeWebPageDialog(final Page page, final By findBy) {
 
 public AcmeWebPageDialog(final Page page, final By findBy, final String... data) {
 	super(page, findBy, data);
-}
-
-public AcmeWebPageDialog(final Page page, final By findBy, final BrowserFrame frame) {
-	super(page, findBy, frame);
-}
-
-public AcmeWebPageDialog(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
-	super(page, findBy, frame, data);
 }
 
 /**

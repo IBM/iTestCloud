@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.*;
 
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
@@ -100,20 +99,8 @@ public TableElement(final Page page, final By findBy) {
 	super(page, findBy);
 }
 
-public TableElement(final Page page, final By findBy, final BrowserFrame frame) {
-	super(page, findBy, frame);
-}
-
 public TableElement(final Page page, final BrowserElement element) {
 	super(page, element);
-}
-
-public TableElement(final Page page, final BrowserElement element, final BrowserFrame frame) {
-	super(page, element, frame);
-}
-
-public TableElement(final Page page, final BrowserFrame frame) {
-	super(page, frame);
 }
 
 @Override

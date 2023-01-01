@@ -16,7 +16,6 @@ package com.ibm.itest.cloud.acme.pages.dialogs;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 
 /**
  * This class represents a generic confirmation dialog and manages all its common actions.
@@ -47,14 +46,6 @@ public AcmeConfirmationDialog(final Page page) {
 
 public AcmeConfirmationDialog(final Page page, final String... data) {
 	super(page, DIALOG_LOCATOR, data);
-}
-
-public AcmeConfirmationDialog(final Page page, final BrowserFrame frame) {
-	super(page, DIALOG_LOCATOR, frame);
-}
-
-public AcmeConfirmationDialog(final Page page, final BrowserFrame frame, final String... data) {
-	super(page, DIALOG_LOCATOR, frame, data);
 }
 
 @Override

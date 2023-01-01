@@ -21,7 +21,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 
@@ -73,72 +72,10 @@ protected ExpandableElement(final ElementWrapper parent) {
  * used for the expanse and collapse operations (ie. by simply clicking on it).
  * </p>
  * @param parent The wrapped web element parent
- * @param locator The locator to find the wrapped web element
- */
-public ExpandableElement(final ElementWrapper parent, final By locator) {
-	this(parent, locator, null /*expansionLocator*/);
-}
-
-/**
- * Create an expandable element child of the given parent using the wrapped and
- * expansion web elements found by the given locators.
- * <p>
- * <b>Important</b>: The expansion web element locator is assumed to be relative
- * to the wrapped web element.
- * </p>
- * @param parent The wrapped web element parent
- * @param locator The locator to find the wrapped web element
- * @param expansionLocator The locator to find the expansion web element
- */
-public ExpandableElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
-	super(parent, locator);
-	this.expansionElement = getExpansionElement(expansionLocator);
-}
-
-/**
- * Create an expandable element child of the given parent using the wrapped and
- * expansion web elements found by the given locators.
- * <p>
- * <b>Important</b>: The expansion web element locator is assumed to be relative
- * to the wrapped web element.
- * </p>
- * @param parent The wrapped web element parent
- * @param locator The locator to find the wrapped web element
- * @param expansionLocator The locator to find the expansion web element
- */
-public ExpandableElement(final ElementWrapper parent, final By locator, final BrowserFrame frame, final By expansionLocator) {
-	super(parent, locator, frame);
-	this.expansionElement = getExpansionElement(expansionLocator);
-}
-
-/**
- * Create an expandable element child of the given parent using the wrapped and
- * expansion web elements found by the given locators.
- * <p>
- * When using this constructor, it's assumed that the wrapped web element is also
- * used for the expanse and collapse operations (ie. by simply clicking on it).
- * </p>
- * @param parent The wrapped web element parent
  * @param webElement The wrapped web element
  */
 public ExpandableElement(final ElementWrapper parent, final BrowserElement webElement) {
 	this(parent, webElement, (By) null /*expansionLocator*/);
-}
-
-/**
- * Create an expandable element child of the given parent using the given wrapped
- * web element and the expansion web element found using the given locator.
- * <p>
- * <b>Important</b>: The expansion web element locator is assumed to be relative
- * to the wrapped web element.
- * </p>
- * @param parent The wrapped web element parent
- * @param webElement The wrapped web element
- * @param expansionLocator The locator to find the expansion web element
- */
-public ExpandableElement(final ElementWrapper parent, final BrowserElement webElement, final By expansionLocator) {
-	this(parent, webElement, (BrowserElement) null /*expansionElement*/);
-	this.expansionElement = getExpansionElement(expansionLocator);
 }
 
 /**
@@ -168,8 +105,38 @@ public ExpandableElement(final ElementWrapper parent, final BrowserElement webEl
  * @param webElement The wrapped web element
  * @param expansionLocator The locator to find the expansion web element
  */
-public ExpandableElement(final ElementWrapper parent, final BrowserElement webElement, final BrowserFrame frame, final By expansionLocator) {
-	super(parent, webElement, frame);
+public ExpandableElement(final ElementWrapper parent, final BrowserElement webElement, final By expansionLocator) {
+	this(parent, webElement, (BrowserElement) null /*expansionElement*/);
+	this.expansionElement = getExpansionElement(expansionLocator);
+}
+
+/**
+ * Create an expandable element child of the given parent using the wrapped and
+ * expansion web elements found by the given locators.
+ * <p>
+ * When using this constructor, it's assumed that the wrapped web element is also
+ * used for the expanse and collapse operations (ie. by simply clicking on it).
+ * </p>
+ * @param parent The wrapped web element parent
+ * @param locator The locator to find the wrapped web element
+ */
+public ExpandableElement(final ElementWrapper parent, final By locator) {
+	this(parent, locator, (By) null /*expansionLocator*/);
+}
+
+/**
+ * Create an expandable element child of the given parent using the wrapped and
+ * expansion web elements found by the given locators.
+ * <p>
+ * <b>Important</b>: The expansion web element locator is assumed to be relative
+ * to the wrapped web element.
+ * </p>
+ * @param parent The wrapped web element parent
+ * @param locator The locator to find the wrapped web element
+ * @param expansionLocator The locator to find the expansion web element
+ */
+public ExpandableElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
+	super(parent, locator);
 	this.expansionElement = getExpansionElement(expansionLocator);
 }
 
@@ -187,6 +154,36 @@ protected ExpandableElement(final Page page) {
 }
 
 /**
+ * Create an expandable element in the given page using the given wrapped web
+ * element.
+ * <p>
+ * When using this constructor, it's assumed that the wrapped web element is also
+ * used for the expanse and collapse operation (ie. by simply clicking on it).
+ * </p>
+ * @param page The page in which the expandable element is located
+ * @param webElement The wrapped web element
+ */
+public ExpandableElement(final Page page, final BrowserElement webElement) {
+	this(page, webElement, (By) null /*expansionLocator*/);
+}
+
+/**
+ * Create an expandable element in the given page using the given wrapped web
+ * element and the expansion web element found using the given locator.
+ * <p>
+ * <b>Important</b>: The expansion web element locator is assumed to be relative
+ * to the wrapped web element.
+ * </p>
+ * @param page The page in which the expandable element is located
+ * @param webElement The wrapped web element
+ * @param expansionLocator The locator to find the expansion web element
+ */
+public ExpandableElement(final Page page, final BrowserElement webElement, final By expansionLocator) {
+	super(page, webElement);
+	this.expansionElement = getExpansionElement(expansionLocator);
+}
+
+/**
  * Create an expandable element in the given page using the wrapped web element
  * found by the given locator.
  * <p>
@@ -197,7 +194,7 @@ protected ExpandableElement(final Page page) {
  * @param locator The locator to find the wrapped web element
  */
 public ExpandableElement(final Page page, final By locator) {
-	this(page, locator, null);
+	this(page, locator, (By) null /*expansionLocator*/);
 }
 
 /**
@@ -213,68 +210,6 @@ public ExpandableElement(final Page page, final By locator) {
  */
 public ExpandableElement(final Page page, final By locator, final By expansionLocator) {
 	super(page, locator);
-	this.expansionElement = getExpansionElement(expansionLocator);
-}
-
-/**
- * Create an expandable element in the given page using the wrapped and expansion
- * web elements found by the given locators.
- * <p>
- * <b>Important</b>: The expansion web element locator is assumed to be relative
- * to the wrapped web element.
- * </p>
- * @param page The page in which the expandable element is located
- * @param locator The locator to find the wrapped web element
- * @param expansionLocator The locator to find the expansion web element
- */
-public ExpandableElement(final Page page, final By locator, final BrowserFrame frame, final By expansionLocator) {
-	super(page, locator, frame);
-	this.expansionElement = getExpansionElement(expansionLocator);
-}
-
-/**
- * Create an expandable element in the given page using the given wrapped web
- * element.
- * <p>
- * When using this constructor, it's assumed that the wrapped web element is also
- * used for the expanse and collapse operation (ie. by simply clicking on it).
- * </p>
- * @param page The page in which the expandable element is located
- * @param webElement The wrapped web element
- */
-public ExpandableElement(final Page page, final BrowserElement webElement) {
-	this(page, webElement, null);
-}
-
-/**
- * Create an expandable element in the given page using the given wrapped web
- * element and the expansion web element found using the given locator.
- * <p>
- * <b>Important</b>: The expansion web element locator is assumed to be relative
- * to the wrapped web element.
- * </p>
- * @param page The page in which the expandable element is located
- * @param webElement The wrapped web element
- * @param expansionLocator The locator to find the expansion web element
- */
-public ExpandableElement(final Page page, final BrowserElement webElement, final By expansionLocator) {
-	this(page, webElement, null, expansionLocator);
-}
-
-/**
- * Create an expandable element in the given page and frame using the given wrapped web
- * element and the expansion web element found using the given locator.
- * <p>
- * <b>Important</b>: The expansion web element locator is assumed to be relative
- * to the wrapped web element.
- * </p>
- * @param page The page in which the expandable element is located
- * @param webElement The wrapped web element
- * @param frame The frame that the element belongs
- * @param expansionLocator The locator to find the expansion web element
- */
-public ExpandableElement(final Page page, final BrowserElement webElement, final BrowserFrame frame, final By expansionLocator) {
-	super(page, webElement, frame);
 	this.expansionElement = getExpansionElement(expansionLocator);
 }
 

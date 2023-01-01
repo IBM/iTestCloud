@@ -13,14 +13,11 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.pages.elements;
 
-import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.pause;
-
 import com.ibm.itest.cloud.common.browsers.Browser;
 import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.config.User;
 import com.ibm.itest.cloud.common.nls.NlsMessages;
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
 import com.ibm.itest.cloud.common.topology.Application;
@@ -31,8 +28,6 @@ import com.ibm.itest.cloud.common.topology.Topology;
  * <p>
  * There's no public actions at this root level, only common operations for subclasses usage:
  * <ul>
- * <li>{@link #selectFrame()}: Select the frame in which the current window is expected to be found.</li>
- * <li>{@link #storeBrowserFrame()}: Store the browser the frame.</li>
  * <li>{@link #switchToMainWindow()}: Selects either the first frame on the page, or the main document when a page contains iframes.</li>
  * <li>{@link #switchToParentFrame()}: Change focus to the parent context.</li>
  * </ul>
@@ -77,48 +72,13 @@ abstract public class PageElement {
 	protected Browser browser;
 
 	/**
-	 * The frames that the windows has to deal with:
-	 * <ul>
-	 * <li>slot 0: The browser frame when the dialog was opened.
-	 * <p>
-	 * It's important to store this piece of information to be able to restore it
-	 * when closing the dialog.
-	 * </p>
-	 * </li>
-	 * <li>slot 1: The frame used by the dialog
-	 * <p>
-	 * Can be <code>null</code> if no frame is used by the window
-	 * </p><p>
-	 * Note that not all the window elements are supposed to be in this frame,
-	 * typically window title is not in this frame
-	 * </p>
-	 * </li>
-	 * <li>slot 2: The current used frame.
-	 * <p>
-	 * If slot 1 is null, then this slot is always <code>null</code>, otherwise
-	 * it can be either equals to slot 1 if frame elements want to be found or
-	 * <code>null</code>  if other elements are searched.
-	 * </p>
-	 * </li>
-	 * </ul>
-	 */
-	protected BrowserFrame[] frames;
-
-	/**
 	 * Current timeout.
 	 */
 	private Timeout currentTimeout;
 
 public PageElement(final Page page) {
-	this(page, null);
-}
-
-public PageElement(final Page page, final BrowserFrame frame) {
 	this.page = page;
 	this.browser = page.getBrowser();
-	this.frames = new BrowserFrame[3];
-	this.frames[0] = this.browser.getCurrentFrame();
-	this.frames[1] = frame;
 }
 
 /**
@@ -133,16 +93,6 @@ protected Application getApplication() {
  */
 protected Config getConfig() {
 	return this.page.getConfig();
-}
-
-/**
- * Return the frame used inside the wrapped element.
- *
- * @return The frame as a {@link BrowserFrame} or <code>null</code> if
- * no frame is used.
- */
-protected BrowserFrame getFrame() {
-	return this.frames[1];
 }
 
 /**
@@ -192,17 +142,6 @@ protected void resetTimeout() {
 }
 
 /**
- * Select the frame in which the current window is expected to be found.
- */
-protected void selectFrame() {
-	if (this.frames[2] != this.frames[1]) { // == is intentional
-		this.frames[2] = this.frames[1];
-		this.frames[2].switchTo();
-		pause(250);
-	}
-}
-
-/**
  * @see Page#shortTimeout()
  */
 protected int shortTimeout() {
@@ -222,18 +161,6 @@ protected void startTimeout(final int timeout, final String message) {
 		this.currentTimeout = new Timeout(timeout, message);
 	}
 	this.currentTimeout.test();
-}
-
-/**
- * Store the browser the frame.
- * <p>
- * As frame might not be set when building the wrapper, this method allows
- * subclasses to store the current browser frame when they know that it matches
- * the one displayed inside by the wrapped element.
- * </p>
- */
-protected void storeBrowserFrame() {
-	this.frames[1] = this.browser.getCurrentFrame();
 }
 
 /**

@@ -16,7 +16,6 @@ package com.ibm.itest.cloud.common.pages.dialogs;
 import org.openqa.selenium.By;
 
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 
 /**
  * This class represents a generic confirmation dialog and manages all its common actions.
@@ -44,14 +43,6 @@ public ConfirmationDialog(final Page page,final By findBy) {
 
 public ConfirmationDialog(final Page page, final By findBy, final String... data) {
 	super(page, findBy, data);
-}
-
-public ConfirmationDialog(final Page page, final By findBy, final BrowserFrame frame) {
-	super(page, findBy, frame);
-}
-
-public ConfirmationDialog(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
-	super(page, findBy, frame, data);
 }
 
 /**

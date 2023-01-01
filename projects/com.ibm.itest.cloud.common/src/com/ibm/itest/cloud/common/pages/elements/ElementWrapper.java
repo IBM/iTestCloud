@@ -24,7 +24,6 @@ import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.config.IUser;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.Page.ClickType;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.scenario.errors.*;
 
 /**
@@ -68,18 +67,8 @@ public ElementWrapper(final ElementWrapper parent, final BrowserElement element)
 	this.parent = parent;
 }
 
-public ElementWrapper(final ElementWrapper parent, final BrowserElement element, final BrowserFrame frame) {
-	this(parent.getPage(), element, frame);
-	this.parent = parent;
-}
-
 public ElementWrapper(final ElementWrapper parent, final By selectBy) {
 	this(parent.getPage(), parent.element.waitForElement(selectBy));
-	this.parent = parent;
-}
-
-public ElementWrapper(final ElementWrapper parent, final By selectBy, final BrowserFrame frame) {
-	this(parent.getPage(), parent.element.waitForElement(selectBy), frame);
 	this.parent = parent;
 }
 
@@ -92,23 +81,9 @@ public ElementWrapper(final Page page, final BrowserElement element) {
 	this.element = element;
 }
 
-public ElementWrapper(final Page page, final BrowserElement element, final BrowserFrame frame) {
-	super(page, frame);
-	this.element = element;
-}
-
-public ElementWrapper(final Page page, final BrowserFrame frame) {
-	super(page, frame);
-}
-
 public ElementWrapper(final Page page, final By findBy) {
 	super(page);
 	//waitForElement() in this class can't filter out the hidden element, use the one in super class instead
-	this.element = page.waitForElement(findBy, true, openTimeout());
-}
-
-public ElementWrapper(final Page page, final By findBy, final BrowserFrame frame) {
-	super(page, frame);
 	this.element = page.waitForElement(findBy, true, openTimeout());
 }
 

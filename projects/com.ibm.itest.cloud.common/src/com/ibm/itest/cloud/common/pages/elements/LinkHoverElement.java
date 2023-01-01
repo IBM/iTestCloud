@@ -250,8 +250,6 @@ public BrowserElement getTitleElement() {
 			hoverTitleElement = this.element.waitForElement(By.xpath(getTitleLinkXpath()), openTimeout());
 		}
 		if (hoverTitleElement == null) {
-			// Workaround Select frame again
-			selectFrame();
 			// Wait again for the title
 			hoverTitleElement = this.element.waitForElement(By.xpath(getTitleLinkXpath()), openTimeout());
 			if (hoverTitleElement == null) {

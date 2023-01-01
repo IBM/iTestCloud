@@ -21,8 +21,6 @@ import com.ibm.itest.cloud.common.Constants;
 import com.ibm.itest.cloud.common.config.Config;
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.*;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
-import com.ibm.itest.cloud.common.pages.frames.NamedFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 
@@ -70,15 +68,7 @@ public AbstractWindow(final Page page, final By findBy) {
 }
 
 public AbstractWindow(final Page page, final By findBy, final String... data) {
-	this(page, findBy, (BrowserFrame) null, data);
-}
-
-public AbstractWindow(final Page page, final By findBy, final String frame) {
-	this(page, findBy, new NamedFrame(page.getBrowser(), frame));
-}
-
-public AbstractWindow(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
-	super(page, frame, data);
+	super(page, data);
 	this.findBy = findBy;
 	this.max = BrowserElement.MAX_RECOVERY_ATTEMPTS;
 }

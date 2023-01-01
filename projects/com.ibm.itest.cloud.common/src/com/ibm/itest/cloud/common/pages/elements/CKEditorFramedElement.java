@@ -22,6 +22,7 @@ import org.openqa.selenium.*;
 
 import com.ibm.itest.cloud.common.config.Timeouts;
 import com.ibm.itest.cloud.common.pages.Page;
+import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.pages.frames.ElementFrame;
 import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
@@ -63,19 +64,20 @@ public class CKEditorFramedElement extends ElementWrapper {
 
 	/* Fields */
 	private String editorInstance;
+	private BrowserFrame frame;
 
 public CKEditorFramedElement(final Page page) {
 	this(page, CKEDITOR_IFRAME_LOCATOR);
 }
 
-public CKEditorFramedElement(final Page page, final By editorIframeLocator) {
-	super(page, page.getBrowser().waitForElement(editorIframeLocator, Timeouts.DEFAULT_TIMEOUT), new ElementFrame(page.getBrowser(), editorIframeLocator));
+public CKEditorFramedElement(final Page page, final BrowserElement editorIframeElement) {
+	super(page, editorIframeElement);
+	this.frame = new ElementFrame(page.getBrowser(), editorIframeElement);
 	setEditorInstance();
 }
 
-public CKEditorFramedElement(final Page page, final BrowserElement editorIframeElement) {
-	super(page, editorIframeElement, new ElementFrame(page.getBrowser(), editorIframeElement));
-	setEditorInstance();
+public CKEditorFramedElement(final Page page, final By editorIframeLocator) {
+	this(page, page.getBrowser().waitForElement(editorIframeLocator, Timeouts.DEFAULT_TIMEOUT));
 }
 
 /**
@@ -343,26 +345,6 @@ public String[][] getInsertedTableContent() {
 	return getInsertedTableContent(index);
 }
 
-/**
- * Get the content for the table inserted at the given index in the editor.
- *
- * @param index The index of the inserted table.
- * @return The table cells as a matrix (ie. an array of arrays) of {@link String} or
- * <code>null</code> if the index is over the number of inserted tables in the editor.
-  */
-public String[][] getInsertedTableContent(final int index) {
-	if (DEBUG) debugPrintln("		+ Get the content of inserted table #"+index+".");
-
-	// Get corresponding table
-	BrowserElement tableElement = getInsertedTableElement(index);
-	if (tableElement == null) {
-		return null;
-	}
-
-	// Return table content
-	return getInsertedTableContent(tableElement);
-}
-
 private String[][] getInsertedTableContent(final BrowserElement tableElement) {
 
 	// Select frame
@@ -383,6 +365,26 @@ private String[][] getInsertedTableContent(final BrowserElement tableElement) {
 
 	// Return table content
 	return tableContent;
+}
+
+/**
+ * Get the content for the table inserted at the given index in the editor.
+ *
+ * @param index The index of the inserted table.
+ * @return The table cells as a matrix (ie. an array of arrays) of {@link String} or
+ * <code>null</code> if the index is over the number of inserted tables in the editor.
+  */
+public String[][] getInsertedTableContent(final int index) {
+	if (DEBUG) debugPrintln("		+ Get the content of inserted table #"+index+".");
+
+	// Get corresponding table
+	BrowserElement tableElement = getInsertedTableElement(index);
+	if (tableElement == null) {
+		return null;
+	}
+
+	// Return table content
+	return getInsertedTableContent(tableElement);
 }
 
 private BrowserElement getInsertedTableElement(final int index) {
@@ -486,6 +488,13 @@ public void moveCursorToEnd() {
  */
 public void saveContent(){
 	this.element.sendKeys(Keys.chord(Keys.CONTROL, "s"));
+}
+
+/**
+ * Select the frame in which the current window is expected to be found.
+ */
+private void selectFrame() {
+	this.frame.switchTo();
 }
 
 /**

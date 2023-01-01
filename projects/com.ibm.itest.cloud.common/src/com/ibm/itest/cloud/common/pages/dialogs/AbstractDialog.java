@@ -24,7 +24,6 @@ import org.openqa.selenium.interactions.Action;
 
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
-import com.ibm.itest.cloud.common.pages.frames.BrowserFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
@@ -36,7 +35,6 @@ import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
  * <ul>
  * <li>{@link #open(BrowserElement)}: open the window by clicking on the
  * given web element.</li>
- * <li>{@link #selectDialogFrame()}: Sets the browser frame to the dialog frame.
  * </ul>
 * </p><p>
  * Following operations are also specialized for dialogs:
@@ -76,7 +74,6 @@ import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
  * <li>{@link #getTitleElementLocator()}:
  * Return the locator for the title element of the current dialog.</li>
  * <li>{@link #handleConfirmationPopup()}: Handle possible confirmation popup dialog.</li>
- * <li>{@link #selectDialogFrame()}: Sets the current browser frame to this dialog's frame.</li>
  * <li>{@link #waitForLoadingEnd()}: Wait for the window content to be loaded.</li>
  * </ul>
   * </p>
@@ -95,10 +92,6 @@ public AbstractDialog(final Page page, final By findBy, final String... data) {
 
 public AbstractDialog(final Page page, final By findBy, final String frame) {
 	super(page, findBy, frame);
-}
-
-public AbstractDialog(final Page page, final By findBy, final BrowserFrame frame, final String... data) {
-	super(page, findBy, frame, data);
 }
 
 /**
@@ -574,13 +567,6 @@ public BrowserElement opened() {
 	waitForLoadingEnd();
 
 	return this.element;
-}
-
-/**
- * Sets the current browser frame to this dialog's frame.
- */
-protected void selectDialogFrame() {
-	getFrame().switchTo();
 }
 
 /**
