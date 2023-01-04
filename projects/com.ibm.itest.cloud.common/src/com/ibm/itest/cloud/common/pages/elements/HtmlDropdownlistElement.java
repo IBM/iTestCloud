@@ -24,30 +24,47 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
 import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
 
 /**
- * Class to handle select element.
- *
- * @see Select
+ * This class represents a HTML dropdown list element and manages all its common actions.
+ * <p>
+ * The following is an example for such a dropdown list element</br>
+ * <xmp>
+ * <select name="pets" id="pet-select">
+ *     <option value="">--Please choose an option--</option>
+ *     <option value="dog">Dog</option>
+ *     <option value="cat">Cat</option>
+ *     <option value="hamster">Hamster</option>
+ * </select>
+ * </xmp>
+ * </p><p>
+ * Following public features are accessible on this page:
+ * <ul>
+ * </ul>
+ * </p><p>
+ * Following private features are also defined or specialized by this page:
+ * <ul>
+ * </ul>
+ * </p>
  */
-public class SelectElement extends ElementWrapper {
+public class HtmlDropdownlistElement extends ElementWrapper {
 
 	final Select select;
 
-public SelectElement(final ElementWrapper parent, final By selectBy) {
+public HtmlDropdownlistElement(final ElementWrapper parent, final By selectBy) {
 	super(parent, selectBy);
 	this.select = new Select(this.element);
 }
 
-public SelectElement(final Page page, final By selectBy) {
+public HtmlDropdownlistElement(final Page page, final By selectBy) {
 	super(page, selectBy);
 	this.select = new Select(this.element);
 }
 
-public SelectElement(final Page page, final BrowserElement element) {
+public HtmlDropdownlistElement(final Page page, final BrowserElement element) {
 	super(page, element);
 	this.select = new Select(this.element);
 }
 
-public SelectElement(final Page page, final BrowserElement parent, final By selectBy) {
+public HtmlDropdownlistElement(final Page page, final BrowserElement parent, final By selectBy) {
 	super(page, parent.waitForElement(selectBy));
 	this.select = new Select(this.element);
 }
