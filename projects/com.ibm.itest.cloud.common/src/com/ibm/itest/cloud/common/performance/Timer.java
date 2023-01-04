@@ -13,6 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.performance;
 
+import static java.math.RoundingMode.HALF_UP;
+
 import java.math.BigDecimal;
 
 /**
@@ -90,7 +92,7 @@ public void reset() {
  */
 public static double round(final double unrounded, final int precision) {
     BigDecimal bigDec = new BigDecimal(unrounded);
-    BigDecimal scale = bigDec.setScale(precision, BigDecimal.ROUND_HALF_UP);
+    BigDecimal scale = bigDec.setScale(precision, HALF_UP);
     return scale.doubleValue();
 }
 

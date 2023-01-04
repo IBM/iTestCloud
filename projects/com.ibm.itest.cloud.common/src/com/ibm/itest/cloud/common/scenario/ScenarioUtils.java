@@ -1284,27 +1284,29 @@ private static Properties readParametersFile(final String fileDir, final String 
 /**
  * Run a command in the file system.
  *
- * @param command The command to execute.
+ * @param cmdarray an array containing the command to call and its arguments.
+ *
  * @return The output of the executed command.
  *
  * @throws InvalidCommandException If the command is found to be invalid by the operating system.
  */
-public static String runCommand(final String command) throws InvalidCommandException {
-	return runCommand(command, 0 /*returnCodes*/);
+public static String runCommand(final String[] cmdarray) throws InvalidCommandException {
+	return runCommand(cmdarray, new int[0] /*returnCodes*/);
 }
 
 /**
- * Run a command in the file system.
+ * Runs the specified command and arguments in a separate process.
  *
- * @param command The command to execute.
- * @param returnCodes A list of expected return codes.
+ * @param cmdarray an array containing the command to call and its arguments.
+ * @param returnCodes a list of expected return codes.
+ *
  * @return The output of the executed command.
  *
  * @throws InvalidCommandException If the command is found to be invalid by the operating system.
  */
-public static String runCommand(final String command, final int... returnCodes) throws InvalidCommandException {
+public static String runCommand(final String[] cmdarray, final int[] returnCodes) throws InvalidCommandException {
 	try {
-		Process process = Runtime.getRuntime().exec(command);
+		Process process = Runtime.getRuntime().exec(cmdarray);
 
 		InputStream stdErrorInputStream = process.getErrorStream();
 		InputStream stdOutInputStream = process.getInputStream();
@@ -1327,14 +1329,14 @@ public static String runCommand(final String command, final int... returnCodes) 
 	}
 }
 
-public static void runCommandInBackground(final String command) throws InvalidCommandException {
-	String silentCommand = "nohup " + command + " > /dev/null 2>&1 &";
-
-	runCommand(silentCommand);
-
-	// Wait a moment
-	sleep(1 /*seconds*/);
-}
+//public static void runCommandInBackground(final String[] cmdarray) throws InvalidCommandException {
+//	String silentCommand = "nohup " + command + " > /dev/null 2>&1 &";
+//
+//	runCommand(silentCommand);
+//
+//	// Wait a moment
+//	sleep(1 /*seconds*/);
+//}
 
 public static void setDebugWriter() {
 	STR_WRITER = new StringWriter();

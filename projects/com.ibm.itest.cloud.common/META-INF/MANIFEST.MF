@@ -5,9 +5,8 @@ Bundle-SymbolicName: com.ibm.itest.cloud.common
 Automatic-Module-Name: com.ibm.itest.cloud.common
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: IBM
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.google.gson,
- com.ibm.automation.framework.security,
  com.ibm.itest.cloud.common;version="1.0.0",
  com.ibm.itest.cloud.common.annotations,
  com.ibm.itest.cloud.common.browsers,
@@ -71,7 +70,6 @@ Bundle-ClassPath: libs/async-http-client-2.12.3.jar,
  libs/auto-service-annotations-1.0.1.jar,
  libs/byte-buddy-1.12.18.jar,
  libs/checker-qual-3.12.0.jar,
- libs/com.ibm.automation.framework.security.jar,
  libs/commons-codec-1.10.jar,
  libs/commons-exec-1.3.jar,
  libs/commons-io-2.4.jar,

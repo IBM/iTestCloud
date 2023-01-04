@@ -13,9 +13,10 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.performance;
 
+import static java.lang.Integer.valueOf;
+
 import java.text.DecimalFormat;
 import java.util.Calendar;
-
 
 /**
  * Task Data Writer class, for writing task data results to disk
@@ -75,19 +76,19 @@ public static String timestamp2(final long time, final boolean showSecsMillis) {
 	Calendar cs = Calendar.getInstance();
 	cs.setTimeInMillis(time);
 
-	Integer yy = new Integer(cs.get(Calendar.YEAR));
-	Integer mon = new Integer(cs.get(Calendar.MONTH) + 1);
-	Integer dd = new Integer(cs.get(Calendar.DAY_OF_MONTH));
-	Integer hh = new Integer(cs.get(Calendar.HOUR_OF_DAY));
-	Integer mins = new Integer(cs.get(Calendar.MINUTE));
+	Integer yy = valueOf(cs.get(Calendar.YEAR));
+	Integer mon = valueOf(cs.get(Calendar.MONTH) + 1);
+	Integer dd = valueOf(cs.get(Calendar.DAY_OF_MONTH));
+	Integer hh = valueOf(cs.get(Calendar.HOUR_OF_DAY));
+	Integer mins = valueOf(cs.get(Calendar.MINUTE));
 	String name =
 		mon + "/" + fmt2.format(dd) + "/" + fmt2.format(yy) +
 		" " + fmt2.format(hh) + ":" + fmt2.format(mins);
 	if (showSecsMillis) {
 		DecimalFormat fmt3 = new DecimalFormat("###");
 		fmt3.setMinimumIntegerDigits(3);
-		Integer secs = new Integer(cs.get(Calendar.SECOND));
-		Integer msecs = new Integer(cs.get(Calendar.MILLISECOND));
+		Integer secs = valueOf(cs.get(Calendar.SECOND));
+		Integer msecs = valueOf(cs.get(Calendar.MILLISECOND));
 		name += ":" + fmt2.format(secs) + "." + fmt3.format(msecs);
 	}
 	return name;

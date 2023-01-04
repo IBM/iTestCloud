@@ -15,6 +15,7 @@ package com.ibm.itest.cloud.common.performance;
 
 import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.EMPTY_STRING;
+import static java.lang.Double.valueOf;
 
 import java.util.ArrayList;
 
@@ -115,9 +116,9 @@ public static String regressionTypeToString(final RegressionType regressionType)
  * Add a new response time to the perfTimeList for the perf result
  */
 public void addResponseTime(final double serverTime, final double clientTime, final long timeDateStamp) {
-	this.serverTimes.add(new Double(serverTime));
-	this.clientTimes.add(new Double(clientTime));
-	this.regressionTimes.add(new Double(PerfResult.getRegressionValue(serverTime,clientTime,this.regressionType)));
+	this.serverTimes.add(valueOf(serverTime));
+	this.clientTimes.add(valueOf(clientTime));
+	this.regressionTimes.add(valueOf(PerfResult.getRegressionValue(serverTime,clientTime,this.regressionType)));
 	this.timeDateStamps.add(TaskDataWriter.timestamp2(timeDateStamp,true));
 }
 

@@ -15,6 +15,7 @@ package com.ibm.itest.cloud.common.browsers;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static java.lang.Integer.valueOf;
 
 import java.io.File;
 
@@ -44,7 +45,7 @@ private void initDownloadDir() {
 	// # 0 means to download to the desktop,
 	// 1 means to download to the default "Downloads" directory,
 	// 2 means to use the directory you specify in "browser.download.dir"
-	this.firefoxProfile.setPreference("browser.download.folderList", new Integer(2));
+	this.firefoxProfile.setPreference("browser.download.folderList", valueOf(2));
 
 	// Without asking a location, download files to the directory specified in browser.download.folderList
 	this.firefoxProfile.setPreference("browser.download.useDownloadDir", TRUE);

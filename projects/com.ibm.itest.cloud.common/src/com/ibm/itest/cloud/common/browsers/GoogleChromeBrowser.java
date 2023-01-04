@@ -13,6 +13,8 @@
  *********************************************************************/
 package com.ibm.itest.cloud.common.browsers;
 
+import static java.lang.Boolean.valueOf;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -89,9 +91,9 @@ private void initExperimentalOptions() {
 	if (this.downloadDir != null) {
 		// Default download directory
 		prefs.put("download.default_directory", this.downloadDir.getAbsolutePath());
-		prefs.put("download.directory_upgrade", new Boolean(true));
+		prefs.put("download.directory_upgrade", valueOf(true));
 		// No prompt while download a file
-		prefs.put("download.prompt_for_download", new Boolean(false));
+		prefs.put("download.prompt_for_download", valueOf(false));
 	}
 
 	// Set browser locale if necessary.

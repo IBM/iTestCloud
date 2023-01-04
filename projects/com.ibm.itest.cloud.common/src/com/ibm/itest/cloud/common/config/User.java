@@ -14,13 +14,11 @@
 package com.ibm.itest.cloud.common.config;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
-import static com.ibm.itest.cloud.common.utils.EncryptionUtils.getSecretKey;
+import static com.ibm.itest.cloud.common.utils.EncryptionUtils.decrypt;
 
 import org.apache.commons.codec.EncoderException;
-import org.apache.commons.codec.binary.Base64;
 
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.utils.EncryptionUtils;
 
 /**
  * User connected to an application while going to a web page.
@@ -31,13 +29,12 @@ import com.ibm.itest.cloud.common.utils.EncryptionUtils;
  */
 public class User implements UserConstants, IUser {
 
-	static final private Base64 BASE64 = new Base64();
 	public static void main(final String[] args) throws EncoderException {
 		if((args == null) || (args.length == 0)) {
 			System.err.println("A password was not provided to encode");
 		}
 		else {
-			System.out.println("Encoded password: " + new String(BASE64.encode(args[0].getBytes())));
+			System.out.println("Encoded password: " + decrypt(args[0]));
 		}
 	}
 	// User info
@@ -47,8 +44,8 @@ public class User implements UserConstants, IUser {
 	String password;
 	String email;
 
-// Encryption
-private boolean encrypted = false;
+	// Encryption
+	private boolean encrypted = false;
 
 protected User(final String prefix) {
 	this(prefix, null);
@@ -174,12 +171,7 @@ final public String getName() {
 @Override
 final public String getPassword() {
 	if (this.encrypted) {
-		// If a secret key is not provided, use the legacy approach to decrypt the text.
-		if(getSecretKey() == null) {
-			return new String(BASE64.decode(this.password.getBytes()));
-		}
-		// If a secret key is provided, use it to decrypt the text.
-		return EncryptionUtils.decrypt(this.password);
+		return decrypt(this.password);
 	}
 	return this.password;
 }

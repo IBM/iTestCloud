@@ -4,7 +4,7 @@ Bundle-Name: Acme Page Objects
 Bundle-SymbolicName: com.ibm.itest.cloud.acme
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: IBM
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: com.ibm.itest.cloud.common;bundle-version="1.0.0";visibility:=reexport
 Automatic-Module-Name: com.ibm.itest.cloud.acme
 Export-Package: com.ibm.itest.cloud.acme.config,

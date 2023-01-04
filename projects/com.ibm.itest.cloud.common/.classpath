@@ -11,7 +11,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/auto-service-annotations-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/byte-buddy-1.12.18.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/checker-qual-3.12.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/com.ibm.automation.framework.security.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-exec-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/error_prone_annotations-2.11.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/failsafe-3.3.0.jar"/>

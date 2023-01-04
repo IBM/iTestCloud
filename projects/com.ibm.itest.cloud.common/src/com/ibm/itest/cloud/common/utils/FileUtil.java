@@ -192,8 +192,6 @@ public static void deleteFile(final File file) throws IOException {
 		if (i == maxAttempt) {
 			throw new IOException("Could not delete " + file.getCanonicalPath()); //$NON-NLS-1$
 		}
-		System.gc();
-		System.runFinalization();
 		try {
 			Thread.sleep(250); // wait 250 ms before retrying
 		} catch(InterruptedException e) {
