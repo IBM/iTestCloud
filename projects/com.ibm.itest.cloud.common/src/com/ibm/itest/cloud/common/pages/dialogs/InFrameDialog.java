@@ -139,11 +139,8 @@ protected void storeBrowserFrame() {
  * @throws ScenarioFailedError If the frame argument is true as the frame is
  * already known.
  */
-public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final int timeout, final boolean isInFrame) {
-	if (isInFrame) {
-		throw new ScenarioFailedError("Should not find element in frames in framed dialog.");
-	}
-
+@Override
+public BrowserElement waitForElement(final BrowserElement parentElement, final By locator, final int timeout) {
 	// Select frame
 	selectFrame();
 

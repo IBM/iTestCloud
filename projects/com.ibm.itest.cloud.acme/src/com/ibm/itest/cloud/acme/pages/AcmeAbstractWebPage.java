@@ -120,7 +120,7 @@ public AcmeApplication getApplication() {
  */
 protected BrowserElement getBreadcrumbElement(final int index, final boolean fail) {
 	String xpath = index < 0 ? LAST_BREADCRUMB_ELEMENT_XPATH : (BREADCRUMB_ELEMENTS_XPATH_PREFIX + "[" + (index+1) + "]/*");
-	return waitForElement(By.xpath(xpath), fail, fail? timeout() : 1);
+	return waitForElement(By.xpath(xpath), (fail ? timeout() : tinyTimeout()), fail);
 }
 
 /**
@@ -253,7 +253,7 @@ public boolean isBreadcrumbAvailable() {
 
 @Override
 public boolean isInApplicationContext() {
-	return waitForElement(NAVIGATION_TITLE_LINK_LOCATOR, false /*fail*/, timeout()) != null;
+	return waitForElement(NAVIGATION_TITLE_LINK_LOCATOR, timeout(), false /*fail*/) != null;
 }
 
 /**
@@ -403,7 +403,7 @@ protected void performLogin(final User user) {
 
 		BrowserElement[] w3idLoginRelatedElements =
 			this.browser.waitForMultipleElements(
-				null /*parentElement*/, new By[]{By.name("username"), getLoggedUserElementLocator()}, new boolean[]{true,false} /*displayFlags*/, timeout(), true /*fail*/);
+				null /*parentElement*/, new By[]{By.name("username"), getLoggedUserElementLocator()}, timeout(), true /*fail*/, new boolean[]{true,false} /*displayFlags*/);
 
 			// If w3id login page is displayed (it will not be displayed if the user already logged on to W3 in the same browser session).
 		if(w3idLoginRelatedElements[0] != null) {
@@ -422,7 +422,7 @@ protected void performLogin(final User user) {
 			clickButton(By.id("btn_signin"), true /*check*/);
 
 			// If an error message (such as "Your w3id or password was entered incorrectly") is displayed, throw an exception.
-			BrowserElement w3idLoginErrorMessage = waitForElement(By.className("errorMessage"), false /*fail*/, 1 /*time_out*/, false /*displayed*/);
+			BrowserElement w3idLoginErrorMessage = waitForElement(By.className("errorMessage"), tinyTimeout(), false /*fail*/, false /*displayed*/);
 			if(w3idLoginErrorMessage != null) {
 				throw new AcmeScenarioLoginError("The following error occurred during log in operation: " + w3idLoginErrorMessage.getText());
 			}
@@ -440,7 +440,7 @@ protected void performLogin(final User user) {
 
 		// Check whether there's a login issue in the login page.
 		BrowserElement ibmAlertElement =
-			waitForElement(By.xpath("//*[contains(@class,'ibm-alert')]/*"), false /*fail*/, 2 /*time_out*/, false /*displayed*/);
+			waitForElement(By.xpath("//*[contains(@class,'ibm-alert')]/*"), 2 /*time_out*/, false /*fail*/, false /*displayed*/);
 		if (ibmAlertElement != null) {
 			// Throw an appropriate error if there is a login issue.
 			throw new AcmeScenarioLoginError("Cannot login on page '" + this.location + "' with user " + user + ".\nError message is: " + ibmAlertElement.getText());
@@ -448,7 +448,7 @@ protected void performLogin(final User user) {
 
 		// Check if an APS Portal account does not exist for the given IBM ID.
 		BrowserElement alertErrorElement =
-			waitForElement(By.xpath("//*[contains(@class,'alert--error')]"), false /*fail*/, 1 /*time_out*/, false /*displayed*/);
+			waitForElement(By.xpath("//*[contains(@class,'alert--error')]"), 1 /*time_out*/, false /*fail*/, false /*displayed*/);
 		if(alertErrorElement != null) {
 			String alertError = alertErrorElement.getText();
 
@@ -466,7 +466,7 @@ protected void performLogin(final User user) {
 		}
 
 		// Check whether there's a login issue in Watson Studio.
-		BrowserElement errorMsgElement = waitForElement(By.id("errormsg"), /*fail:*/false, /*timeout:*/1, /*displayed:*/false);
+		BrowserElement errorMsgElement = waitForElement(By.id("errormsg"), 1 /*time_out*/, /*fail:*/false, /*displayed:*/false);
 		if (errorMsgElement != null && errorMsgElement.isDisplayed()) {
 			BrowserElement textElement = errorMsgElement.waitForElement(By.xpath(".//p[@id='errtxt']"));
 			throw new AcmeScenarioLoginError("Cannot login on page '"+this.location+"' with user "+user+".\nError message is: "+textElement.getText());
@@ -482,7 +482,7 @@ protected void performLogin(final User user) {
 
 	// Wait until the login operation to be completed and the logged user information
 	// to appear as it may take some time in some geographies.
-	waitForElement(getLoggedUserElementLocator(), true /*fail*/, timeout(), false /*displayed*/);
+	waitForElement(getLoggedUserElementLocator(), timeout(), true /*fail*/, false /*displayed*/);
 
 	// Store user in application
 	this.topology.login(this.browser.getCurrentUrl(), user);
@@ -518,7 +518,7 @@ protected void performLogout() {
 
 	// Wait for login button to reappear.
 	// Sometimes a blank or error page is loaded due to various product defects.
-	if(waitForElement(IBM_ID_LOG_IN_ELEMENT_LOCATOR, false /*fail*/, 2 * 60 /*time_out*/, true /*displayed*/, false /*single*/) == null) {
+	if(waitForElement(IBM_ID_LOG_IN_ELEMENT_LOCATOR, 2 * 60 /*time_out*/, false /*fail*/, true /*displayed*/, false /*single*/) == null) {
 		// A BrowserError must be raised in such a situation.
 		throw new BrowserError("Web page '" + getUrl() + "' does not contain sign-in elements");
 	}

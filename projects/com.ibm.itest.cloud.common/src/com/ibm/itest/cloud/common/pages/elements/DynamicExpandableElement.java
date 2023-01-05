@@ -88,6 +88,6 @@ public boolean isExpandable() throws ScenarioFailedError {
 
 @Override
 public boolean isExpanded() throws ScenarioFailedError {
-	return waitForElement(this.locator, false /*fail*/, tinyTimeout()) != null;
+	return waitForElement(this.locator, tinyTimeout(), false /*fail*/) != null;
 }
 }

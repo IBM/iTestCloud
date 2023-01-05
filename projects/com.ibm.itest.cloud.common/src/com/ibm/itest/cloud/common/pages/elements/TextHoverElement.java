@@ -63,7 +63,7 @@ public TextHoverElement(final Page page) {
  * @param page The page on which the hover occurs.
  */
 public static void waitAndCancel(final Page page) {
-	BrowserElement dialogElement = page.waitForElement(DEFAULT_TEXT_HOVER_LOCATOR, false/*fail*/, 1/*sec*/);
+	BrowserElement dialogElement = page.waitForElement(DEFAULT_TEXT_HOVER_LOCATOR, 1 /*sec*/, false/*fail*/);
 	if (dialogElement != null) {
 		pause(250);
 		dialogElement.sendKeys(Keys.ESCAPE);

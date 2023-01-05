@@ -80,10 +80,10 @@ public void collapse() throws ScenarioFailedError {
  */
 protected void findElement(final boolean fail) {
 	if(this.parent != null) {
-		this.element = this.browser.waitForElement(this.parent.getElement(), this.locator, (fail ? timeout() : 0), fail);
+		this.element = this.browser.waitForElement(this.parent.getElement(), this.locator, (fail ? timeout() : tinyTimeout()), fail);
 	}
 	else {
-		this.element = waitForElement(this.locator, fail, (fail ? timeout() : 0));
+		this.element = waitForElement(this.locator, (fail ? timeout() : tinyTimeout()), fail);
 	}
 }
 
