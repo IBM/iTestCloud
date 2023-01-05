@@ -67,8 +67,8 @@ public ElementWrapper(final ElementWrapper parent, final BrowserElement element)
 	this.parent = parent;
 }
 
-public ElementWrapper(final ElementWrapper parent, final By selectBy) {
-	this(parent.getPage(), parent.element.waitForElement(selectBy));
+public ElementWrapper(final ElementWrapper parent, final By findBy) {
+	this(parent.getPage(), parent.element.waitForElement(findBy));
 	this.parent = parent;
 }
 

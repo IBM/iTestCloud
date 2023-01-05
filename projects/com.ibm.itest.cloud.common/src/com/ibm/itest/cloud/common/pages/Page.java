@@ -43,7 +43,6 @@ import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.*;
 import com.ibm.itest.cloud.common.topology.Application;
 import com.ibm.itest.cloud.common.topology.Topology;
-import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
 import com.ibm.itest.cloud.common.utils.FileUtil;
 
 /**
@@ -3476,47 +3475,6 @@ private void waitForReadyState() {
  */
 public String waitForText(final BrowserElement element, final boolean fail, final int time_out, final String... texts) {
 	return this.browser.waitForText(element, fail, time_out, texts);
-}
-
-/**
- * Wait until have got one of the expected texts on of the given element.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if none of the text is found before {@link #timeout()} seconds</li>
- * </ul>
- * </p>
- * @param pattern The comparison pattern to find the expected texts.
- * @param texts The expected texts
- * @return One of the expected text as {@link String} or <code>null</code>
- * if element text never matches one before the timeout and asked not to fail
- * @throws ScenarioFailedError if element text never matches an expected ones
- * before the timeout and asked to fail
- *
- * @see Browser#waitForText(BrowserElement, boolean, int, String...)
- */
-public BrowserElement waitForTextPresent(final ComparisonPattern pattern, final String... texts) {
-	return this.browser.waitForTextPresent(null, true/*fail*/, timeout(), true/*displayed*/, false/*multiple*/, pattern, texts);
-}
-
-/**
- * Wait until have got one of the expected texts on of the given element.
- * <p>
- * Note that:
- * <ul>
- * <li>it will fail if none of the text is found before {@link #timeout()} seconds</li>
- * </ul>
- * </p>
- * @param texts The expected texts
- * @return One of the expected text as {@link String} or <code>null</code>
- * if element text never matches one before the timeout and asked not to fail
- * @throws ScenarioFailedError if element text never matches an expected ones
- * before the timeout and asked to fail
- *
- * @see Browser#waitForText(BrowserElement, boolean, int, String...)
- */
-public BrowserElement waitForTextPresent(final String... texts) {
-	return this.browser.waitForTextPresent(null, true/*fail*/, timeout(), true/*displayed*/, false/*first occurrence*/, ComparisonPattern.STARTS_WITH, texts);
 }
 
 /**

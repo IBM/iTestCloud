@@ -15,24 +15,24 @@ package com.ibm.itest.cloud.common.pages.elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
 import com.ibm.itest.cloud.common.pages.Page;
 import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
 
 /**
  * This class represents a HTML dropdown list element and manages all its common actions.
  * <p>
  * The following is an example for such a dropdown list element</br>
  * <xmp>
- * <select name="pets" id="pet-select">
+ * <select name="cars" id="car-selector">
  *     <option value="">--Please choose an option--</option>
- *     <option value="dog">Dog</option>
- *     <option value="cat">Cat</option>
- *     <option value="hamster">Hamster</option>
+ *     <option value="toyota">Toyota</option>
+ *     <option value="dodge">Dodge</option>
+ *     <option value="bmw">BMW</option>
  * </select>
  * </xmp>
  * </p><p>
@@ -49,13 +49,8 @@ public class HtmlDropdownlistElement extends ElementWrapper {
 
 	final Select select;
 
-public HtmlDropdownlistElement(final ElementWrapper parent, final By selectBy) {
-	super(parent, selectBy);
-	this.select = new Select(this.element);
-}
-
-public HtmlDropdownlistElement(final Page page, final By selectBy) {
-	super(page, selectBy);
+public HtmlDropdownlistElement(final ElementWrapper parent, final By findBy) {
+	super(parent, findBy);
 	this.select = new Select(this.element);
 }
 
@@ -64,8 +59,13 @@ public HtmlDropdownlistElement(final Page page, final BrowserElement element) {
 	this.select = new Select(this.element);
 }
 
-public HtmlDropdownlistElement(final Page page, final BrowserElement parent, final By selectBy) {
-	super(page, parent.waitForElement(selectBy));
+public HtmlDropdownlistElement(final Page page, final BrowserElement parent, final By findBy) {
+	super(page, parent.waitForElement(findBy));
+	this.select = new Select(this.element);
+}
+
+public HtmlDropdownlistElement(final Page page, final By findBy) {
+	super(page, findBy);
 	this.select = new Select(this.element);
 }
 
@@ -100,6 +100,15 @@ public List<String> getAllLabels() {
 }
 
 /**
+ * Return the selected elements list.
+ *
+ * @return The list of option as a {@link List} of {@link BrowserElement}.
+ */
+public List<BrowserElement> getAllSelectedElements() {
+	return BrowserElement.getList(this.select.getAllSelectedOptions());
+}
+
+/**
  * Return the select labels list.
  *
  * @return The list of option as a {@link List} of {@link String}.
@@ -111,15 +120,6 @@ public List<String> getAllValues() {
 		values.add(option.getAttribute("value"));
 	}
 	return values;
-}
-
-/**
- * Return the selected elements list.
- *
- * @return The list of option as a {@link List} of {@link BrowserElement}.
- */
-public List<BrowserElement> getAllSelectedElements() {
-	return BrowserElement.getList(this.select.getAllSelectedOptions());
 }
 
 /**
@@ -177,6 +177,35 @@ public boolean hasValue(final String value) {
 }
 
 /**
+ * Selects an option matching a given pattern.
+ *
+ * @param pattern the pattern to match the option.
+ *
+ * @throws ScenarioFailedError if the option is not found or if it's found but disabled.
+ */
+public void select(final Pattern pattern) throws ScenarioFailedError {
+	// Loop trough the option to compare them to the option with the given pattern
+	List<WebElement> optionElements = this.select.getOptions();
+
+	for (int i = 0; i < optionElements.size(); i++) {
+		WebElement optionElement = optionElements.get(i);
+		String optionText = optionElement.getText();
+
+		if (pattern.matcher(optionText).matches()) {
+			// A matching option found.
+			if (!optionElement.isEnabled()) {
+				throw new ScenarioFailedError("Cannot select option '" + optionText + "' because it's disabled.");
+			}
+			// Select the option
+			this.select.selectByIndex(i);
+			// Return to caller.
+			return;
+		}
+	}
+	throw new ScenarioFailedError("An option matching pattern '" + pattern + "' was not found in dropdown list element " + this.element);
+}
+
+/**
  * Select the corresponding option using the given text.
  *
  * @param option The option to select in the list.
@@ -184,58 +213,6 @@ public boolean hasValue(final String value) {
  */
 public void select(final String option) throws NoSuchElementException {
 	this.select.selectByVisibleText(option);
-}
-
-/**
- * Select the corresponding option using the given text.
- *
- * @param option The option to select in the list.
- * @param pattern The pattern used for matching text.
- * @throws ScenarioFailedError If the option is not found or if it's found but disabled
- */
-public void select(final String option, final ComparisonPattern pattern) throws ScenarioFailedError {
-
-	// If pattern is equals, then it's equivalent to select it
-	if (pattern.equals(ComparisonPattern.EQUALS)) {
-		this.select.selectByVisibleText(option);
-		return;
-	}
-
-	// Start from first option element to make sure that all elements are checked
-	int index = 0;
-
-	// Loop trough the option to compare them to the option with the given pattern
-	List<WebElement> optionElements = this.select.getOptions();
-	for (WebElement optionElement: optionElements) {
-		// Select the option
-		this.select.selectByIndex(index);
-		String optionText = optionElement.getText();
-		boolean found = false;
-		switch (pattern) {
-			case EQUALS:
-				found = optionText.equals(option);
-				break;
-			case STARTS_WITH:
-				found = optionText.startsWith(option);
-				break;
-			case ENDS_WITH:
-				found = optionText.endsWith(option);
-				break;
-			case CONTAINS:
-				found = optionText.contains(option);
-				break;
-		}
-		if (found) {
-			if (!optionElement.isEnabled()) {
-				throw new ScenarioFailedError("Cannot select option '"+optionText+"' because it's disabled.");
-			}
-			return;
-		}
-		// Fix for: https://jazz.net/jazz/resource/itemName/com.ibm.team.workitem.WorkItem/330554
-		// The option we want is not this one.  Deselect this one.
-		this.select.deselectByIndex(index++);
-	}
-	throw new ScenarioFailedError(option+" was not found in selection element "+this.element);
 }
 
 /**

@@ -45,8 +45,8 @@ import com.ibm.itest.cloud.common.pages.frames.ElementFrame;
 import com.ibm.itest.cloud.common.performance.PerfManager;
 import com.ibm.itest.cloud.common.scenario.ScenarioUtils;
 import com.ibm.itest.cloud.common.scenario.errors.*;
-import com.ibm.itest.cloud.common.utils.*;
-import com.ibm.itest.cloud.common.utils.ByUtils.ComparisonPattern;
+import com.ibm.itest.cloud.common.utils.FileUtil;
+import com.ibm.itest.cloud.common.utils.StringComparisonCriterion;
 
 /**
  * Abstract class to handle information of browser used to run FVT Selenium tests.
@@ -3093,34 +3093,6 @@ public String waitForText(final BrowserElement element, final boolean fail, fina
 		throw new WaitElementTimeoutError(builder.toString());
 	}
 	return null;
-}
-
-/**
- * Returns whether one of the given text is present in the current displayed page
- * content.
- *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param fail Tells whether to fail if none of the locators is find before timeout
- * @param timeout The time to wait before giving up the research
- * @param displayed When <code>true</code> then only displayed element can be returned.
- * When <code>false</code> then the returned element can be either displayed or hidden.
- * @param single Tells whether a single element is expected
- * @param pattern The pattern used for matching text (see {@link ComparisonPattern}).
- * @param texts List of the text to find in the page
- * @return The found web element where text matches one of the given one or
- *  <code>null</code> if not asked to fail
- * @throw ScenarioFailedError if none of the text is found before the timeout
- * was reached.
- */
-public BrowserElement waitForTextPresent(final BrowserElement parentElement, final boolean fail, final int timeout, final boolean displayed, final boolean single, final ComparisonPattern pattern, final String... texts) {
-
-	// Create the search locator
-	By	textBy = ByUtils.xpathMatchingTexts(pattern, false/*all*/, texts);
-
-	// Return the element found
-	return waitForElement(parentElement, textBy, timeout, fail, displayed, single);
-
 }
 
 /**
