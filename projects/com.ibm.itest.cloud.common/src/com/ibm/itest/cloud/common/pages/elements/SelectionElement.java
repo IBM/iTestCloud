@@ -15,7 +15,6 @@ package com.ibm.itest.cloud.common.pages.elements;
 
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import com.ibm.itest.cloud.common.pages.Page;
@@ -31,8 +30,6 @@ import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
  * <ul>
  * <li>{@link #alter(boolean)}: Alter the selection status of the element.</li>
  * <li>{@link #isSelected()}: Determine whether or not this element is selected or not.</li>
- * <li>{@link #getLabelElementLocator(String, boolean)}:
- * Return the locator of a given label element of the selection element.</li>
  * <li>{@link #select()}: Select or check the given element.</li>
  * <li>{@link #selectByOpeningDialog(Class)}:
  * Select or check the element by opening a ApsPortalConfirmationDialog.</li>
@@ -45,54 +42,21 @@ import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
  */
 public class SelectionElement extends ElementWrapper {
 
-	private static final By INPUT_ELEMENT_LOCATOR = By.xpath("./../input");
+	protected BrowserElement labelElement;
 
-/**
- * Return the locator of a given label element of the selection element.
- *
- * @param label The text of the label element.
- * @param isRelative Specifies whether the locator (xpath) should be relative.
- *
- * @return The locator of the given label element of the selection element
- * as {@link By}.
- */
-public static By getLabelElementLocator(final String label, final boolean isRelative) {
-	return By.xpath((isRelative? "." : "") + "//label[.='" + label + "']");
+protected SelectionElement(final ElementWrapper parent, final BrowserElement element) {
+	super(parent, element);
+	this.labelElement = null;
 }
 
-	protected final BrowserElement labelElement;
-
-public SelectionElement(final ElementWrapper parent, final By labelElementLocator) {
-	super(parent);
-	this.labelElement = parent.getElement().waitForElement(labelElementLocator);
-	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
-}
-
-public SelectionElement(final ElementWrapper parent, final String label) {
-	this(parent, getLabelElementLocator(label, true /*isRelative*/));
-}
-
-public SelectionElement(final ElementWrapper parent, final BrowserElement labelElement) {
-	this(parent, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
+protected SelectionElement(final Page page, final BrowserElement element) {
+	super(page, element);
+	this.labelElement = null;
 }
 
 public SelectionElement(final ElementWrapper parent, final BrowserElement element, final BrowserElement labelElement) {
 	super(parent, element);
 	this.labelElement = labelElement;
-}
-
-public SelectionElement(final Page page, final By labelElementLocator) {
-	super(page);
-	this.labelElement = waitForElement(labelElementLocator);
-	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
-}
-
-public SelectionElement(final Page page, final String label) {
-	this(page, getLabelElementLocator(label, false /*isRelative*/));
-}
-
-public SelectionElement(final Page page, final BrowserElement labelElement) {
-	this(page, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
 }
 
 public SelectionElement(final Page page, final BrowserElement element, final BrowserElement labelElement) {

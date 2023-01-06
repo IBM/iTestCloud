@@ -40,16 +40,33 @@ import com.ibm.itest.cloud.common.pages.elements.*;
  */
 public class AcmeSelectionElement extends SelectionElement {
 
+	private static final By INPUT_ELEMENT_LOCATOR = By.xpath("./../input");
+
+/**
+ * Return the locator of a given label element of the selection element.
+ *
+ * @param label The text of the label element.
+ * @param isRelative Specifies whether the locator (xpath) should be relative.
+ *
+ * @return The locator of the given label element of the selection element
+ * as {@link By}.
+ */
+public static By getLabelElementLocator(final String label, final boolean isRelative) {
+	return By.xpath((isRelative? "." : "") + "//label[.='" + label + "']");
+}
+
 public AcmeSelectionElement(final ElementWrapper parent, final By labelElementLocator) {
-	super(parent, labelElementLocator);
+	super(parent, null /*element*/);
+	this.labelElement = parent.waitForElement(labelElementLocator);
+	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
 }
 
 public AcmeSelectionElement(final ElementWrapper parent, final String label) {
-	super(parent, label);
+	this(parent, getLabelElementLocator(label, true /*isRelative*/));
 }
 
 public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement labelElement) {
-	super(parent, labelElement);
+	this(parent, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
 }
 
 public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement element, final BrowserElement labelElement) {
@@ -57,15 +74,17 @@ public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement el
 }
 
 public AcmeSelectionElement(final Page page, final By labelElementLocator) {
-	super(page, labelElementLocator);
+	super(page, null /*element*/);
+	this.labelElement = page.waitForElement(labelElementLocator);
+	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
 }
 
 public AcmeSelectionElement(final Page page, final String label) {
-	super(page, label);
+	this(page, getLabelElementLocator(label, false /*isRelative*/));
 }
 
 public AcmeSelectionElement(final Page page, final BrowserElement labelElement) {
-	super(page, labelElement);
+	this(page, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
 }
 
 public AcmeSelectionElement(final Page page, final BrowserElement element, final BrowserElement labelElement) {
