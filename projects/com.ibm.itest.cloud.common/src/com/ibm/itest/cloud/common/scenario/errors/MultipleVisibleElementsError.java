@@ -22,27 +22,6 @@ import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
 public class MultipleVisibleElementsError extends ScenarioFailedError {
 
 /**
- * Create a multiple visible elements error with a generic message.
- * @deprecated as of 6.0.0; use {@link #MultipleVisibleElementsError(List)}
- * to provide more debugging information.
- */
-@Deprecated
-public MultipleVisibleElementsError() {
-	this("Found several visible elements.");
-}
-
-/**
- * Create a multiple visible elements error with a specific message.
- * @deprecated as of 6.0.0; use {@link #MultipleVisibleElementsError(List)}
- * or {@link #MultipleVisibleElementsError(String, List)} to provide more
- * debugging information.
- */
-@Deprecated
-public MultipleVisibleElementsError(final String message) {
-	super(message);
-}
-
-/**
  * Create a multiple visible elements error, including information about the locator being used
  * and how many elements have been found.
  *
@@ -63,18 +42,5 @@ public MultipleVisibleElementsError(final String message, final List<BrowserElem
 	super(message + LINE_SEPARATOR
 		+ "			-> element: " + elements.get(0).getBy() + LINE_SEPARATOR
 		+ "			-> # found: " + elements.size());
-}
-
-/**
- * Create a multiple visible elements error with a specific message.
- * @deprecated as of 6.0.0; use {@link #MultipleVisibleElementsError(List)}
- * or {@link #MultipleVisibleElementsError(String, List)} to provide more
- * debugging information.
- * TODO If necessary, create a constructor that takes a throwable and additional
- * debugging information
- */
-@Deprecated
-public MultipleVisibleElementsError(final Throwable ex) {
-	super(ex);
 }
 }

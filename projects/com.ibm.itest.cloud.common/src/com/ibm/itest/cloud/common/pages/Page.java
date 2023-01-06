@@ -21,7 +21,6 @@ import static com.ibm.itest.cloud.common.performance.PerfManager.USER_ACTION_NOT
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static com.ibm.itest.cloud.common.utils.ObjectUtils.matches;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +42,6 @@ import com.ibm.itest.cloud.common.performance.PerfManager.RegressionType;
 import com.ibm.itest.cloud.common.scenario.errors.*;
 import com.ibm.itest.cloud.common.topology.Application;
 import com.ibm.itest.cloud.common.topology.Topology;
-import com.ibm.itest.cloud.common.utils.FileUtil;
 
 /**
  * The abstract class for any web page connected to a {@link Browser}.
@@ -1169,24 +1167,6 @@ protected BrowserElement getLoggedUserElement(final boolean fail, final int wait
 protected abstract By getLoggedUserElementLocator();
 
 /**
- * Return a new file appeared in the download directory.
- * <p>
- * Such a file may appear as a result of a download.
- * </p>
- *
- * @param initialFiles A list of file existed in the download directory
- * prior for the new file to appear.
- *
- * @return The new file appeared in the download directory as {@link File}.
- *
- * @deprecated Use {@link Browser#getNewFileInDownloadDir(List)} instead.
- */
-@Deprecated
-protected File getNewFileInDownloadDir(final List<File> initialFiles) {
-	return this.browser.getNewFileInDownloadDir(initialFiles);
-}
-
-/**
  * Get the root web element of the current web page.
  *
  * @return The root element as a {@link BrowserElement}.
@@ -1399,25 +1379,6 @@ protected boolean isLoaded() {
 //	}
 
 	return true;
-}
-
-/**
- * Specifies whether a given is a temporary file.
- * <p>
- * Such a file may be created during a download operation to collect the
- * downloaded content and discarded after the download has completed.
- * </p>
- *
- * @param file The corresponding file to check.
- *
- * @return <code>true</code> if the given is a temporary file or
- * <code>false</code> otherwise.
- *
- * @deprecated Use {@link FileUtil#isTemporaryFile(File)} instead.
- */
-@Deprecated
-protected boolean isTemporaryFile(final File file) {
-	return FileUtil.isTemporaryFile(file);
 }
 
 /**

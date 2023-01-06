@@ -125,29 +125,6 @@ public int getShortTimeout() {
 }
 
 /**
- * Return the timeout used to wait for an expected element in
- * the current web page. This time is expressed in <b>seconds</b>.
- *
- * @return The timeout as a <code>int</code>.
- * @deprecated Since 6.0.0 NG, use {@link #getDefaultTimeout()} instead.
- */
-@Deprecated
-public int getTimeout() {
-	return DEFAULT_TIMEOUT;
-}
-
-/**
- * Return the timeouts used while running the scenario.
- *
- * @return The timeouts as {@link Timeouts}.
- * @deprecated Since 6.0.0 NG. Should NOT be used!
- */
-@Deprecated
-public Timeouts getTimeouts() {
-	return this.timeouts;
-}
-
-/**
  * Return the timeout used to wait for a momentarily run operation.<br>
  * This time is expressed in <b>seconds</b>.
  *
