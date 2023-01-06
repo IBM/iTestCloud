@@ -174,7 +174,7 @@ public BrowserElement getCellElement(final int row, final Pattern columnHeaderPa
 private List <BrowserElement> getCellElementsForRow(final int row) {
 	List<BrowserElement> rowElements = getRowElements();
 	return rowElements.get(row).waitForElements(
-		By.xpath(".//td | .//div[starts-with(@class,'ReactVirtualized__Table__rowColumn')]"), tinyTimeout(), false /*displayed*/);
+		By.xpath(".//td | .//div[starts-with(@class,'ReactVirtualized__Table__rowColumn')]"), tinyTimeout(), true /*fail*/, false /*displayed*/);
 }
 
 /**
@@ -484,7 +484,7 @@ public List<BrowserElement> search(final String searchText, final StringComparis
 		break;
 	}
 	xpathExpression = ".//tbody/tr/td" + xpathExpression + " | .//*[contains(@class,'ReactVirtualized__Table__row')]/*" + xpathExpression;
-	return this.browser.waitForElements(this.element, By.xpath(xpathExpression), tinyTimeout(), fail, true/*displayed*/);
+	return this.browser.waitForElements(this.element, By.xpath(xpathExpression), tinyTimeout(), fail, true /*displayed*/);
 }
 
 /**

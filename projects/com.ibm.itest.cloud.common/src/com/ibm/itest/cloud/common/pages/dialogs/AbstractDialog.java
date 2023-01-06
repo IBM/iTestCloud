@@ -407,7 +407,7 @@ private List<BrowserElement> getMatchingDialogElements(final List<BrowserElement
  * @return The list of opened dialog elements as a {@link List} of {@link BrowserElement}
  */
 protected List<BrowserElement> getOpenedDialogElements(final int seconds) {
-	return this.browser.waitForElements(getParentElement(), this.findBy, seconds, false /*fail*/, true/*visible*/);
+	return this.browser.waitForElements(getParentElement(), this.findBy, seconds, false /*fail*/, true /*displayed*/);
 }
 
 /**
@@ -489,7 +489,6 @@ public BrowserElement open(final BrowserElement openElement, final Action postEl
 	clickOnOpenElement(openElement, postElementClickAction);
 
 	// Wait for dialog web element
-	//	this.element = this.browser.waitForElement(this.parent, this.findBy, false, shortTimeout(), true/*visible*/, false/*first occurrence*/);
 	setElement();
 
 	// Loop until having got the web element
@@ -500,36 +499,6 @@ public BrowserElement open(final BrowserElement openElement, final Action postEl
 			throw new WaitElementTimeoutError("Failing to open the dialog "+this);
 		}
 
-//		// Workaround
-//		debugPrintln("Workaround: click on "+openElement+" to open dialog again as previous click didn't work...");
-//	   	try {
-//	        clickOnOpenElement(openElement, postElementClickAction);
-//	    } catch (WebDriverException wde) {
-//			// Workaround
-//	    	debugPrintException(wde);
-//			debugPrintln("Workaround: exception occurred during the click might be because the dialog finally opened!?");
-//	    }
-//	   	List<WebBrowserElement> windowElements = this.browser.waitForElements(this.parent, this.findBy, false, shortTimeout(), true/*visible*/);
-//	   	final int size = windowElements.size();
-//	   	switch (size) {
-//	   		case 1:
-//	   			// We got it, store in window and leave the loop
-//	   			this.element = windowElements.get(0);
-//	   			break;
-//	   		case 0:
-//	   			// Still not found, the loop will continue
-//	   			break;
-//	   		case 2:
-//	   			// Apparently, the first dialog finally opened but the second click opened
-//	   			// another dialog. So, keep the first one and close the second
-//	   			this.element = windowElements.get(1);
-//	   			WebBrowserElement firstWindow = windowElements.get(0);
-//	   			firstWindow.findElement(By.xpath(".//button[text()='Cancel']")).click();
-//	   			sleep(2);
-//	   			break;
-//	   		default:
-//	   			throw new ScenarioFailedError("Too many dialogs opened.");
-//	   	}
 	    setElement();
 	}
 
@@ -604,16 +573,6 @@ protected void setElement() {
    			sleep(2);
    			break;
    	}
-}
-
-/**
- * Initialize the dialog element.
- *
- * @deprecated Use {@link AbstractDialog#setElement() instead.}
- */
-@Deprecated
-protected void setElement(@SuppressWarnings("unused") final List<BrowserElement> alreadyOpenedDialogElements) {
-	throw new ScenarioFailedError("This method should not be used");
 }
 
 /**

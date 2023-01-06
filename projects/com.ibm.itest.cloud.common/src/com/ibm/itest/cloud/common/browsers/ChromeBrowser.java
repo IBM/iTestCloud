@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2012, 2022 IBM Corporation and others.
+ * Copyright (c) 2012, 2023 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,14 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 /**
- * The browser class when Google Chrome is used to run the tests.
+ * The browser class when Chrome is used to run the tests.
  */
-public class GoogleChromeBrowser extends Browser {
+public class ChromeBrowser extends Browser {
 
 	private ChromeDriverService service;
 	private ChromeOptions options;
 
-public GoogleChromeBrowser() {
+public ChromeBrowser() {
 	super("Google Chrome");
 }
 

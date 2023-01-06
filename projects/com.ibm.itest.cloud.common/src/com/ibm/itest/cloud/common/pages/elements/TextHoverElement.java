@@ -63,7 +63,7 @@ public TextHoverElement(final Page page) {
  * @param page The page on which the hover occurs.
  */
 public static void waitAndCancel(final Page page) {
-	BrowserElement dialogElement = page.waitForElement(DEFAULT_TEXT_HOVER_LOCATOR, 1 /*sec*/, false/*fail*/);
+	BrowserElement dialogElement = page.waitForElement(DEFAULT_TEXT_HOVER_LOCATOR, 1 /*sec*/, false /*fail*/);
 	if (dialogElement != null) {
 		pause(250);
 		dialogElement.sendKeys(Keys.ESCAPE);
@@ -167,7 +167,7 @@ public BrowserElement open(final BrowserElement webElement) {
 	}
 
 	// Store the hover element
-	this.element = this.browser.waitForElement(null, this.findBy, (int) ((timeout - System.currentTimeMillis())/1000), true/*fail*/, true/*displayed*/, true/*single expected*/);
+	this.element = this.browser.waitForElement(null, this.findBy, (int) ((timeout - System.currentTimeMillis())/1000), true /*fail*/, true /*displayed*/, true /*single*/);
 
 	waitForLoadingEnd();
 

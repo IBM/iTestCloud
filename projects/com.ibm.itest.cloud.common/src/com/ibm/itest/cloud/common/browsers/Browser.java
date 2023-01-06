@@ -260,7 +260,7 @@ public abstract class Browser implements SearchContext {
     		case BROWSER_KIND_IEXPLORER:
     			return new InternetExplorerBrowser();
     		case BROWSER_KIND_GCHROME:
-    			return new GoogleChromeBrowser();
+    			return new ChromeBrowser();
     		case BROWSER_KIND_CHROMIUM:
     			return new ChromiumBrowser();
     		case BROWSER_KIND_SAFARI:

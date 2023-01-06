@@ -28,7 +28,6 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * <li>{@link #getColumnSortMode(Pattern)}: Return the sort mode of the column macthing the given name.</li>
  *</ul>
  * </p>
- * @since 6.0
  */
 public interface ITableElement {
 	/**

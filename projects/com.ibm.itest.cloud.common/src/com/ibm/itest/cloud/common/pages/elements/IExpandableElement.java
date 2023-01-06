@@ -27,7 +27,6 @@ import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
  * <li>{@link #toggle()}: Toggle the current web element.</li>
  *</ul>
  * </p>
- * @since 6.0
  */
 public interface IExpandableElement {
 

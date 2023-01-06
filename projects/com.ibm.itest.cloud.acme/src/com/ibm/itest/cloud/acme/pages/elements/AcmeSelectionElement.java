@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2018, 2022 IBM Corporation and others.
+ * Copyright (c) 2018, 2023 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,10 @@
  *********************************************************************/
 package com.ibm.itest.cloud.acme.pages.elements;
 
-import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.println;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 
-import com.ibm.itest.cloud.acme.pages.dialogs.AcmeConfirmationDialog;
 import com.ibm.itest.cloud.common.pages.Page;
-import com.ibm.itest.cloud.common.pages.elements.BrowserElement;
-import com.ibm.itest.cloud.common.pages.elements.ElementWrapper;
-import com.ibm.itest.cloud.common.scenario.errors.ScenarioFailedError;
-import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
+import com.ibm.itest.cloud.common.pages.elements.*;
 
 /**
  * This class represents a generic selection element such as a check-box and radio-button
@@ -45,144 +38,37 @@ import com.ibm.itest.cloud.common.scenario.errors.WaitElementTimeoutError;
  * </ul>
  * </p>
  */
-public class AcmeSelectionElement extends AcmeWebElementWrapper {
-
-	private static final By INPUT_ELEMENT_LOCATOR = By.xpath("./../input");
-
-/**
- * Return the locator of a given label element of the selection element.
- *
- * @param label The text of the label element.
- * @param isRelative Specifies whether the locator (xpath) should be relative.
- *
- * @return The locator of the given label element of the selection element
- * as {@link By}.
- */
-public static By getLabelElementLocator(final String label, final boolean isRelative) {
-	return By.xpath((isRelative? "." : "") + "//label[.='" + label + "']");
-}
-
-	private final BrowserElement labelElement;
+public class AcmeSelectionElement extends SelectionElement {
 
 public AcmeSelectionElement(final ElementWrapper parent, final By labelElementLocator) {
-	super(parent);
-	this.labelElement = parent.getElement().waitForElement(labelElementLocator);
-	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
+	super(parent, labelElementLocator);
 }
 
 public AcmeSelectionElement(final ElementWrapper parent, final String label) {
-	this(parent, getLabelElementLocator(label, true /*isRelative*/));
+	super(parent, label);
 }
 
 public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement labelElement) {
-	this(parent, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
+	super(parent, labelElement);
 }
 
 public AcmeSelectionElement(final ElementWrapper parent, final BrowserElement element, final BrowserElement labelElement) {
-	super(parent, element);
-	this.labelElement = labelElement;
+	super(parent, element, labelElement);
 }
 
 public AcmeSelectionElement(final Page page, final By labelElementLocator) {
-	super(page);
-	this.labelElement = waitForElement(labelElementLocator);
-	this.element = this.labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/);
+	super(page, labelElementLocator);
 }
 
 public AcmeSelectionElement(final Page page, final String label) {
-	this(page, getLabelElementLocator(label, false /*isRelative*/));
+	super(page, label);
 }
 
 public AcmeSelectionElement(final Page page, final BrowserElement labelElement) {
-	this(page, labelElement.waitForElement(INPUT_ELEMENT_LOCATOR, false /*displayed*/), labelElement);
+	super(page, labelElement);
 }
 
 public AcmeSelectionElement(final Page page, final BrowserElement element, final BrowserElement labelElement) {
-	super(page, element);
-	this.labelElement = labelElement;
-}
-
-/**
- * Alter the selection status of the element.
- * <p>
- * This operation only applies to input elements such as checkboxes, options in a
- * select and radio buttons. The element status will only be altered if the current
- * status is different from the provided.
- * </p>
- * @param select Specifies whether to select or clear the element. The value <b>true</b>
- * or <b>false</b> implies that the element should be selected or cleared respectively.
- *
- * @return <code>true</code> if an alteration is needed or <code>false</code> otherwise.
- */
-public boolean alter(final boolean select) {
-	boolean selectionNeeded = (select && !this.element.isSelected()) || (!select && this.element.isSelected());
-
-	if (selectionNeeded) {
-		this.labelElement.click();
-	}
-
-	return selectionNeeded;
-}
-
-/**
- * Determine whether or not this element is selected.
- * <p>
- * This operation only applies to input elements such as checkboxes,
- * options in a select and radio buttons.
- * </p>
- * @return True if the element is currently selected or checked, false otherwise.
- */
-public boolean isSelected(){
-	return this.element.isSelected();
-}
-
-/**
- * Select or check the element.
- * <p>
- * This operation only applies to input elements such as checkboxes,
- * options in a select and radio buttons. The element will only be
- * selected/checked if it has not been selected/checked already.
- * </p>
- *
- * @return <code>true</code> if a selection is needed or <code>false</code> otherwise.
- */
-public boolean select() {
-	return alter(true /* select */);
-}
-
-/**
- * Select or check the element by opening a {@link AcmeConfirmationDialog}.
- * <p>
- * A confirmation dialog will automatically be opened after clicking
- * on the particular menu item.
- * </p>
- * @param dialogClass A class representing the confirmation dialog opened
- * after selecting the element.
- *
- * @return The opened confirmation dialog as a subclass of {@link AcmeConfirmationDialog}.
- */
-public <P extends AcmeConfirmationDialog> P selectByOpeningDialog(final Class<P> dialogClass) {
-	// Throw an exception if the selection element has already been selected
-	// since the dialog can not be opened and returned back to caller.
-	if (isSelected()) throw new ScenarioFailedError("The element had already been selected. Therefore, the associated dialog can not be opened");
-	P confirmationDialog;
-
-	try {
-		confirmationDialog = dialogClass.getConstructor(Page.class).newInstance(getPage());
-	}
-	catch (WebDriverException e) {
-		throw e;
-	}
-	catch (InstantiationException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e) {
-		println("Exception cause: " + e.getCause());
-		throw new ScenarioFailedError(e);
-	}
-	catch (Throwable e) {
-		println("Exception cause: " + e.getCause());
-		throw new WaitElementTimeoutError(e);
-	}
-
-	confirmationDialog.open(this.labelElement);
-	return confirmationDialog;
+	super(page, element, labelElement);
 }
 }
