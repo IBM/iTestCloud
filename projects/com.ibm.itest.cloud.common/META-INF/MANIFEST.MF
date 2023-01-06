@@ -5,7 +5,7 @@ Bundle-SymbolicName: com.ibm.itest.cloud.common
 Automatic-Module-Name: com.ibm.itest.cloud.common
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: IBM
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.google.gson,
  com.ibm.itest.cloud.common;version="1.0.0",
  com.ibm.itest.cloud.common.annotations,
