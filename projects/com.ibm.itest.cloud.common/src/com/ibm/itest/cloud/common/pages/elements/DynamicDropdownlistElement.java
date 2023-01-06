@@ -45,7 +45,7 @@ public class DynamicDropdownlistElement extends DropdownlistElement {
 
 public DynamicDropdownlistElement(final ElementWrapper parent, final By locator, final By expansionLocator, final By selectionLocator) {
 	this(parent, locator, (BrowserElement) null /*expansionElement*/, selectionLocator);
-	this.expansionElement = parent.getElement().waitForElement(expansionLocator);
+	this.expansionElement = this.page.waitForElement(expansionLocator);
 }
 
 public DynamicDropdownlistElement(final ElementWrapper parent, final By locator, final BrowserElement expansionElement, final By selectionLocator) {
@@ -57,7 +57,7 @@ public DynamicDropdownlistElement(final ElementWrapper parent, final By locator,
 
 public DynamicDropdownlistElement(final Page page, final By locator, final By expansionLocator, final By selectionLocator) {
 	this(page, locator, (BrowserElement) null /*expansionElement*/, selectionLocator);
-	this.expansionElement = waitForElement(expansionLocator);
+	this.expansionElement = page.waitForElement(expansionLocator);
 }
 
 public DynamicDropdownlistElement(final Page page, final By locator, final BrowserElement expansionElement, final By selectionLocator) {
@@ -80,10 +80,10 @@ public void collapse() throws ScenarioFailedError {
  */
 protected void findElement(final boolean fail) {
 	if(this.parent != null) {
-		this.element = this.browser.waitForElement(this.parent.getElement(), this.locator, (fail ? timeout() : tinyTimeout()), fail);
+		this.element = this.parent.waitForElement(this.locator, (fail ? timeout() : tinyTimeout()), fail);
 	}
 	else {
-		this.element = waitForElement(this.locator, (fail ? timeout() : tinyTimeout()), fail);
+		this.element = this.page.waitForElement(this.locator, (fail ? timeout() : tinyTimeout()), fail);
 	}
 }
 

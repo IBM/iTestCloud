@@ -66,8 +66,7 @@ public ElementWrapper(final ElementWrapper parent, final BrowserElement element)
 }
 
 public ElementWrapper(final ElementWrapper parent, final By findBy) {
-	this(parent.getPage(), parent.element.waitForElement(findBy));
-	this.parent = parent;
+	this(parent, parent.waitForElement(findBy));
 }
 
 public ElementWrapper(final Page page) {
@@ -80,8 +79,7 @@ public ElementWrapper(final Page page, final BrowserElement element) {
 }
 
 public ElementWrapper(final Page page, final By findBy) {
-	super(page);
-	this.element = page.waitForElement(findBy);
+	this(page, page.waitForElement(findBy));
 }
 
 /**
@@ -258,7 +256,7 @@ public <P extends ElementWrapper> P openElementUsingLink(final BrowserElement li
  * having clicked on the link.
  */
 public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final By findBy, final Class<P> elementClass, final String... elementData) {
-	return getPage().openElementUsingLink(this.element.waitForElement(linkBy), findBy, elementClass, elementData);
+	return getPage().openElementUsingLink(waitForElement(linkBy), findBy, elementClass, elementData);
 }
 
 /**
@@ -272,7 +270,7 @@ public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final 
  * having clicked on the link.
  */
 public <P extends ElementWrapper> P openElementUsingLink(final By linkBy, final Class<P> elementClass, final String... elementData) {
-	return getPage().openElementUsingLink(this.element.waitForElement(linkBy), elementClass, elementData);
+	return getPage().openElementUsingLink(waitForElement(linkBy), elementClass, elementData);
 }
 
 /**
@@ -356,7 +354,7 @@ public BrowserElement select(final BrowserElement listElement, final String sele
  * @throws ScenarioFailedError if no item matches the expected selection.
  */
 public BrowserElement select(final By locator, final Pattern pattern) {
-	return this.page.select(this.element.waitForElement(locator), pattern);
+	return this.page.select(waitForElement(locator), pattern);
 }
 
 /**
@@ -371,7 +369,7 @@ public BrowserElement select(final By locator, final Pattern pattern) {
  * @throws ScenarioFailedError if no item matches the expected selection.
  */
 public BrowserElement select(final By locator, final String selection) {
-	return this.page.select(this.element.waitForElement(locator), selection);
+	return this.page.select(waitForElement(locator), selection);
 }
 
 /**
@@ -458,7 +456,7 @@ public BrowserElement typeText(final By locator, final String text) {
  * @see Browser#typeText(BrowserElement, String, Keys, boolean, int)
  */
 public BrowserElement typeText(final By locator, final String text, final Keys key) {
-	BrowserElement inputElement = this.element.waitForElement(locator);
+	BrowserElement inputElement = waitForElement(locator);
 	this.page.typeText(inputElement, text, key);
 	return inputElement;
 }

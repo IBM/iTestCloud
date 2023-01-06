@@ -309,7 +309,7 @@ protected BrowserElement getHeaderElement(final Pattern pattern) {
  * @return The web elements as a {@link List} of {@link BrowserElement}.
  */
 protected List<BrowserElement> getHeaderElements() {
-	return this.element.waitForElements(By.xpath(".//th | .//div[starts-with(@class,'ReactVirtualized__Table__headerColumn')]"));
+	return waitForElements(By.xpath(".//th | .//div[starts-with(@class,'ReactVirtualized__Table__headerColumn')]"));
 }
 
 private int getHeaderIndex(final Pattern pattern) {
@@ -332,7 +332,7 @@ public int getRowCount() {
 }
 
 private List<BrowserElement> getRowElements() {
-	return this.element.waitForElements(By.xpath(".//tbody/tr | .//div[starts-with(@class,'ReactVirtualized__Table__row')][@role='row']"), tinyTimeout());
+	return waitForElements(By.xpath(".//tbody/tr | .//div[starts-with(@class,'ReactVirtualized__Table__row')][@role='row']"), tinyTimeout(), false /*fail*/);
 }
 
 /**
@@ -369,7 +369,7 @@ public String getSortedColumn() {
 protected SortMode getSortMode(final BrowserElement hElement) {
 	String sortAttribute = "None";
 	BrowserElement iconElement =
-		hElement.waitForElement(By.xpath(".//button | .//span[starts-with(@class,'DataGrid') and contains(@class,'__activeSort')]/*[name()='svg'][starts-with(@class,'ReactVirtualized__Table__sortableHeaderIcon')]"), tinyTimeout());
+		hElement.waitForElement(By.xpath(".//button | .//span[starts-with(@class,'DataGrid') and contains(@class,'__activeSort')]/*[name()='svg'][starts-with(@class,'ReactVirtualized__Table__sortableHeaderIcon')]"), tinyTimeout(), false /*fail*/);
 
 	if (iconElement != null) {
 		String iconClass = iconElement.getAttribute("class");
@@ -484,7 +484,7 @@ public List<BrowserElement> search(final String searchText, final StringComparis
 		break;
 	}
 	xpathExpression = ".//tbody/tr/td" + xpathExpression + " | .//*[contains(@class,'ReactVirtualized__Table__row')]/*" + xpathExpression;
-	return this.browser.waitForElements(this.element, By.xpath(xpathExpression), tinyTimeout(), fail, true /*displayed*/);
+	return waitForElements(this.element, By.xpath(xpathExpression), tinyTimeout(), fail);
 }
 
 /**

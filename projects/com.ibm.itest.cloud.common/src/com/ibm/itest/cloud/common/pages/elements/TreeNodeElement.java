@@ -289,7 +289,7 @@ protected TreeNodeElement getChildElement(final String path, final boolean fail)
  */
 protected List<TreeNodeElement> getChildElements() {
 	List<TreeNodeElement> childWebFolderElements = new ArrayList<TreeNodeElement>();
-	List<BrowserElement> childWebElements = this.element.waitForElements(this.childrenLocator, tinyTimeout(), false /*fail*/, false /*displayed*/);
+	List<BrowserElement> childWebElements = waitForElements(this.childrenLocator, tinyTimeout(), false /*fail*/, false /*displayed*/);
 
 	for (BrowserElement childWebElement : childWebElements) {
 		childWebFolderElements.add(createChildElement(childWebElement));
@@ -309,7 +309,7 @@ protected String getExpandableAttribute() {
  * @return The web element used to expand or collapse the tree node element as {@link BrowserElement}.
  */
 protected BrowserElement getExpansionElement() {
-	return (this.expansionLocator != null) ? this.element.waitForElement(this.expansionLocator, tinyTimeout(), false /*fail*/) : this.element;
+	return (this.expansionLocator != null) ? waitForElement(this.expansionLocator, tinyTimeout(), false /*fail*/) : this.element;
 }
 
 /**
@@ -327,7 +327,7 @@ protected String getLabel() {
  * @return The label element of the tree node or tree leaf element as {@link BrowserElement}.
  */
 public BrowserElement getLabelElement() {
-	return this.browser.waitForElement(this.element, this.labelLocator, timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
+	return waitForElement(this.element, this.labelLocator, timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
 }
 
 /**

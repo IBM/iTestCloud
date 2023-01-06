@@ -49,6 +49,11 @@ public class HtmlDropdownlistElement extends ElementWrapper {
 
 	final Select select;
 
+public HtmlDropdownlistElement(final ElementWrapper parent, final BrowserElement element) {
+	super(parent, element);
+	this.select = new Select(this.element);
+}
+
 public HtmlDropdownlistElement(final ElementWrapper parent, final By findBy) {
 	super(parent, findBy);
 	this.select = new Select(this.element);
@@ -56,11 +61,6 @@ public HtmlDropdownlistElement(final ElementWrapper parent, final By findBy) {
 
 public HtmlDropdownlistElement(final Page page, final BrowserElement element) {
 	super(page, element);
-	this.select = new Select(this.element);
-}
-
-public HtmlDropdownlistElement(final Page page, final BrowserElement parent, final By findBy) {
-	super(page, parent.waitForElement(findBy));
 	this.select = new Select(this.element);
 }
 
