@@ -73,7 +73,8 @@ import com.ibm.itest.cloud.common.scenario.errors.*;
 public class BrowserElement implements WebElement, Locatable {
 
 	/* Locators */
-	private static final By CHILDREN_LOCATOR = By.xpath("./child::*");
+	private static final String ANY_NODE_WILDCARD = "*";
+	private static final String CHILDREN_XPATH_PREFIX = "./child::";
 
 	/* Javascripts */
 	private final static String MOUSE_OVER_JAVASCRIPT =
@@ -86,27 +87,27 @@ public class BrowserElement implements WebElement, Locatable {
 	 */
 	public static final int MAX_RECOVERY_ATTEMPTS = 5;
 
-/**
- * Return a list of {@link BrowserElement} assuming the given list *is* a
- * list of this kind of {@link WebElement}.
- *
- * @param elements The list of {@link WebElement}.
- * @return The list of {@link BrowserElement}.
- * @throws IllegalArgumentException If one of the element of the given list is
- * not a {@link BrowserElement}.
- */
-public static List<BrowserElement> getList(final List<WebElement> elements) {
-	List<BrowserElement> webElements = new ArrayList<BrowserElement>(elements.size());
-	for (WebElement element: elements) {
-		try {
-			webElements.add((BrowserElement)element);
+	/**
+	 * Return a list of {@link BrowserElement} assuming the given list *is* a
+	 * list of this kind of {@link WebElement}.
+	 *
+	 * @param elements The list of {@link WebElement}.
+	 * @return The list of {@link BrowserElement}.
+	 * @throws IllegalArgumentException If one of the element of the given list is
+	 * not a {@link BrowserElement}.
+	 */
+	public static List<BrowserElement> getList(final List<WebElement> elements) {
+		List<BrowserElement> webElements = new ArrayList<BrowserElement>(elements.size());
+		for (WebElement element: elements) {
+			try {
+				webElements.add((BrowserElement)element);
+			}
+			catch (ClassCastException cce) {
+				throw new IllegalArgumentException("The given list was not a list of WebBrowserElement: "+cce.getMessage());
+			}
 		}
-		catch (ClassCastException cce) {
-			throw new IllegalArgumentException("The given list was not a list of WebBrowserElement: "+cce.getMessage());
-		}
+		return webElements;
 	}
-	return webElements;
-}
 
 	/**
 	 * The browser to use to search the web element.
@@ -139,15 +140,15 @@ public static List<BrowserElement> getList(final List<WebElement> elements) {
 	 */
 	private BrowserFrame frame;
 
-/**
- * Information of parent when the current web element has been found
- * among several other elements.
- * <p>
- * These information allow recovering to be more precise, hence be sure not
- * to recover another element.
- * </p>
- */
-final private int parentListSize, parentListIndex;
+	/**
+	 * Information of parent when the current web element has been found
+	 * among several other elements.
+	 * <p>
+	 * These information allow recovering to be more precise, hence be sure not
+	 * to recover another element.
+	 * </p>
+	 */
+	final private int parentListSize, parentListIndex;
 
 /**
  * Create a web browser element using the given search mechanism in the given
@@ -748,15 +749,18 @@ public By getBy() {
  * @throws ScenarioFailedError If there are either no child or several children
  * for the current element.
  */
-public BrowserElement getChild() throws ScenarioFailedError{
-	List<BrowserElement> children = getChildren();
+public BrowserElement getChild() throws ScenarioFailedError {
+	return getChild(getChildren());
+}
+
+private BrowserElement getChild(final List<BrowserElement> children) throws ScenarioFailedError {
 	switch(children.size()) {
 		case 1:
 			return children.get(0);
 		case 0:
-			throw new WaitElementTimeoutError("Web element "+this+" has no child.");
+			throw new WaitElementTimeoutError("Web element " + this + " has no child.");
 		default:
-			throw new ScenarioFailedError("Web element "+this+" has more than one child.");
+			throw new ScenarioFailedError("Web element " + this + " has more than one child.");
 	}
 }
 
@@ -768,16 +772,8 @@ public BrowserElement getChild() throws ScenarioFailedError{
  * @throws ScenarioFailedError If there are either no child or several children
  * for the current element.
  */
-public BrowserElement getChild(final String tag) throws ScenarioFailedError{
-	List<BrowserElement> children = getChildren(tag);
-	switch(children.size()) {
-		case 1:
-			return children.get(0);
-		case 0:
-			throw new WaitElementTimeoutError("Web element "+this+" has no child.");
-		default:
-			throw new ScenarioFailedError("Web element "+this+" has more than one child.");
-	}
+public BrowserElement getChild(final String tag) throws ScenarioFailedError {
+	return getChild(getChildren(tag));
 }
 
 /**
@@ -786,7 +782,7 @@ public BrowserElement getChild(final String tag) throws ScenarioFailedError{
  * @return The list of web element children as a {@link List} of {@link BrowserElement}.
  */
 public List<BrowserElement> getChildren() {
-	return getList(findElements(CHILDREN_LOCATOR));
+	return getList(findElements(By.xpath(CHILDREN_XPATH_PREFIX + ANY_NODE_WILDCARD)));
 }
 
 /**
@@ -795,7 +791,7 @@ public List<BrowserElement> getChildren() {
  * @return The list of web element children as a {@link List} of {@link BrowserElement}.
  */
 public List<BrowserElement> getChildren(final String tag) {
-	return getList(findElements(By.xpath("./child::"+tag)));
+	return getList(findElements(By.xpath(CHILDREN_XPATH_PREFIX + tag)));
 }
 
 /**
