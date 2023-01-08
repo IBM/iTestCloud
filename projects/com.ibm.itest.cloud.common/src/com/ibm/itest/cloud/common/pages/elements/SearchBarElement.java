@@ -73,11 +73,11 @@ public SearchBarElement(final Page page, final By inputElementLocator, final By 
 }
 
 private BrowserElement getCloseButtonElement() {
-	return this.browser.waitForElement(getParentElement(), this.closeButtonLocator, tinyTimeout(), false /*fail*/);
+	return waitForElement(getParentElement(), this.closeButtonLocator, tinyTimeout(), false /*fail*/);
 }
 
 private BrowserElement getSearchInputElement() {
-	return this.browser.waitForElement(getParentElement(), this.inputElementLocator, tinyTimeout(), false /*fail*/);
+	return waitForElement(getParentElement(), this.inputElementLocator, tinyTimeout(), false /*fail*/);
 }
 
 private boolean isDisabled() {

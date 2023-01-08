@@ -43,20 +43,15 @@ public abstract class DynamicExpandableElement extends ExpandableElement {
 	 */
 	protected final By locator;
 
-public DynamicExpandableElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
-	this(parent, locator, (BrowserElement) null /*expansionElement*/);
-	this.expansionElement = parent.element.waitForElement(expansionLocator);
-}
-
 public DynamicExpandableElement(final ElementWrapper parent, final By locator, final BrowserElement expansionElement) {
 	super(parent);
 	this.locator = locator;
 	this.expansionElement = expansionElement;
 }
 
-public DynamicExpandableElement(final Page page, final By locator, final By expansionLocator) {
-	this(page, locator, (BrowserElement) null /*expansionElement*/);
-	this.expansionElement = waitForElement(expansionLocator);
+public DynamicExpandableElement(final ElementWrapper parent, final By locator, final By expansionLocator) {
+	this(parent, locator, (BrowserElement) null /*expansionElement*/);
+	this.expansionElement = this.page.waitForElement(expansionLocator);
 }
 
 public DynamicExpandableElement(final Page page, final By locator, final BrowserElement expansionElement) {
@@ -65,10 +60,24 @@ public DynamicExpandableElement(final Page page, final By locator, final Browser
 	this.expansionElement = expansionElement;
 }
 
+public DynamicExpandableElement(final Page page, final By locator, final By expansionLocator) {
+	this(page, locator, (BrowserElement) null /*expansionElement*/);
+	this.expansionElement = this.page.waitForElement(expansionLocator);
+}
+
 @Override
 public void expand() throws ScenarioFailedError {
 	super.expand();
-	this.element = waitForElement(this.locator);
+	findElement(true /*fail*/);
+}
+
+private void findElement(final boolean fail) {
+	if(this.parent != null) {
+		this.element = this.parent.waitForElement(this.locator, (fail ? timeout() : tinyTimeout()), fail);
+	}
+	else {
+		this.element = this.page.waitForElement(this.locator, (fail ? timeout() : tinyTimeout()), fail);
+	}
 }
 
 @Override
@@ -88,6 +97,7 @@ public boolean isExpandable() throws ScenarioFailedError {
 
 @Override
 public boolean isExpanded() throws ScenarioFailedError {
-	return waitForElement(this.locator, tinyTimeout(), false /*fail*/) != null;
+	findElement(false /*fail*/);
+	return (this.element != null);
 }
 }

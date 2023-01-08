@@ -411,7 +411,7 @@ protected BrowserElement getContainerElement() {
 		if (this.containerBy == null) {
 			this.containerElement = this.element;
 		} else {
-			this.containerElement = waitForElement(this.containerBy, timeout());
+			this.containerElement = waitForElement(this.containerBy);
 		}
 	}
 	return this.containerElement;
@@ -512,7 +512,7 @@ public String getText() {
  * Initialize the expandable element using the corresponding locator.
  */
 protected void initExpandableElement() {
-	BrowserElement expandElement = waitForElement(this.expandBy, timeout());
+	BrowserElement expandElement = waitForElement(this.expandBy);
 	this.expandableElement = new ExpandableElement(getPage(), expandElement, this.expansionBy);
 }
 

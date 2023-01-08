@@ -112,7 +112,7 @@ protected String getTitle(final boolean fail) {
 	if(!fail && !isTitleExpected()) {
 		return null;
 	}
-	return this.element.waitForElement(getTitleElementLocator()).getText();
+	return waitForElement(getTitleElementLocator()).getText();
 }
 
 /**

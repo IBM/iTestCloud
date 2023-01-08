@@ -53,7 +53,7 @@ public void select(final LocalDate date) {
 
 	// Check if the desired date is today and set it appropriately.
 	if(date.equals(LocalDate.now())) {
-		this.element.waitForElement(By.xpath(".//*[contains(@class, 'today')]")).click();
+		waitForElement(By.xpath(".//*[contains(@class, 'today')]")).click();
 	}
 	// Otherwise set the desired date.
 	else {
@@ -64,7 +64,7 @@ public void select(final LocalDate date) {
 }
 
 private void setDay(final int day) {
-	this.element.waitForElement(By.xpath(".//*[contains(@class, 'flatpickr-day bx--date') and text() = '" + day + "']")).click();
+	waitForElement(By.xpath(".//*[contains(@class, 'flatpickr-day bx--date') and text() = '" + day + "']")).click();
 }
 
 private void setMonth(final Month month) {

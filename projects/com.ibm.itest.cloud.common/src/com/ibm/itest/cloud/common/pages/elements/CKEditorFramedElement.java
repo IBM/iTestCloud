@@ -77,7 +77,7 @@ public CKEditorFramedElement(final Page page, final BrowserElement editorIframeE
 }
 
 public CKEditorFramedElement(final Page page, final By editorIframeLocator) {
-	this(page, page.getBrowser().waitForElement(editorIframeLocator, Timeouts.DEFAULT_TIMEOUT));
+	this(page, page.waitForElement(editorIframeLocator, Timeouts.DEFAULT_TIMEOUT));
 }
 
 /**

@@ -146,7 +146,7 @@ protected abstract String getCloseButton(boolean validate);
 public boolean isCloseable() {
 	// Get web element for close button
 	BrowserElement closeButtonElement =
-		this.element.waitForElement(By.xpath(getCloseButton(true/*validate*/)), tinyTimeout());
+		waitForElement(By.xpath(getCloseButton(true/*validate*/)), tinyTimeout(), false /*fail*/);
 
 	// If button is found then return whether it's enabled or not
 	if (closeButtonElement != null) {

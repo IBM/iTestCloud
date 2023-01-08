@@ -301,9 +301,9 @@ protected String getExpandableAttribute() {
 protected BrowserElement getExpansionElement(final By expansionLocator) {
 	if(expansionLocator == null) return this.element;
 
-	if(isRelativeLocator(expansionLocator)) return this.element.waitForElement(expansionLocator);
+	if(isRelativeLocator(expansionLocator)) return waitForElement(expansionLocator);
 
-	return getPage().waitForElement(expansionLocator);
+	return this.page.waitForElement(expansionLocator);
 }
 
 /**
