@@ -18,7 +18,6 @@ import static com.ibm.itest.cloud.common.performance.PerfManager.PERFORMANCE_ENA
 import static com.ibm.itest.cloud.common.scenario.ScenarioUtils.*;
 import static com.ibm.itest.cloud.common.utils.ByUtils.fixLocator;
 import static com.ibm.itest.cloud.common.utils.ByUtils.getNormalizedLocatorString;
-import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +73,8 @@ import com.ibm.itest.cloud.common.scenario.errors.*;
 public class BrowserElement implements WebElement, Locatable {
 
 	/* Locators */
-	private static final String XPATH_NODE_WILDCARD = "*";
-	private static final String XPATH_CHILDREN_AXES = "./child::";
+	private static final String ANY_NODE_WILDCARD = "*";
+	private static final String CHILDREN_XPATH_PREFIX = "./child::";
 
 	/* Javascripts */
 	private final static String MOUSE_OVER_JAVASCRIPT =
@@ -110,46 +109,46 @@ public class BrowserElement implements WebElement, Locatable {
 		return webElements;
 	}
 
-/**
- * The browser to use to search the web element.
- */
-final private Browser browser;
+	/**
+	 * The browser to use to search the web element.
+	 */
+	final private Browser browser;
 
-/**
- * The mechanism to use to search the web element.
- */
-final private By by;
+	/**
+	 * The mechanism to use to search the web element.
+	 */
+	final private By by;
 
-/**
- * The context to use to search the web element.
- * <p>
- * If the search is expected to be done in the entire web document, then
- * it will be a {@link WebDriver} object, otherwise, ie. if the search is expected
- * to be done relatively to another web element, then it will be a
- * {@link BrowserElement}.
- * </p>
- */
-final private SearchContext context;
+	/**
+	 * The context to use to search the web element.
+	 * <p>
+	 * If the search is expected to be done in the entire web document, then
+	 * it will be a {@link WebDriver} object, otherwise, ie. if the search is expected
+	 * to be done relatively to another web element, then it will be a
+	 * {@link BrowserElement}.
+	 * </p>
+	 */
+	final private SearchContext context;
 
-/**
- * The wrapped selenium web element.
- */
-WebElement webElement;
+	/**
+	 * The wrapped selenium web element.
+	 */
+	WebElement webElement;
 
-/**
- * The frame used when searching the current web element.
- */
-private BrowserFrame frame;
+	/**
+	 * The frame used when searching the current web element.
+	 */
+	private BrowserFrame frame;
 
-/**
- * Information of parent when the current web element has been found
- * among several other elements.
- * <p>
- * These information allow recovering to be more precise, hence be sure not
- * to recover another element.
- * </p>
- */
-final private int parentListSize, parentListIndex;
+	/**
+	 * Information of parent when the current web element has been found
+	 * among several other elements.
+	 * <p>
+	 * These information allow recovering to be more precise, hence be sure not
+	 * to recover another element.
+	 * </p>
+	 */
+	final private int parentListSize, parentListIndex;
 
 /**
  * Create a web browser element using the given search mechanism in the given
@@ -750,8 +749,19 @@ public By getBy() {
  * @throws ScenarioFailedError If there are either no child or several children
  * for the current element.
  */
-public BrowserElement getChild() throws ScenarioFailedError{
-	return getSingularChild(unmodifiableList(getChildren()));
+public BrowserElement getChild() throws ScenarioFailedError {
+	return getChild(getChildren());
+}
+
+private BrowserElement getChild(final List<BrowserElement> children) throws ScenarioFailedError {
+	switch(children.size()) {
+		case 1:
+			return children.get(0);
+		case 0:
+			throw new WaitElementTimeoutError("Web element " + this + " has no child.");
+		default:
+			throw new ScenarioFailedError("Web element " + this + " has more than one child.");
+	}
 }
 
 /**
@@ -762,8 +772,8 @@ public BrowserElement getChild() throws ScenarioFailedError{
  * @throws ScenarioFailedError If there are either no child or several children
  * for the current element.
  */
-public BrowserElement getChild(final String tag) throws ScenarioFailedError{
-	return getSingularChild(unmodifiableList(getChildren(tag)));
+public BrowserElement getChild(final String tag) throws ScenarioFailedError {
+	return getChild(getChildren(tag));
 }
 
 /**
@@ -772,7 +782,7 @@ public BrowserElement getChild(final String tag) throws ScenarioFailedError{
  * @return The list of web element children as a {@link List} of {@link BrowserElement}.
  */
 public List<BrowserElement> getChildren() {
-	return getList(findElements(By.xpath(XPATH_CHILDREN_AXES + XPATH_NODE_WILDCARD)));
+	return getList(findElements(By.xpath(CHILDREN_XPATH_PREFIX + ANY_NODE_WILDCARD)));
 }
 
 /**
@@ -781,7 +791,7 @@ public List<BrowserElement> getChildren() {
  * @return The list of web element children as a {@link List} of {@link BrowserElement}.
  */
 public List<BrowserElement> getChildren(final String tag) {
-	return getList(findElements(By.xpath(XPATH_CHILDREN_AXES + tag)));
+	return getList(findElements(By.xpath(CHILDREN_XPATH_PREFIX + tag)));
 }
 
 /**
@@ -979,17 +989,6 @@ public Rectangle getRect() {
 @Override
 public <X> X getScreenshotAs(final OutputType<X> target) throws WebDriverException {
 	return this.webElement.getScreenshotAs(target);
-}
-
-private BrowserElement getSingularChild(final List<BrowserElement> children) throws ScenarioFailedError {
-	switch(children.size()) {
-		case 1:
-			return children.get(0);
-		case 0:
-			throw new WaitElementTimeoutError("Web element " + this + " has no child.");
-		default:
-			throw new ScenarioFailedError("Web element " + this + " has more than one child.");
-	}
 }
 
 /**
