@@ -213,7 +213,7 @@ protected void close(final boolean validate) {
 @Override
 protected void closeAction(final boolean validate) {
 	BrowserElement buttonElement =
-		this.browser.waitForElement(this.element, By.xpath(getCloseButton(validate)), timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
+		waitForElement(By.xpath(getCloseButton(validate)), timeout(), true /*fail*/, false /*displayed*/);
 	this.browser.clickButton(buttonElement, timeout(), false /*validate*/);
 }
 
@@ -289,7 +289,7 @@ public <P extends ConfirmationDialog> P closeByOpeningDialog(final boolean valid
 		throw new WaitElementTimeoutError(e);
 	}
 
-	confirmationDialog.open(this.element.waitForElement(By.xpath(getCloseButton(validate))));
+	confirmationDialog.open(waitForElement(By.xpath(getCloseButton(validate))));
 	return confirmationDialog;
 }
 
@@ -320,7 +320,7 @@ public <P extends ConfirmationDialog> P closeByOpeningDialog(final Class<P> dial
 	// Perform any actions prior to closing the window.
 	if(validate) preCloseActions();
 
-	return openPageUsingLink(this.element.waitForElement(By.xpath(getCloseButton(validate))), pageClass, postLinkClickAction, pageData);
+	return openPageUsingLink(waitForElement(By.xpath(getCloseButton(validate))), pageClass, postLinkClickAction, pageData);
 }
 
 /**
@@ -390,7 +390,8 @@ private List<BrowserElement> getMatchingDialogElements(final List<BrowserElement
 	List<BrowserElement> matchingDialogElements = new ArrayList<BrowserElement>();
 
 	for (BrowserElement openedDialogElement : openedDialogElements) {
-		BrowserElement titleElement = openedDialogElement.waitForElement(getTitleElementLocator(), tinyTimeout());
+		BrowserElement titleElement =
+			openedDialogElement.waitForElement(getTitleElementLocator(), tinyTimeout(), false /*fail*/);
 
 		if((titleElement != null) && getExpectedTitle().matcher(titleElement.getText()).matches()) {
 			matchingDialogElements.add(openedDialogElement);
@@ -407,7 +408,7 @@ private List<BrowserElement> getMatchingDialogElements(final List<BrowserElement
  * @return The list of opened dialog elements as a {@link List} of {@link BrowserElement}
  */
 protected List<BrowserElement> getOpenedDialogElements(final int seconds) {
-	return this.browser.waitForElements(getParentElement(), this.findBy, seconds, false /*fail*/, true /*displayed*/);
+	return waitForElements(getParentElement(), this.findBy, seconds, false /*fail*/);
 }
 
 /**
@@ -581,7 +582,7 @@ protected void setElement() {
  * @return The content element as {@link BrowserElement}.
  */
 protected BrowserElement waitForContentElement() {
-	return this.element.waitForElement(getContentElementLocator());
+	return waitForElement(getContentElementLocator());
 }
 
 @Override

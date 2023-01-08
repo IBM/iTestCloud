@@ -215,7 +215,7 @@ protected BrowserElement getSelectionElement() {
 	if(this.selectionLocator == null) return null;
 	BrowserElement parentElement = isRelativeLocator(this.selectionLocator) ? this.element : null;
 
-	return waitForElement(parentElement, this.selectionLocator, tinyTimeout(), false /*fail*/, false /*displayed*/, true /*single*/);
+	return waitForElement(parentElement, this.selectionLocator, tinyTimeout(), false /*fail*/, false /*displayed*/);
 }
 
 @Override
@@ -233,7 +233,7 @@ public boolean isExpanded() throws ScenarioFailedError {
 	}
 
 	BrowserElement selectOptionsElement =
-		waitForElement(By.xpath(".//ul[@class='select__options']"), tinyTimeout(), false /*fail*/, false /*displayed*/, true /*single*/);
+		waitForElement(By.xpath(".//ul[@class='select__options']"), tinyTimeout(), false /*fail*/, false /*displayed*/);
 	if(selectOptionsElement != null) {
 		String style = selectOptionsElement.getAttributeValue("style");
 		// remove style values "overflow:hidden", "overflow-x:hidden", "overflow-y:hidden"

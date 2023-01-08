@@ -147,7 +147,7 @@ protected By[] getBusyIndicatorElementLocators() {
  *
  */
 protected BrowserElement[] getBusyIndicatorElements() {
-	return this.browser.waitForMultipleElements(this.element, tinyTimeout(), false /*fail*/, getBusyIndicatorElementLocators());
+	return waitForMultipleElements(tinyTimeout(), false /*fail*/, getBusyIndicatorElementLocators());
 }
 
 /**

@@ -484,7 +484,7 @@ public List<BrowserElement> search(final String searchText, final StringComparis
 		break;
 	}
 	xpathExpression = ".//tbody/tr/td" + xpathExpression + " | .//*[contains(@class,'ReactVirtualized__Table__row')]/*" + xpathExpression;
-	return waitForElements(this.element, By.xpath(xpathExpression), tinyTimeout(), fail);
+	return waitForElements(By.xpath(xpathExpression), tinyTimeout(), fail);
 }
 
 /**

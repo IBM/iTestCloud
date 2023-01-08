@@ -118,7 +118,7 @@ public String getText() {
 	if (DEBUG) debugPrintln("		+ Get text for hover "+this.element);
 
 	// Get content element
-	BrowserElement contentElement = waitForElement(By.xpath(".//div[@dojoattachpoint='content']"), openTimeout(), false /*fail*/);
+	BrowserElement contentElement = waitForElement(By.xpath(".//div[@dojoattachpoint='content']"), tinyTimeout(), false /*fail*/);
 
 	// Return text if content is found
 	if (contentElement != null) {
@@ -167,7 +167,7 @@ public BrowserElement open(final BrowserElement webElement) {
 	}
 
 	// Store the hover element
-	this.element = waitForElement(null, this.findBy, (int) ((timeout - System.currentTimeMillis())/1000), true /*fail*/, true /*displayed*/, true /*single*/);
+	this.element = waitForElement(null, this.findBy, (int) ((timeout - System.currentTimeMillis())/1000));
 
 	waitForLoadingEnd();
 

@@ -238,20 +238,20 @@ protected StringComparisonCriterion getTitleComparisonCriterion() {
  */
 public BrowserElement getTitleElement() {
 	// Get the title element
-	BrowserElement hoverTitleElement = waitForElement(By.xpath(getTitleLinkXpath()), openTimeout());
+	BrowserElement hoverTitleElement = waitForElement(By.xpath(getTitleLinkXpath()), tinyTimeout(), false /*fail*/);
 	if (hoverTitleElement == null) {
 		// Check if there's a login
-		BrowserElement loginElement = waitForElement(By.xpath(".//a[text()='Log in']"), 1 /*sec*/);
+		BrowserElement loginElement = waitForElement(By.xpath(".//a[text()='Log in']"), tinyTimeout(), false /*fail*/);
 		if (loginElement != null) {
 			// Login
 			// TODO Need improvement for distributed topology
 			loginElement.click();
 			// Wait again for the title
-			hoverTitleElement = waitForElement(By.xpath(getTitleLinkXpath()), openTimeout());
+			hoverTitleElement = waitForElement(By.xpath(getTitleLinkXpath()), tinyTimeout(), false /*fail*/);
 		}
 		if (hoverTitleElement == null) {
 			// Wait again for the title
-			hoverTitleElement = waitForElement(By.xpath(getTitleLinkXpath()), openTimeout());
+			hoverTitleElement = waitForElement(By.xpath(getTitleLinkXpath()), tinyTimeout(), false /*fail*/);
 			if (hoverTitleElement == null) {
 				throw new WaitElementTimeoutError("The rich hover title was not found.");
 			}

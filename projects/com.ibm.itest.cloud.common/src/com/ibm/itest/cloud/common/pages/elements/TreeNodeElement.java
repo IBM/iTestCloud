@@ -327,7 +327,7 @@ protected String getLabel() {
  * @return The label element of the tree node or tree leaf element as {@link BrowserElement}.
  */
 public BrowserElement getLabelElement() {
-	return waitForElement(this.element, this.labelLocator, timeout(), true /*fail*/, false /*displayed*/, true /*single*/);
+	return waitForElement(this.labelLocator, timeout(), true /*fail*/, false /*displayed*/);
 }
 
 /**
