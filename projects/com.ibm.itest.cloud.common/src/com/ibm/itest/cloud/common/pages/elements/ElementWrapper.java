@@ -462,14 +462,15 @@ public BrowserElement typeText(final By locator, final String text, final Keys k
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within a specified parent element, using a locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the specified parent element. This
+ * locator must be relative to the parent element.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -481,14 +482,16 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
 }
 
 /**
- * Waits until have found one of element using the given search locators.
+ * Waits until finding an element within a specified parent element, using one of the
+ * given locators.
  * <p>
- * Fails only if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locators Search locators of the expected elements.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locators The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -499,15 +502,16 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within a specified parent element, using a locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the specified parent element. This
+ * locator must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -519,16 +523,17 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within a specified parent element, using a locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the specified parent element. This
+ * locator must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  *
  * @return The web element as {@link BrowserElement} or <code>null</code>
  * if no element was found before the timeout and asked not to fail.
@@ -541,16 +546,17 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within a specified parent element, using a locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research
- * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the specified parent element. This
+ * locator must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  *
@@ -565,16 +571,18 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within a specified parent element, using a locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails if specified and after having waited the given timeout, or if multiple
+ * elements are found and only single one was expected.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research
- * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the specified parent element. This
+ * locator must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  * @param single Tells whether a single element is expected.
@@ -590,16 +598,19 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final B
 }
 
 /**
- * Waits until have found one of element using the given search locators.
+ * Waits until finding an element within a specified parent element, using one of the
+ * given locators.
  * <p>
- * Fails only if specified and after having waited the given timeout.
+ * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
- * @param locators Search locators of the expected elements.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if none of the elements is located before timeout.
+ * @param locators The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
+ *
  * @return The web element as {@link BrowserElement} or <code>null</code>
  * if no element was found before the timeout and asked not to fail.
  *
@@ -610,15 +621,17 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final i
 }
 
 /**
- * Waits until have found one of element using the given search locators.
+ * Waits until finding an element within a specified parent element, using one of the
+ * given locators.
  * <p>
- * Fails only if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param locators Search locators of the expected elements.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param locators The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -629,21 +642,22 @@ public BrowserElement waitForElement(final BrowserElement parentElement, final i
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding an element within the current wrapped element, using the given
+ * locator.
  * <p>
  * Note that:
  * <ul>
  * <li>hidden element will be ignored</li>
  * <li>it will fail if:
  * <ol>
- * <li>the element is not found before timeout seconds</li>
- * <li>there's more than one element found</li>
+ * <li>the element is not found before {@link #timeout()} seconds</li>
+ * <li>there is more than one element found</li>
  * </ol></li>
  * </ul>
  * </p>
- * </p>
  *
- * @param locator Locator to find the element in the current page.
+ * @param locator The locator to find the element in the current wrapped element.
+ * The locator must be relative to the current wrapped element.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -655,12 +669,14 @@ public BrowserElement waitForElement(final By locator) {
 }
 
 /**
- * Waits until have found one of element using the given search locators.
+ * Waits until finding an element within the current wrapped element, using one of the
+ * given locators.
  * <p>
- * Fails only if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param locators Search locators of the expected elements.
+ * @param locators The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -671,12 +687,14 @@ public BrowserElement waitForElement(final By... locators) {
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding an element within the current wrapped element, using the given
+ * locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
+ * @param locator The locator to find the element in the current wrapped element.
+ * The locator must be relative to the current wrapped element.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  *
@@ -691,46 +709,52 @@ public BrowserElement waitForElement(final By locator, final boolean displayed) 
 }
 
 /**
- * Waits until have found the web element relatively to a parent element using
- * the respective given mechanisms.
+ * Waits until finding an element within a parent element, using the respective given
+ * locators.
  * <p>
  * Note that:
  * <ul>
+ * <li>hidden element will be ignored</li>
  * <li>it will fail if:
  * <ol>
  * <li>the element is not found before {@link #timeout()} seconds</li>
- * <li>there's more than one element found</li>
+ * <li>there is more than one element found</li>
  * </ol></li>
- * <li>hidden element will be ignored</li>
  * </p>
- * @param parentLocator The locator to find the parent element in the current
- * element, if <code>null</code>, the element will be searched in the current element.
- * @param locator The locator to find the element in the current page or
- * from the given parent element if not <code>null</code>
- * @return The web element as {@link BrowserElement}
+ *
+ * @param parentLocator The locator to find the parent element in the current wrapped
+ * element. The locator must be relative to the current wrapped element. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the parent element. The locator must
+ * be relative to the parent element.
+ *
+ * @return The web element as {@link BrowserElement}.
+ *
  * @throws ScenarioFailedError if no element was found before the {@link #timeout()}.
  *
  * @see #waitForElement(By, By, boolean, int)
  */
 public BrowserElement waitForElement(final By parentLocator, final By locator) {
-	return waitForElement(parentLocator, locator, true/*fail*/, timeout());
+	return waitForElement(parentLocator, locator, true /*fail*/, timeout());
 }
 
 /**
- * Waits until have found the web element relatively to a parent element using
- * the respective given mechanisms.
+ * Waits until finding an element within a parent element, using the respective given
+ * locators.
  * <p>
  * Note that:
  * <ul>
  * <li>it will fail if there's more than one element found</li>
  * <li>hidden element will be ignored</li>
  * </p>
- * @param parentLocator The locator to find the parent element in the current
- * element, if <code>null</code>, the element will be searched in the current element.
- * @param locator The locator to find the element in the current page or
- * from the given parent element if not <code>null</code>.
- * @param fail Tells whether to fail if none of the elements is find before timeout.
- * @param time_out The time to wait before giving up the research.
+ *
+ * @param parentLocator The locator to find the parent element in the current wrapped
+ * element. The locator must be relative to the current wrapped element. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locator to find the element in the parent element. The locator must
+ * be relative to the parent element.
+ * @param fail Tells whether to fail if no element is located before timeout.
+ * @param timeout The time to wait in seconds before giving up the search.
  *
  * @return The web element as {@link BrowserElement} or <code>null</code>
  * if no element was found before the timeout and asked not to fail.
@@ -740,28 +764,29 @@ public BrowserElement waitForElement(final By parentLocator, final By locator) {
  *
  * @see Browser#waitForElement(BrowserElement, By, int, boolean, boolean, boolean)
  */
-public BrowserElement waitForElement(final By parentLocator, final By locator, final boolean fail, final int time_out) {
+public BrowserElement waitForElement(final By parentLocator, final By locator, final boolean fail, final int timeout) {
 	BrowserElement parentElement = (parentLocator != null) ? waitForElement(parentLocator) : this.element;
-	return this.browser.waitForElement(parentElement, locator, time_out, fail, true /*displayed*/, true /*single*/);
+	return this.browser.waitForElement(parentElement, locator, timeout, fail, true /*displayed*/, true /*single*/);
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within the current wrapped element, using the given
+ * locator.
  * <p>
  * Note that:
  * <ul>
  * <li>hidden element will be ignored</li>
  * <li>it will fail if:
  * <ol>
- * <li>the element is not found before timeout seconds</li>
- * <li>there's more than one element found</li>
+ * <li>the element is not found before {@link #timeout()} seconds</li>
+ * <li>there is more than one element found</li>
  * </ol></li>
  * </ul>
  * </p>
- * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
+ * @param locator The locator to find the element in the current wrapped element. The
+ * locator must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -773,14 +798,16 @@ public BrowserElement waitForElement(final By locator, final int timeout) {
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within the current wrapped element, using the given
+ * locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param locator The locator to find the element in the current wrapped element. The
+ * locator must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  *
  * @return The web element as {@link BrowserElement} or <code>null</code>
  * if no element was found before the timeout and asked not to fail.
@@ -793,14 +820,16 @@ public BrowserElement waitForElement(final By locator, final int timeout, final 
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within the current wrapped element, using the given
+ * locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research
- * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param locator The locator to find the element in the current wrapped element. The
+ * locator must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  *
@@ -815,14 +844,17 @@ public BrowserElement waitForElement(final By locator, final int timeout, final 
 }
 
 /**
- * Waits until have found the element using given locator.
+ * Waits until finding the element within the current wrapped element, using the given
+ * locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails if specified and after having waited the given timeout, or if multiple
+ * elements are found and only single one was expected.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research
- * @param fail Tells whether to fail if none of the locators is find before timeout
+ * @param locator The locator to find the element in the current wrapped element. The
+ * locator must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  * @param single Tells whether a single element is expected.
@@ -838,14 +870,16 @@ public BrowserElement waitForElement(final By locator, final int timeout, final 
 }
 
 /**
- * Waits until have found one of element using the given search locators.
+ * Waits until finding the element within the current wrapped element, using one of the
+ * given locators.
  * <p>
- * Fails only if specified and after having waited the given timeout.
+ * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
- * @param locators Search locators of the expected elements.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
+ * @param locators The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
  *
  * @return The web element as {@link BrowserElement} or <code>null</code>
  * if no element was found before the timeout and asked not to fail.
@@ -857,13 +891,15 @@ public BrowserElement waitForElement(final int timeout, final boolean fail, fina
 }
 
 /**
- * Waits until have found one of element using the given search locators.
+ * Waits until finding the element within the current wrapped element, using one of the
+ * given locators.
  * <p>
- * Fails only if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param timeout The time to wait before giving up the research.
- * @param locators Search locators of the expected elements.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param locators The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
  *
  * @return The web element as {@link BrowserElement}.
  *
@@ -874,14 +910,16 @@ public BrowserElement waitForElement(final int timeout, final By... locators) {
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within a specified parent element,
+ * using the given locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
  *
  * @return A {@link List} of web element as {@link BrowserElement}.
  *
@@ -892,14 +930,16 @@ public List<BrowserElement> waitForElements(final BrowserElement parentElement, 
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within a specified parent element,
+ * using the given locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  *
@@ -912,15 +952,17 @@ public List<BrowserElement> waitForElements(final BrowserElement parentElement, 
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within a specified parent element,
+ * using the given locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
  *
  * @return A {@link List} of web element as {@link BrowserElement}.
  *
@@ -931,16 +973,18 @@ public List<BrowserElement> waitForElements(final BrowserElement parentElement, 
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within a specified parent element,
+ * using the given locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  *
  * @return A {@link List} of web element as {@link BrowserElement}. Might
  * be empty if no element was found before the timeout and asked not to fail.
@@ -953,16 +997,18 @@ public List<BrowserElement> waitForElements(final BrowserElement parentElement, 
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within a specified parent element,
+ * using the given locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param parentElement The element where the search must start. If {@code null},
+ * the current wrapped element will be regarded as the parent element.
+ * @param locator The locators to find the element in the specified parent element.
+ * These locators must be relative to the parent element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  *
@@ -977,12 +1023,14 @@ public List<BrowserElement> waitForElements(final BrowserElement parentElement, 
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within the current wrapped element,
+ * using the given locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
+ * @param locator The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
  *
  * @return A {@link List} of web element as {@link BrowserElement}.
  *
@@ -993,13 +1041,15 @@ public List<BrowserElement> waitForElements(final By locator) {
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within the current wrapped element,
+ * using the given locator.
  * <p>
- * Only fails if specified and after having waited the given timeout.
+ * Only fails after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
+ * @param locator The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
  *
  * @return A {@link List} of web element as {@link BrowserElement}.
  *
@@ -1010,14 +1060,16 @@ public List<BrowserElement> waitForElements(final By locator, final int timeout)
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within the current wrapped element,
+ * using the given locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param locator The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  *
  * @return A {@link List} of web element as {@link BrowserElement}. Might
  * be empty if no element was found before the timeout and asked not to fail.
@@ -1030,14 +1082,16 @@ public List<BrowserElement> waitForElements(final By locator, final int timeout,
 }
 
 /**
- * Waits until have found one or several elements using given locator.
+ * Waits until finding one or several elements within the current wrapped element,
+ * using the given locator.
  * <p>
  * Only fails if specified and after having waited the given timeout.
  * </p>
  *
- * @param locator Locator to find the element in the current page.
- * @param timeout The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param locator The locators to find the element in the current wrapped element.
+ * These locators must be relative to the current wrapped element.
+ * @param timeout The time to wait in seconds before giving up the search.
+ * @param fail Tells whether to fail if no element is located before timeout.
  * @param displayed When <code>true</code> then only displayed element can be returned.
  * When <code>false</code> then the returned element can be either displayed or hidden.
  *
