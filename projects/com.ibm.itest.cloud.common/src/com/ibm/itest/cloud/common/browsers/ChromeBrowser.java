@@ -53,7 +53,7 @@ void initDriver() {
 
 	// Set the headless mode if requested.
     if (this.headless) {
-    	this.options.addArguments("--headless");
+    	this.options.addArguments("--headless=new");
 		this.options.addArguments("--disable-impl-side-painting");
 		this.options.addArguments("--disable-dev-shm-usage");
     }
