@@ -15,8 +15,8 @@
 <project name="com.ibm.bluearmy" basedir="." default="main">
 	<property environment="env"/>
 
-	<property name="firefox" value="FireFox"/>
-	<property name="chrome" value="Chrome"/>
+	<property name="firefox" value="firefox"/>
+	<property name="chrome" value="chrome"/>
 	<property name="firefox.kind" value="1"/>
 	<property name="firefox.path" value="${env.FF_PATH}"/>
 	<property name="firefox.driver" value="${env.FF_DRIVER}"/>
@@ -35,13 +35,13 @@
 	</condition>
 
 	<condition property="browser.kind" value="${firefox.kind}" else="${chrome.kind}">
-		<equals arg1="${browser}" arg2="${firefox}" />
+		<equals arg1="${browser}" arg2="${firefox}" casesensitive="false"/>
 	</condition>
 	<condition property="browser.path" value="${firefox.path}" else="${chrome.driver}">
-		<equals arg1="${browser}" arg2="${firefox}" />
+		<equals arg1="${browser}" arg2="${firefox}" casesensitive="false"/>
 	</condition>
 	<condition property="browser.driver" value="${firefox.driver}" else="${chrome.driver}">
-		<equals arg1="${browser}" arg2="${firefox}" />
+		<equals arg1="${browser}" arg2="${firefox}" casesensitive="false"/>
 	</condition>
 
  	<property name="repos.dir" value="repos"/>
@@ -66,6 +66,11 @@
 	<property name="params" value=""/>
 	<property name="headless" value="false"/>
 	<property name="performance" value=""/>
+	<property name="firstStep" value=""/>
+	<property name="lastStep" value=""/>
+	<property name="firstTest" value=""/>
+	<property name="lastTest" value=""/>
+	
 	<condition property="applications" value="" else="apsportal;${env.URL}">
 		<equals arg1="${env.URL}" arg2="$${env.URL}" />
 	</condition>
@@ -141,6 +146,10 @@
 			<sysproperty key="testerPassword" value="${adminPassword}"/>
 			<sysproperty key="adminPassword" value="${adminPassword}"/>
 			<sysproperty key="performance" value="${performance}"/>
+			<sysproperty key="firstStep" value="${firstStep}"/>
+			<sysproperty key="lastStep" value="${lastStep}"/>
+			<sysproperty key="firstTest" value="${firstTest}"/>
+			<sysproperty key="lastTest" value="${lastTest}"/>
 
 			<classpath>
 				<fileset dir="${libs.dir}">
