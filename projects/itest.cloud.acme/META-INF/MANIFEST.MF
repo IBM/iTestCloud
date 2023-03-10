@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acme Page Objects
+Bundle-SymbolicName: itest.cloud.acme
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: IBM
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: itest.cloud;bundle-version="1.0.0";visibility:=reexport
+Automatic-Module-Name: com.ibm.itest.cloud.acme
+Export-Package: itest.cloud.acme.config,
+ itest.cloud.acme.pages,
+ itest.cloud.acme.pages.dialogs,
+ itest.cloud.acme.pages.elements,
+ itest.cloud.acme.scenario,
+ itest.cloud.acme.scenario.errors,
+ itest.cloud.acme.topology

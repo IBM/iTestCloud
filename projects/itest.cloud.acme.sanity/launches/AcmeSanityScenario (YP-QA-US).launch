@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/com.ibm.itest.cloud.apsportal.demo/src/itest/cloud/apsportal/demo/scenario/ApsPortalDemoScenario.java"/>
+    </listAttribute>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="1"/>
+    </listAttribute>
+    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
+    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
+    <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="itest.cloud.apsportal.demo.scenario.ApsPortalDemoScenario"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="com.ibm.itest.cloud.apsportal.demo"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DparamFilesDir=params&#13;&#10;-DparamFilesPath=browser/chrome.properties;scenario.properties;secret.properties;environment/yp-qa-us.properties&#13;&#10;-DfirstStep=&#13;&#10;-DfirstTest=&#10;-DrunDeepDiveTests=true&#10;-DstopOnFailure=true&#10;-DverifyDependencies=true"/>
+</launchConfiguration>
