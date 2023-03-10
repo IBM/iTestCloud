@@ -53,23 +53,23 @@
 	<classpathentry exported="true" kind="lib" path="libs/opentelemetry-sdk-trace-1.22.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/opentelemetry-semconv-1.22.0-alpha.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/reactive-streams-1.0.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-api-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-chrome-driver-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-chromium-driver-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v107-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v108-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v109-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v85-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-edge-driver-4.8.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-api-4.8.0.jar" sourcepath="libs/selenium-api-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-chrome-driver-4.8.0.jar" sourcepath="libs/selenium-chrome-driver-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-chromium-driver-4.8.0.jar" sourcepath="libs/selenium-chromium-driver-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v107-4.8.0.jar" sourcepath="libs/selenium-devtools-v107-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v108-4.8.0.jar" sourcepath="libs/selenium-devtools-v108-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v109-4.8.0.jar" sourcepath="libs/selenium-devtools-v109-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-devtools-v85-4.8.0.jar" sourcepath="libs/selenium-devtools-v85-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-edge-driver-4.8.0.jar" sourcepath="libs/selenium-edge-driver-4.8.0-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/selenium-firefox-driver-4.8.0.jar" sourcepath="libs/selenium-firefox-driver-4.8.0-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-http-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-ie-driver-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-java-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-json-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-manager-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-remote-driver-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-safari-driver-4.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/selenium-support-4.8.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-http-4.8.0.jar" sourcepath="libs/selenium-http-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-ie-driver-4.8.0.jar" sourcepath="libs/selenium-ie-driver-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-java-4.8.0.jar" sourcepath="libs/selenium-java-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-json-4.8.0.jar" sourcepath="libs/selenium-json-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-manager-4.8.0.jar" sourcepath="libs/selenium-manager-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-remote-driver-4.8.0.jar" sourcepath="libs/selenium-remote-driver-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-safari-driver-4.8.0.jar" sourcepath="libs/selenium-safari-driver-4.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/selenium-support-4.8.0.jar" sourcepath="libs/selenium-support-4.8.0-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/slf4j-api-2.0.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
