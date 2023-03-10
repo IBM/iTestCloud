@@ -51,9 +51,12 @@ void initDriver() {
 	// Disable "navigator.webdriver" in ChromeDriver to avoid bot detection policy
 	this.options.addArguments("--disable-blink-features=AutomationControlled");
 
+	// Allow all remote origins.
+	this.options.addArguments("--remote-allow-origins=*");
+
 	// Set the headless mode if requested.
-    if (this.headless) {
-    	this.options.addArguments("--headless");
+	if (this.headless) {
+		this.options.addArguments("--headless");
 		this.options.addArguments("--disable-impl-side-painting");
 		this.options.addArguments("--disable-dev-shm-usage");
     }

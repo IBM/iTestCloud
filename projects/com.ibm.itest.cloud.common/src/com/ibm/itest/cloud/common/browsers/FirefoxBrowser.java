@@ -89,7 +89,7 @@ void initDriver() {
 		firefoxOptions.setBinary(binary).setProfile(this.firefoxProfile);
 		// Set the headless mode if requested.
 		if (this.headless) {
-			firefoxOptions.setHeadless(true /*headless*/);
+			firefoxOptions.addArguments("-headless");
 		}
 		this.driver = new FirefoxDriver(firefoxOptions);
 	}
