@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2012, 2022 IBM Corporation and others.
+ * Copyright (c) 2012, 2023 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1166,6 +1166,10 @@ protected BrowserElement getLoggedUserElement(final boolean fail, final int wait
  */
 protected abstract By getLoggedUserElementLocator();
 
+private String getNormalizedUrlPath(final URL url) {
+	return url.getPath().endsWith("/") ? url.getPath().substring(0 /*beginIndex*/, url.getPath().length()-1) : url.getPath();
+}
+
 /**
  * Get the root web element of the current web page.
  *
@@ -1537,14 +1541,7 @@ public void makeElementVisible(final String id) {
 
 /**
  * Return whether the current page location matches the browser URL or not.
- * <p>
- * That basically looks whether the browser URL starts with the location after
- * having replaced "%20" characters by space. But that might be refined by
- * subclass to more subtle match.
- * </p><p>
- * At this general level, it also try to see if there's an id (ie. "&id=") in both
- * addresses and , if it's the case, compare them.
- * </p>
+ *
  * @return <code>true</code> if the location and the url match, <code>false</code>
  * otherwise.
  */
@@ -1557,17 +1554,13 @@ protected boolean matchBrowserUrl() {
 	}
 
 	// Compare URL starts
-	URL browserURL = null;
-	URL pageURL = null;
 	try {
-		browserURL = new URL(URLDecoder.decode(url, "UTF-8"));
-		pageURL = new URL(URLDecoder.decode(this.location, "UTF-8"));
-		if (!browserURL.getProtocol().equals(pageURL.getProtocol()) ||
-		        !browserURL.getHost().equals(pageURL.getHost()) ||
-		        browserURL.getPort() != pageURL.getPort() ||
-		        !browserURL.getPath().startsWith(pageURL.getPath())) {
-			return false;
-		}
+		URL browserURL = new URL(URLDecoder.decode(url, "UTF-8"));
+		URL pageURL = new URL(URLDecoder.decode(this.location, "UTF-8"));
+		return browserURL.getProtocol().equals(pageURL.getProtocol()) &&
+		       browserURL.getHost().equals(pageURL.getHost()) &&
+		       browserURL.getPort() == pageURL.getPort() &&
+		       matchBrowserUrlPath(getNormalizedUrlPath(pageURL), getNormalizedUrlPath(browserURL));
 	}
 	catch (MalformedURLException mue) {
 		throw new ScenarioFailedError(mue);
@@ -1575,47 +1568,19 @@ protected boolean matchBrowserUrl() {
 	catch (UnsupportedEncodingException uee) {
 		throw new ScenarioFailedError(uee);
 	}
+}
 
-	// If fragments are the same then return now
-	String browserUrlRef = browserURL.getRef();
-	if (browserUrlRef != null && browserUrlRef.equals(pageURL.getRef())) {
-		return true;
-	}
-
-	// Check IDs if possible
-	String browserUrl = browserURL.toString();
-	int idx1 = -1, idx2 = -1;
-	if ((idx1 = browserUrl.indexOf("&id=")) > 0 && (idx2 = this.location.indexOf("&id=")) > 0) {
-		String browserUrlID = browserUrl.substring(idx1 + 4);
-		if ((idx1 = browserUrlID.indexOf('&')) > 0) {
-			browserUrlID = browserUrlID.substring(0, idx1);
-		}
-		String locationID = this.location.substring(idx2 + 4);
-		if ((idx2 = locationID.indexOf('&')) > 0) {
-			locationID = locationID.substring(0, idx2);
-		}
-		if (browserUrlID.equals(locationID)) {
-			return true;
-		}
-	}
-
-	// Remove vvc configuration from browser URLs
-	int vvcIndex = -1;
-	if ((vvcIndex = browserUrl.indexOf("&vvc.configuration=")) > 0) {
-		browserUrl = browserUrl.substring(0, vvcIndex);
-	}
-
-	// Check that browser URL at least starts with page location
-	String pageUrl = getTopology().getPageUrl(this.location).replaceAll("%20", SPACE_STRING);
-	try {
-		pageUrl = URLDecoder.decode(pageUrl, "UTF-8");
-	} catch (UnsupportedEncodingException e) {
-		// skip
-	}
-	if ((vvcIndex = pageUrl.indexOf("&vvc.configuration=")) > 0) {
-		pageUrl = pageUrl.substring(0, vvcIndex);
-	}
-	return browserUrl.replaceAll("%20", SPACE_STRING).startsWith(pageUrl);
+/**
+ * Compare the path section of the URL expected for the web page against the URL appear in the browser.
+ *
+ * @param pageURL The path section of the URL expected for the web page as {@link String}.
+ * @param browserURL The path section of the URL appear in the Browser for the web page {@link String}.
+ *
+ * @return <code>true</code> if the path section of the expected URL matches the browser URL or
+ * <code>false</code> otherwise.
+ */
+protected boolean matchBrowserUrlPath(final String pageURL, final String browserURL) {
+	return pageURL.startsWith(browserURL) || browserURL.startsWith(pageURL);
 }
 
 /**
