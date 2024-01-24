@@ -1489,8 +1489,8 @@ public boolean login(final User user, final boolean force) {
 		// Check whether the current page is on the expected user or not
 		BrowserElement userProfileElement;
 		if (!force) {
-			userProfileElement = getLoggedUserElement(false/*fail*/, 2/*sec*/);
-			if (userProfileElement != null && matchDisplayedUser(user, userProfileElement)) {
+			userProfileElement = getLoggedUserElement(false /*fail*/, 2 /*sec*/);
+			if ((userProfileElement != null) && matchDisplayedUser(user, userProfileElement)) {
 				return true;
 			}
 		}
@@ -2840,7 +2840,7 @@ protected void verifyPageUser() throws ScenarioFailedError {
 
 	// Check whether the current page is on the expected user or not
 	BrowserElement loggedUserElement = getLoggedUserElement(false/*fail*/, timeout());
-	if (loggedUserElement != null && !matchDisplayedUser(getUser(), loggedUserElement)) {
+	if ((loggedUserElement != null) && !matchDisplayedUser(getUser(), loggedUserElement)) {
 		this.browser.takeSnapshotInfo("VerifyPageUser");
 		println("INFO: User name '"+loggedUserElement.getText()+"' does not match expected one: '"+getUser().getName()+"'");
 		println("     Workaround this issue by forcing a login with "+getUser());
@@ -2856,7 +2856,8 @@ protected void verifyPageUser() throws ScenarioFailedError {
 
 		// Otherwise, try logging in again
 		login(getUser(), true);
-	} else {
+	}
+	else {
 		if (DEBUG) debugPrintln("		  -> OK");
 	}
 }
