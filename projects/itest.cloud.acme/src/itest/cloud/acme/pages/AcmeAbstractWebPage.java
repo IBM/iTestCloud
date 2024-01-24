@@ -297,6 +297,7 @@ protected boolean matchBrowserUrl() {
  * @return <code>true</code> if the path section of the expected URL matches the browser URL or
  * <code>false</code> otherwise.
  */
+@Override
 protected boolean matchBrowserUrlPath(final String pageURL, final String browserURL) {
 	return pageURL.startsWith(browserURL) || browserURL.startsWith(pageURL);
 }
