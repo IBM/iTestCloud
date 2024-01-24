@@ -234,7 +234,7 @@ protected void initBulkParams() {
 	String parametersString = getParameterValue("params");
 
 	if(parametersString != null) {
-		String[] parameters = parametersString.split(",", -1 /*limit*/);
+		String[] parameters = parametersString.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1 /*limit*/);
 
 		for (String parameter : parameters) {
 			String[] parameterInfo = parameter.split("=");
