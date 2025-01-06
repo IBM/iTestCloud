@@ -13,13 +13,13 @@
  *********************************************************************/
 package itest.cloud.performance;
 
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.scenario.ScenarioUtil.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import itest.cloud.browsers.Browser;
+import itest.cloud.browser.Browser;
 
 /**
  * Performance Manager class, for gathering and storing the information for multiple performance page/action result.

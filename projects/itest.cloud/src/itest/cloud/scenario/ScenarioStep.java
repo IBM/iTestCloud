@@ -13,16 +13,17 @@
  *********************************************************************/
 package itest.cloud.scenario;
 
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.scenario.ScenarioUtil.*;
 
 import org.junit.*;
 import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import itest.cloud.browsers.Browser;
+import itest.cloud.browser.Browser;
 import itest.cloud.config.Config;
-import itest.cloud.pages.Page;
+import itest.cloud.config.IUser;
+import itest.cloud.page.Page;
 import itest.cloud.topology.Topology;
 
 /**
@@ -49,8 +50,8 @@ public class ScenarioStep {
 	class ScenarioStepRule implements org.junit.rules.MethodRule {
 
 		final class ScenarioStepRuleStatement extends Statement {
-			private final Statement statement;
 			private final FrameworkMethod method;
+			private final Statement statement;
 			private final Object target;
 
 			ScenarioStepRuleStatement(final Statement statement, final FrameworkMethod method, final Object target) {
@@ -78,17 +79,16 @@ public class ScenarioStep {
 	// Step info
 	protected static boolean IS_NEW_STEP = true;
 
+	@BeforeClass
+	public static void setUpStep() {
+		IS_NEW_STEP = true;
+	}
+
 	// Execution
 	protected ScenarioExecution scenarioExecution;
 
-
-@Rule
-public ScenarioStepRule stepRule = new ScenarioStepRule();
-
-@BeforeClass
-public static void setUpStep() {
-	IS_NEW_STEP = true;
-}
+	@Rule
+	public ScenarioStepRule stepRule = new ScenarioStepRule();
 
 /**
  * @see Config#getBrowser()
@@ -102,6 +102,18 @@ protected Browser getBrowser() {
  */
 protected Config getConfig() {
 	return this.scenarioExecution.config;
+}
+
+/**
+ * The current test page or the page stored by the {@link ScenarioExecution}
+ * if none was already stored.
+ *
+ * @return The page as a subclass of {@link Page}. May be <code>null</code>
+ * if no page was stored neither in current test nor in previous one.
+ */
+protected Page getCurrentPage() {
+//	return getBrowser().getCurrentPage();
+	return Page.getCurrentPage();
 }
 
 /**
@@ -130,24 +142,21 @@ protected Page getPage() {
 }
 
 /**
- * The current test page or the page stored by the {@link ScenarioExecution}
- * if none was already stored.
- *
- * @return The page as a subclass of {@link Page}. May be <code>null</code>
- * if no page was stored neither in current test nor in previous one.
- */
-protected Page getCurrentPage() {
-//	return getBrowser().getCurrentPage();
-	return Page.getCurrentPage();
-}
-
-/**
  * Return the scenario execution.
  *
  * @return The scenario execution as a {@link ScenarioExecution}.
  */
 protected ScenarioExecution getScenarioExecution() {
 	return this.scenarioExecution;
+}
+
+/**
+ * Return the default user utilized for a scenario.
+ *
+ * @return The test user as {@link IUser}.
+ */
+protected IUser getTestUser() {
+	return getData().getTestUser();
 }
 
 /**

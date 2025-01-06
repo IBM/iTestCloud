@@ -24,7 +24,7 @@ mkdir /home/automation/jenkins || errorExit "Creating Jenkins dir failed, exitin
 
 echo -e ">>>>>>>>>>>>>> Downloading agent.jar"
 cd /home/automation/jenkins || errorExit "Changing dir to /home/automation/jenkins failed, exiting"
-wget https://wcp-itestcloud-jenkins.swg-devops.com/jnlpJars/agent.jar || errorExit "Downloading agent.jar failed, exiting"
+wget http://sottdevperf1.fyre.ibm.com:8080/jnlpJars/agent.jar || errorExit "Downloading agent.jar failed, exiting"
 
 echo -e ">>>>>>>>>>>>>> Creating VNC session and setting password"
 vncserver :1 -geometry 1920x1080 || errorExit "Creating VNC session and setting password failed, exiting"

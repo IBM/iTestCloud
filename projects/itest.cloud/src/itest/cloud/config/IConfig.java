@@ -13,7 +13,7 @@
  *********************************************************************/
 package itest.cloud.config;
 
-import itest.cloud.browsers.Browser;
+import itest.cloud.browser.Browser;
 import itest.cloud.topology.Topology;
 
 public interface IConfig {

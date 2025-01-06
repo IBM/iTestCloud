@@ -25,17 +25,24 @@ then
 	sudo apt-get install -y libxtst6 libgtk-3-0 libx11-xcb-dev libdbus-glib-1-2 libxt6 libpci-dev || errorExit "Installing Firefox prerequisites failed, exiting"
 
 	echo -e ">>>>>>>>>>>>>> Downloading Firefox"
-	wget -nv https://ftp.mozilla.org/pub/firefox/releases/109.0/linux-x86_64/en-US/firefox-109.0.tar.bz2 || errorExit "Downloading Firefox failed, exiting"
-
+	cd /opt || errorExit "Changing dir to /opt failed, exiting"
+	wget https://ftp.mozilla.org/pub/firefox/releases/126.0.1/linux-x86_64/en-US/firefox-126.0.1.tar.bz2 || errorExit "Downloading Firefox failed, exiting"
+	
 	echo -e ">>>>>>>>>>>>>> Extracting Firefox"
-	tar -xjf firefox-109.0.tar.bz2 || errorExit "Extracting Firefox failed, exiting"
+	tar -xjvf ./firefox-126.0.1.tar.bz2 || errorExit "Extracting Firefox failed, exiting"
+	
+	echo -e ">>>>>>>>>>>>>> Deleting Firefox installer"
+	rm -f ./firefox-126.0.1.tar.bz2 || errorExit "Deleting Firefox installer failed, exiting"
 
 	echo -e ">>>>>>>>>>>>>> Downloading Gecko driver archive"
-	wget -nv https://github.com/mozilla/geckodriver/releases/download/v0.32.1/geckodriver-v0.32.1-linux64.tar.gz || errorExit "Downloading Gecko driver archive failed, exiting"
-
+	wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz || errorExit "Downloading Gecko driver archive failed, exiting"
+	
 	echo -e ">>>>>>>>>>>>>> Extracting Gecko driver archive"
-	tar -xzf geckodriver-v0.32.1-linux64.tar.gz || errorExit "Extracting Gecko driver archive failed, exiting"
+	tar -xzvf ./geckodriver-v0.34.0-linux64.tar.gz || errorExit "Extracting Gecko driver archive failed, exiting"
 	chmod +x ./geckodriver || errorExit "Setting execution permission for Gecko driver failed, exiting"
+	
+	echo -e ">>>>>>>>>>>>>> Deleting Gecko driver archive"
+	rm -f ./geckodriver-v0.34.0-linux64.tar.gz || errorExit "Deleting Gecko driver archive failed, exiting"
 
 	export FF_PATH=firefox/firefox
 	export FF_DRIVER=geckodriver
@@ -50,13 +57,16 @@ then
 	sudo apt install --fix-broken -y ./google-chrome-stable_current_amd64.deb || errorExit "Installing Chrome failed, exiting"
 
 	echo -e ">>>>>>>>>>>>>> Downloading Chrome driver archive"
-	wget -nv https://chromedriver.storage.googleapis.com/109.0.5414.74/chromedriver_linux64.zip || errorExit "Downloading Chrome driver archive failed, exiting"
+	wget https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.72/linux64/chromedriver-linux64.zip || errorExit "Downloading Chrome driver archive failed, exiting"
 
 	echo -e ">>>>>>>>>>>>>> Extracting Chrome driver archive"
-	unzip chromedriver_linux64.zip || errorExit "Extracting Chrome driver archive failed, exiting"
-	chmod +x ./chromedriver || errorExit "Setting execution permission for Chrome driver failed, exiting"
+	unzip ./chromedriver-linux64.zip || errorExit "Extracting Chrome driver archive failed, exiting"
+	chmod +x ./chromedriver-linux64/chromedriver || errorExit "Setting execution permission for Chrome driver failed, exiting"
 
-	export CHROME_DRIVER=chromedriver
+	echo -e ">>>>>>>>>>>>>> Deleting Chrome driver archive"
+	rm -f ./chromedriver-linux64.zip || errorExit "Deleting Chrome driver archive failed, exiting"
+
+	export CHROME_DRIVER=chromedriver-linux64/chromedriver
 fi
 
 # if [ ${BROWSER} == "Random" ]
@@ -72,15 +82,15 @@ fi
 # 	echo -e ">>>>>>>>>>>>>> ${BROWSER} was selected as browser to run tests"
 # fi
 
-export CLASSPATH=repos/com.ibm.itest.cloud.common/libs/junit-4.12.jar:repos/com.ibm.itest.cloud.common/libs/hamcrest-core-1.3.jar || errorExit "Defining class path failed, exiting"
+export CLASSPATH=projects/com.ibm.itest.cloud.common/libs/junit-4.12.jar:projects/com.ibm.itest.cloud.common/libs/hamcrest-core-1.3.jar || errorExit "Defining class path failed, exiting"
 
 echo -e ">>>>>>>>>>>>>> Starting xvfb"
 Xvfb -ac :99 -screen 0 1280x1024x16 -nolisten unix &
 export DISPLAY=:99
 
-cp repos/com.ibm.itest.cloud.deployment/build-v3.xml build.xml || errorExit "Copying build-v2.xml failed, exiting"
+cp projects/itest.cloud.deployment/build.xml build.xml || errorExit "Copying build.xml failed, exiting"
 
-ant run -Dtest=${1} -Dlocale="${LOCALE}" -Denvironment="${ENVIRONMENT}" -Dprefix="${PREFIX}" -Dparams="${PARAMS}" -Dheadless=true || errorExit "Invoking test scenario failed, exiting"
+ant run -Dtest=${1} -Dlocale="${LOCALE}" -Denvironment="${ENVIRONMENT}" -Dprefix="${PREFIX}" -Dparams="${PARAMS}" -Dheadless=true -Dperformance="${PERFORMANCE}" || errorExit "Invoking test scenario failed, exiting"
 
 if [[ -z ${ARTIFACTORY_ACCOUNT} ]];
 then

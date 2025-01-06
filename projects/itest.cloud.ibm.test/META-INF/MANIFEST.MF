@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acme Sanity Scenario
+Bundle-SymbolicName: itest.cloud.ibm.sanity
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: IBM
+Bundle-RequiredExecutionEnvironment: JavaSE-19
+Require-Bundle: itest.cloud.ibm,
+ itest.cloud
+Automatic-Module-Name: itest.cloud.ibm

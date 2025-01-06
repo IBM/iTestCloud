@@ -79,13 +79,13 @@ then
  	echo -e ">>>>>>>>>>>>>> ${BROWSER} was selected as browser to run tests"
 fi
 
-echo -e ">>>>>>>>>>>>>> Creating /etc/hosts file"
-sudo rm -f /etc/hosts
-sudo cp repos/com.ibm.itest.cloud.deployment/hosts /etc/hosts
+#echo -e ">>>>>>>>>>>>>> Creating /etc/hosts file"
+#sudo rm -f /etc/hosts
+#sudo cp repos/com.ibm.itest.cloud.deployment/hosts /etc/hosts
 
-export CLASSPATH=repos/com.ibm.itest.cloud.common/libs/junit-4.12.jar:repos/com.ibm.itest.cloud.common/libs/hamcrest-core-1.3.jar || errorExit "Defining class path failed, exiting"
+export CLASSPATH=projects/com.ibm.itest.cloud.common/libs/junit-4.12.jar:projects/com.ibm.itest.cloud.common/libs/hamcrest-core-1.3.jar || errorExit "Defining class path failed, exiting"
 
-cp repos/com.ibm.itest.cloud.deployment/build-v3.xml build.xml || errorExit "Copying build-v3.xml failed, exiting"
+cp projects/itest.cloud.deployment/build.xml build.xml || errorExit "Copying build.xml failed, exiting"
 
 ant run -Dtest=${1} -Dlocale="${LOCALE}" -Denvironment="${ENVIRONMENT}" -Dprefix="${PREFIX}" -Dparams="${PARAMS}" -Dheadless=true -Dperformance="${PERFORMANCE}" || errorExit "Invoking test scenario failed, exiting"
 

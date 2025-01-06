@@ -13,8 +13,8 @@
  *********************************************************************/
 package itest.cloud.scenario;
 
-import itest.cloud.pages.Page;
-import itest.cloud.pages.dialogs.AbstractDialog;
+import itest.cloud.page.Page;
+import itest.cloud.page.dialog.Dialog;
 
 /**
  * Manage a workaround applied when running a scenario.
@@ -34,7 +34,7 @@ public ScenarioSilentWorkaround(final P page, final String msg, final boolean fa
 	this(page, msg, fail, null);
 }
 
-public ScenarioSilentWorkaround(final P page, final String msg, final boolean fail, final AbstractDialog dialog) {
+public ScenarioSilentWorkaround(final P page, final String msg, final boolean fail, final Dialog dialog) {
 	super(page, msg, fail, dialog, false /* report */);
 }
 

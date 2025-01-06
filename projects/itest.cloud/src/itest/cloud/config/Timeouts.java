@@ -14,8 +14,8 @@
 package itest.cloud.config;
 
 import static itest.cloud.config.Timeouts.Performance.AVERAGE;
-import static itest.cloud.scenario.ScenarioUtils.getParameterIntValue;
-import static itest.cloud.scenario.ScenarioUtils.getParameterValue;
+import static itest.cloud.scenario.ScenarioUtil.getParameterIntValue;
+import static itest.cloud.scenario.ScenarioUtil.getParameterValue;
 
 /**
  * General timeouts used while running a scenario.
@@ -59,7 +59,7 @@ abstract public class Timeouts {
 
 	// Constants
 	public static final Performance PERFORMANCE = Performance.valueOf(getParameterValue("performance", AVERAGE.name()));
-	private final static int DEFAULT_MAIN_TIMEOUT = 60  * PERFORMANCE.multiplier;
+	protected final static int DEFAULT_MAIN_TIMEOUT = 60  * PERFORMANCE.multiplier;
 
 	/**
 	 * Default timeout used all over the framework (e.g. while searching a web element
@@ -92,7 +92,7 @@ abstract public class Timeouts {
 	 * The value is 30 seconds.
 	 * </p>
 	 */
-	static final public int OPEN_PAGE_TIMEOUT = getParameterIntValue("timeoutToOpenPage", 30 * PERFORMANCE.multiplier);
+	static final public int OPEN_PAGE_TIMEOUT = getParameterIntValue("timeoutToOpenPage", DEFAULT_MAIN_TIMEOUT);
 
 	/**
 	 * Timeout used to wait for a dialog to be closed.

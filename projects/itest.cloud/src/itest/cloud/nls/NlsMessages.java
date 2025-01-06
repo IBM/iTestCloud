@@ -13,8 +13,8 @@
  *********************************************************************/
 package itest.cloud.nls;
 
-import static itest.cloud.scenario.ScenarioUtils.getParameterValue;
-import static itest.cloud.scenario.ScenarioUtils.println;
+import static itest.cloud.scenario.ScenarioUtil.getParameterValue;
+import static itest.cloud.scenario.ScenarioUtil.println;
 
 import java.util.*;
 
@@ -59,9 +59,9 @@ public NlsMessages() {
 			}
 			selectedLocale = Locale.getDefault();
 		} else if (country == null) {
-			selectedLocale = new Locale(language);
+			selectedLocale = new Locale.Builder().setLanguage(language).build();
 		} else {
-			selectedLocale = new Locale(language, country);
+			selectedLocale = new Locale.Builder().setLanguage(language).setRegion(country).build();;
 		}
 	} else {
 		selectedLocale = Supported.valueOf(locale).getLocale();

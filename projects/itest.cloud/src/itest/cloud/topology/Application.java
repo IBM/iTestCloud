@@ -13,14 +13,14 @@
  *********************************************************************/
 package itest.cloud.topology;
 
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.scenario.ScenarioUtil.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.StringTokenizer;
 
 import itest.cloud.config.User;
-import itest.cloud.scenario.errors.ScenarioFailedError;
+import itest.cloud.scenario.error.ScenarioFailedError;
 
 /**
  * Abstract class for a topology application.

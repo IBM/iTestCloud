@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/itest.cloud.ibm.test/src/itest/cloud/ibm/test/scenario/ca/mobile/CaMobileRegressionScenario.java"/>
+    </listAttribute>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="1"/>
+    </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="ANDROID_HOME" value="/Users/sudarsha/Library/Android/sdk"/>
+        <mapEntry key="APPIUM_BINARY_PATH" value="/usr/local/bin/appium"/>
+        <mapEntry key="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/ibm-semeru-open-21.jre/Contents/Home"/>
+    </mapAttribute>
+    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
+    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
+    <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="itest.cloud.ibm.test.scenario.ca.mobile.CaMobileRegressionScenario"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="itest.cloud.ibm.test"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DparamFilesDir=params&#13;&#10;-DparamFilesPath=browser/android.properties;scenario.properties;secret.properties;environment/ca-mobile.properties&#13;&#10;-DfirstStep=&#13;&#10;-DfirstTest=&#10;-DrunDeepDiveTests=true&#10;-DstopOnFailure=true&#10;-DverifyDependencies=true&#10;-DverifyDependenciesOnly=false"/>
+</launchConfiguration>

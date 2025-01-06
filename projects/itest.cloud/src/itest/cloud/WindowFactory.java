@@ -18,9 +18,9 @@ import java.lang.reflect.Modifier;
 
 import org.openqa.selenium.By;
 
-import itest.cloud.factories.Factory;
-import itest.cloud.pages.Page;
-import itest.cloud.pages.dialogs.AbstractWindow;
+import itest.cloud.factory.Factory;
+import itest.cloud.page.Page;
+import itest.cloud.page.dialog.AbstractWindow;
 
 /**
  * Factory to create instances of {@link AbstractWindow}.

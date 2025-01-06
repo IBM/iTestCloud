@@ -13,10 +13,10 @@
  *********************************************************************/
 package itest.cloud.scenario;
 
-import static itest.cloud.browsers.Browser.BROWSER_DOWNLOAD_DIR_ID;
-import static itest.cloud.browsers.Browser.BROWSER_DOWNLOAD_DIR_VALUE;
-import static itest.cloud.scenario.ScenarioUtils.EMPTY_STRING;
-import static itest.cloud.scenario.ScenarioUtils.getParameterValue;
+import static itest.cloud.browser.Browser.BROWSER_DOWNLOAD_DIR_ID;
+import static itest.cloud.browser.Browser.BROWSER_DOWNLOAD_DIR_VALUE;
+import static itest.cloud.scenario.ScenarioUtil.EMPTY_STRING;
+import static itest.cloud.scenario.ScenarioUtil.getParameterValue;
 
 import java.io.File;
 

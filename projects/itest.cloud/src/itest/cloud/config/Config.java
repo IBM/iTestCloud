@@ -15,8 +15,8 @@ package itest.cloud.config;
 
 import static itest.cloud.config.Timeouts.*;
 
-import itest.cloud.browsers.Browser;
-import itest.cloud.pages.Page;
+import itest.cloud.browser.Browser;
+import itest.cloud.page.Page;
 import itest.cloud.topology.Topology;
 
 /**

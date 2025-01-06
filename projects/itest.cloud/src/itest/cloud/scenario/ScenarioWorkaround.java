@@ -13,15 +13,15 @@
  *********************************************************************/
 package itest.cloud.scenario;
 
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.scenario.ScenarioUtil.*;
 
 import java.util.*;
 
-import itest.cloud.browsers.Browser;
-import itest.cloud.pages.Page;
-import itest.cloud.pages.dialogs.AbstractDialog;
-import itest.cloud.pages.elements.BrowserElement;
-import itest.cloud.scenario.errors.WaitElementTimeoutError;
+import itest.cloud.browser.Browser;
+import itest.cloud.page.Page;
+import itest.cloud.page.dialog.Dialog;
+import itest.cloud.page.element.BrowserElement;
+import itest.cloud.scenario.error.WaitElementTimeoutError;
 
 /**
  * Manage workaround applied when running a scenario.
@@ -39,7 +39,7 @@ abstract public class ScenarioWorkaround<P extends Page> {
 	private boolean shouldFail;
 	private long id;
 	protected P page;
-	protected AbstractDialog dialog;
+	protected Dialog dialog;
 
 public ScenarioWorkaround(final P page, final String msg) {
 	this(page, msg, true, null);
@@ -49,11 +49,11 @@ public ScenarioWorkaround(final P page, final String msg, final boolean fail) {
 	this(page, msg, fail, null);
 }
 
-public ScenarioWorkaround(final P page, final String msg, final boolean fail, final AbstractDialog dialog) {
+public ScenarioWorkaround(final P page, final String msg, final boolean fail, final Dialog dialog) {
 	this(page, msg, fail, dialog, true /* report */);
 }
 
-public ScenarioWorkaround(final P page, final String msg, final boolean fail, final AbstractDialog dialog, final boolean report) {
+public ScenarioWorkaround(final P page, final String msg, final boolean fail, final Dialog dialog, final boolean report) {
 	this.message = msg;
 	this.page = page;
 	this.dialog = dialog;
@@ -77,7 +77,7 @@ public ScenarioWorkaround(final P page, final String msg, final boolean fail, fi
 	}
 }
 
-public ScenarioWorkaround(final P page, final String msg, final AbstractDialog dialog) {
+public ScenarioWorkaround(final P page, final String msg, final Dialog dialog) {
 	this(page, msg, true, dialog);
 }
 

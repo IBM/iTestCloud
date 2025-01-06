@@ -13,10 +13,10 @@
  *********************************************************************/
 package itest.cloud;
 
-import static itest.cloud.scenario.ScenarioUtils.debugPrintln;
+import static itest.cloud.scenario.ScenarioUtil.debugPrintln;
 
-import itest.cloud.pages.Page;
-import itest.cloud.pages.elements.BrowserElement;
+import itest.cloud.page.Page;
+import itest.cloud.page.element.BrowserElement;
 import itest.cloud.scenario.ScenarioWorkaround;
 
 public class PageWorkaround extends ScenarioWorkaround<Page> {

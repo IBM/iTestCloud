@@ -13,12 +13,12 @@
  *********************************************************************/
 package itest.cloud.topology;
 
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.scenario.ScenarioUtil.*;
 
 import java.util.*;
 
 import itest.cloud.config.User;
-import itest.cloud.scenario.errors.ScenarioFailedError;
+import itest.cloud.scenario.error.ScenarioFailedError;
 
 /**
  * Manage the scenario topology. A topology is made of applications

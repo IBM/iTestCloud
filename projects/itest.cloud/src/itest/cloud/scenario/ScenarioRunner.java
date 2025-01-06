@@ -14,7 +14,8 @@
 package itest.cloud.scenario;
 
 import static itest.cloud.performance.PerfManager.PERFORMANCE_LOOPS;
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.scenario.ScenarioUtil.*;
+import static java.lang.System.setProperty;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -28,11 +29,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 
-import itest.cloud.annotations.FireFoxTest;
-import itest.cloud.annotations.GoogleChromeTest;
-import itest.cloud.scenario.errors.ScenarioFailedError;
-import itest.cloud.utils.DependsOn;
-import itest.cloud.utils.NotRerunnable;
+import itest.cloud.annotation.*;
+import itest.cloud.scenario.error.ScenarioFailedError;
 
 /**
  * Manage scenario JUnit run.
@@ -224,7 +222,7 @@ public ScenarioExecution getScenarioExecution() {
 protected void initAnnotationFilters() {
 	this.annotationFilters = new ArrayList<AnnotationFilter<? extends Annotation>>();
 	addAnnotationFilter(new AnnotationFilter<FireFoxTest>(this.scenarioExecution.getBrowser().isFirefox(), "runFireFoxTests", FireFoxTest.class));
-	addAnnotationFilter(new AnnotationFilter<GoogleChromeTest>(this.scenarioExecution.getBrowser().isGoogleChrome(), "runGoogleChromeTests", GoogleChromeTest.class));
+	addAnnotationFilter(new AnnotationFilter<ChromeTest>(this.scenarioExecution.getBrowser().isChrome(), "runChromeTests", ChromeTest.class));
 }
 
 /**
@@ -237,8 +235,9 @@ protected void initBulkParams() {
 		String[] parameters = parametersString.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1 /*limit*/);
 
 		for (String parameter : parameters) {
-			String[] parameterInfo = parameter.split("=");
-			System.setProperty(parameterInfo[0], parameterInfo[1]);
+			final int equalCharIndex = parameter.indexOf("=");
+			setProperty(parameter.substring(0 /*beginIndex*/, equalCharIndex /*endIndex*/),
+				parameter.substring(equalCharIndex + 1) /*beginIndex*/);
 		}
 	}
 }

@@ -14,13 +14,13 @@
 package itest.cloud.performance;
 
 import static itest.cloud.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
-import static itest.cloud.scenario.ScenarioUtils.EMPTY_STRING;
+import static itest.cloud.scenario.ScenarioUtil.EMPTY_STRING;
 import static java.lang.Double.valueOf;
 
 import java.util.ArrayList;
 
 import itest.cloud.performance.PerfManager.RegressionType;
-import itest.cloud.scenario.errors.ScenarioFailedError;
+import itest.cloud.scenario.error.ScenarioFailedError;
 
 /**
  * Performance Result class, for storing the information on a single performance

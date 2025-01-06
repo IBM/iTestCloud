@@ -22,8 +22,8 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.*;
 
-import itest.cloud.utils.FailureBlocker;
-import itest.cloud.utils.FailureRelaxer;
+import itest.cloud.annotation.FailureBlocker;
+import itest.cloud.annotation.FailureRelaxer;
 
 /**
  * Manage scenario step JUnit run.

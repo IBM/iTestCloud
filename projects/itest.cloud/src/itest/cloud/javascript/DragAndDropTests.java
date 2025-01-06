@@ -13,12 +13,12 @@
  *********************************************************************/
 package itest.cloud.javascript;
 
-import static itest.cloud.scenario.ScenarioUtils.println;
+import static itest.cloud.scenario.ScenarioUtil.println;
 
 import org.openqa.selenium.By;
 
-import itest.cloud.browsers.FirefoxBrowser;
-import itest.cloud.pages.elements.BrowserElement;
+import itest.cloud.browser.FirefoxBrowser;
+import itest.cloud.page.element.BrowserElement;
 
 @SuppressWarnings("unused")
 public class DragAndDropTests {

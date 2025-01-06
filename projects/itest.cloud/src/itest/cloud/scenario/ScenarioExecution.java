@@ -13,8 +13,8 @@
  *********************************************************************/
 package itest.cloud.scenario;
 
-import static itest.cloud.browsers.Browser.JAVASCRIPT_ERROR_ALERT_PATTERN;
-import static itest.cloud.scenario.ScenarioUtils.*;
+import static itest.cloud.browser.Browser.JAVASCRIPT_ERROR_ALERT_PATTERN;
+import static itest.cloud.scenario.ScenarioUtil.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -29,14 +29,14 @@ import org.junit.runners.model.Statement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
-import itest.cloud.browsers.Browser;
+import itest.cloud.annotation.*;
+import itest.cloud.browser.Browser;
 import itest.cloud.config.Config;
-import itest.cloud.pages.Page;
+import itest.cloud.page.Page;
 import itest.cloud.performance.PerfManager;
-import itest.cloud.scenario.errors.*;
+import itest.cloud.scenario.error.*;
 import itest.cloud.topology.Application;
 import itest.cloud.topology.Topology;
-import itest.cloud.utils.*;
 
 /**
  * Manage scenario execution.
@@ -152,7 +152,7 @@ public abstract class ScenarioExecution implements ScenarioDataConstants {
 public ScenarioExecution() {
 
 	// Init Debug
-	ScenarioUtils.debugOpen();
+	ScenarioUtil.debugOpen();
 
 	// Init execution controls
 	this.stopOnFailure = getParameterBooleanValue(STOP_ON_FAILURE_ID, false);
@@ -246,7 +246,7 @@ private void createExecutionDetailsFile() {
  * Ends the scenario execution.
  */
 public void finish() {
-	ScenarioUtils.debugClose();
+	ScenarioUtil.debugClose();
 	createExecutionDetailsFile();
 	try {
 		if (this.closeBrowserOnExit) {
@@ -814,7 +814,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 }
 
 void setPackageName(final Object target) {
-	this.packageName = ScenarioUtils.getPackageName(target.getClass());
+	this.packageName = ScenarioUtil.getPackageName(target.getClass());
 }
 
 ///**
@@ -839,7 +839,7 @@ public void setSingleStep(final boolean singleStep) {
 }
 
 void setStepName(final Object target, final boolean isNewStep) {
-	this.stepName = ScenarioUtils.getClassSimpleName(target.getClass());
+	this.stepName = ScenarioUtil.getClassSimpleName(target.getClass());
 	// If it is a new step, print an appropriate message to the console.
 	if(isNewStep) {
 		printStepStart(this.stepName);
@@ -860,7 +860,7 @@ public boolean shouldStop() {
 
 public void showVersionInfo() {
 	println("Selenium and Browser information:");
-	println("	- " + ScenarioUtils.getSeleniumVersion());
+	println("	- " + ScenarioUtil.getSeleniumVersion());
 	println("	- " + getBrowser().getName() + " version: " + getBrowser().getVersion());
 }
 

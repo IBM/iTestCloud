@@ -13,9 +13,9 @@
  *********************************************************************/
 package itest.cloud.performance;
 
-import static itest.cloud.scenario.ScenarioUtils.LINE_SEPARATOR;
-import static itest.cloud.scenario.ScenarioUtils.QUOTE;
-import static itest.cloud.utils.CollectionsUtil.getListFromArray;
+import static itest.cloud.scenario.ScenarioUtil.LINE_SEPARATOR;
+import static itest.cloud.scenario.ScenarioUtil.QUOTE;
+import static itest.cloud.util.CollectionsUtil.getListFromArray;
 import static java.util.Collections.unmodifiableList;
 
 import java.io.IOException;

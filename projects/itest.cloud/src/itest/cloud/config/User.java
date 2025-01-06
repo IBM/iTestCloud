@@ -13,12 +13,12 @@
  *********************************************************************/
 package itest.cloud.config;
 
-import static itest.cloud.scenario.ScenarioUtils.*;
-import static itest.cloud.utils.EncryptionUtils.decrypt;
+import static itest.cloud.scenario.ScenarioUtil.*;
+import static itest.cloud.util.EncryptionUtil.decrypt;
 
-import org.apache.commons.codec.EncoderException;
+import org.openqa.selenium.InvalidArgumentException;
 
-import itest.cloud.scenario.errors.ScenarioFailedError;
+import itest.cloud.scenario.error.ScenarioFailedError;
 
 /**
  * User connected to an application while going to a web page.
@@ -29,7 +29,7 @@ import itest.cloud.scenario.errors.ScenarioFailedError;
  */
 public class User implements UserConstants, IUser {
 
-	public static void main(final String[] args) throws EncoderException {
+	public static void main(final String[] args) throws InvalidArgumentException {
 		if((args == null) || (args.length == 0)) {
 			System.err.println("A password was not provided to encode");
 		}
@@ -37,12 +37,12 @@ public class User implements UserConstants, IUser {
 			System.out.println("Encoded password: " + decrypt(args[0]));
 		}
 	}
-	// User info
-	String id;
-	String name;
 
-	String password;
-	String email;
+	// User info
+	protected final String id;
+	protected final String name;
+	protected String password;
+	protected final String email;
 
 	// Encryption
 	private boolean encrypted = false;
@@ -117,7 +117,7 @@ public boolean equals(final Object obj) {
 /**
  * Return the user email address.
  *
- * @return The email address as a {@link String}
+ * @return The email address as {@link String}
  */
 @Override
 final public String getEmail() {
@@ -136,7 +136,7 @@ public final String getFirstName(){
 /**
  * Return the user ID.
  *
- * @return The ID as a {@link String}
+ * @return The ID as {@link String}
  */
 @Override
 final public String getId() {
@@ -149,14 +149,14 @@ final public String getId() {
  * @return The first name of the user.
  */
 final public String getLastName() {
-	String[] nameArray = getName().split(SPACE_STRING);
+	final String[] nameArray = getName().split(SPACE_STRING);
 	return nameArray[nameArray.length - 1];
 }
 
 /**
  * Return the user name.
  *
- * @return The name as a {@link String}
+ * @return The name as {@link String}
  */
 @Override
 final public String getName() {
@@ -166,7 +166,7 @@ final public String getName() {
 /**
  * Return the user password.
  *
- * @return The password as a {@link String}
+ * @return The password as {@link String}
  */
 @Override
 final public String getPassword() {

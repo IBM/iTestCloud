@@ -13,8 +13,8 @@
  *********************************************************************/
 package itest.cloud.scenario;
 
-import static itest.cloud.scenario.ScenarioUtils.getParameterBooleanValue;
-import static itest.cloud.scenario.ScenarioUtils.getParameterValue;
+import static itest.cloud.scenario.ScenarioUtil.getParameterBooleanValue;
+import static itest.cloud.scenario.ScenarioUtil.getParameterValue;
 
 import java.io.File;
 

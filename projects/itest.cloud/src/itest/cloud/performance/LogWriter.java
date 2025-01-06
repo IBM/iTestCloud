@@ -13,7 +13,7 @@
  *********************************************************************/
 package itest.cloud.performance;
 
-import static itest.cloud.scenario.ScenarioUtils.LINE_SEPARATOR;
+import static itest.cloud.scenario.ScenarioUtil.LINE_SEPARATOR;
 
 import java.io.FileWriter;
 import java.io.IOException;
