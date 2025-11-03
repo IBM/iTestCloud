@@ -72,12 +72,13 @@ DesiredCapabilities getCapabilities(final String deviceName, final String platfo
 	// The 'platformName' is a standard capability and do not require the 'appium:' prefix.
 	capabilities.setCapability("platformName", platformName);
 	capabilities.setCapability("appium:automationName", automationName);
+	capabilities.setCapability("appium:newCommandTimeout", Integer.valueOf(getParameterIntValue("newCommandTimeout", 3600)));
 	// Specify where the APK file of the application-under-test is located if one provided.
 	// This application will be automatically uploaded and installed on the emulator.
 	final String applicationPath = getParameterValue("applicationPath");
 	if(applicationPath != null) capabilities.setCapability("appium:app", applicationPath);
-//	// Specify the maximum depth for traversing elements source tree when an element is searched.
-//	capabilities.setCapability("snapshotMaxDepth", Integer.valueOf(getParameterIntValue("snapshotMaxDepth", 200)));
+	// Specify the maximum depth for traversing elements source tree when an element is searched.
+	capabilities.setCapability("appium:snapshotMaxDepth", Integer.valueOf(getParameterIntValue("snapshotMaxDepth", 200)));
 	// Automatically grant all the permissions required by the application-under-test on the emulator.
 	capabilities.setCapability("appium:autoGrantPermissions", true);
 
@@ -105,7 +106,7 @@ public SupportsContextSwitching getDriver() {
 AppiumServiceBuilder getServiceBuilder() {
 	// Initialize the Appium service builder.
 	return new AppiumServiceBuilder()
-		.withArgument(LOG_LEVEL, "warn")
+		.withArgument(LOG_LEVEL, getParameterValue("appiumLogLevel", "error"))
 //		.withLogFile(this.logFile)
 		.usingAnyFreePort();
 }

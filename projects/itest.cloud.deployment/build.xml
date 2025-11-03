@@ -69,7 +69,7 @@
 	</condition>
 
 	<path id="classpath">
-		<fileset dir="${libs.dir}" includes="**/*.jar"/>
+		<fileset dir="${libs.dir}" includes="**/**/*.jar"/>
 	</path>
 
 	<target name="copy">

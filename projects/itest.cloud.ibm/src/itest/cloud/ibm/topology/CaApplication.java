@@ -25,6 +25,7 @@ import itest.cloud.topology.Application;
  * <ul>
  * <li>{@link #getBaseUrl()}: Returns the base URL.</li>
  * <li>{@link #getBiSubdirectoryUrl()}: Returns the URL of the BI sub-directory.</li>
+ * <li>{@link #getDashboardViewUrl()}: Returns the URL of the DashboardView.</li>
  * <li>{@link #getHomePageUrl()}: Returns the URL of the home page.</li>
  * <li>{@link #getPinboardViewUrl()}: Returns the URL of the PinboardView.</li>
  * </ul>
@@ -58,6 +59,15 @@ public String getBaseUrl() {
  */
 public String getBiSubdirectoryUrl() {
 	return getBaseUrl() + "bi/";
+}
+
+/**
+ * Returns the URL of the DashboardView.
+ *
+ * @return The URL of the DashboardView {@link String}.
+ */
+public String getDashboardViewUrl() {
+	return getPerspectiveQueryUrl() + "mobileDashboardView";
 }
 
 /**

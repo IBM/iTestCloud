@@ -223,19 +223,19 @@ public static String getFileName(final File file) {
 }
 
 /**
- * Specifies whether a given is a temporary file.
+ * Specifies whether a given file is a temporary file.
  * <p>
  * Such a file may be created during a download operation to collect the
  * downloaded content and discarded after the download has completed.
  * </p>
  *
- * @param file The corresponding file to check.
+ * @param fileName The name of the file.
  *
- * @return <code>true</code> if the given is a temporary file or
+ * @return <code>true</code> if the given file is a temporary file or
  * <code>false</code> otherwise.
  */
-public static boolean isTemporaryFile(final File file) {
-	return Pattern.matches(".*\\.part|.*\\.crdownload|.*\\.Chrome\\..*", file.getName());
+public static boolean isTemporaryFile(final String fileName) {
+	return Pattern.matches(".*\\.part|.*\\.crdownload|.*\\.Chrome\\..*", fileName);
 }
 
 private static void read(final InputStream inputStream, final OutputStream outputStream) throws IOException {

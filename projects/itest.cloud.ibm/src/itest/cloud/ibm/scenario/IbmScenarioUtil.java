@@ -12,7 +12,6 @@
  * limitations under the License.
  *********************************************************************/
 package itest.cloud.ibm.scenario;
-
 import static itest.cloud.util.ByUtils.toRelativeLocatorString;
 
 import org.openqa.selenium.By;
@@ -22,6 +21,7 @@ import itest.cloud.scenario.ScenarioUtil;
 /**
  * Utilities to perform various operations.
  * <p>
+ * <li>{@link #contains(Object, Object...)}: Returns true if the given array contains a specified object.</li>
  * <li>{@link #getBusyIndicatorElementLocator(boolean)}: Return the busy indicator element locator.</li>
  * <li>{@link #getBusyIndicatorElementLocator(boolean, String...)}: Return the busy indicator element locator.</li>
  * </p>
@@ -29,6 +29,21 @@ import itest.cloud.scenario.ScenarioUtil;
 public class IbmScenarioUtil extends ScenarioUtil {
 
 	private static final String BUSY_INDICATOR_ELEMENT_LOCATOR_STRING = "//*[contains(@class,'skeleton')]";
+
+/**
+ * Returns {@code true} if the given array contains a specified object.
+ *
+ * @param object The object to check for existence in the array as {@link Object}.
+ * @param objects An error of objects to check if a matching object resides among them as an array of {@link Object}s.
+ *
+ * @return {@code true} if this list contains the specified element
+ */
+public static boolean contains(final Object object, final Object... objects) {
+	for (Object anObject : objects) {
+		if(object.equals(anObject)) return true;
+	}
+	return false;
+}
 
 /**
  * Return the busy indicator element locator.

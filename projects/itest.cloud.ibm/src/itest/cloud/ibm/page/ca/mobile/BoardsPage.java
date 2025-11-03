@@ -13,13 +13,12 @@
  *********************************************************************/
 package itest.cloud.ibm.page.ca.mobile;
 
-import static itest.cloud.ibm.page.element.ca.mobile.ChartElement.CHART_ELEMENT_LOCATOR_STRING;
-import static itest.cloud.ibm.page.element.ca.mobile.ChartElement.CHART_TITLE_ELEMENT_LOCATOR;
+import static itest.cloud.entity.AlertStatus.Success;
+import static itest.cloud.ibm.scenario.ca.mobile.CaMobileScenarioUtil.getBoardsDeletionAlertPattern;
 import static itest.cloud.util.ByUtils.OR;
 import static java.util.regex.Pattern.compile;
 import static java.util.regex.Pattern.quote;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -28,8 +27,8 @@ import org.openqa.selenium.By;
 import itest.cloud.config.User;
 import itest.cloud.ibm.config.IbmConfig;
 import itest.cloud.ibm.page.dialog.ca.mobile.NewBoardDialog;
-import itest.cloud.ibm.page.element.ca.mobile.BoardContextMenuElement;
-import itest.cloud.ibm.page.element.ca.mobile.ChartElement;
+import itest.cloud.ibm.page.element.ca.mobile.*;
+import itest.cloud.page.element.AlertElement;
 import itest.cloud.page.element.BrowserElement;
 import itest.cloud.scenario.error.InvalidOutcomeError;
 import itest.cloud.scenario.error.WaitElementTimeoutError;
@@ -39,12 +38,15 @@ import itest.cloud.scenario.error.WaitElementTimeoutError;
  * <p>
  * Following public features are accessible on this page:
  * <ul>
+ * <li>{@link #boardsExist()}: Specifies whether no boards exist.</li>
+ * <li>{@link #chartExist(String)}: Specifies whether a given chart exist in the currently opened board.</li>
  * <li>{@link #createBoard(String)}: Create a new board with a given name.</li>
  * <li>{@link #deleteBoard()}: Delete the currently opened board.</li>
- * <li>{@link #doBoardsExist()}: Specifies whether no boards exist.</li>
- * <li>{@link #getBoardName()}: Return the name of the open board.</li>
+ * <li>{@link #getBoardName()}: Return the name of the currently open board.</li>
  * <li>{@link #openBoardsManagementPage()}: Open the Boards Management Page.</li>
- * <li>{@link #openChart(String, String)}: Open a given chart in a board.</li>
+ * <li>{@link #openChart(String)}: Open a given chart from the currently opened board.</li>
+ * <li>{@link #renameBoard(String)}: Rename the currently opened board to a given.</li>
+ * <li>{@link #unpinChart(String)}: Unpin the a given chart from the currently opened board.</li>
  * <li>{@link #waitForLoadingPageEnd()}: Wait for the page loading to be finished.</li>
  * </ul>
  * </p><p>
@@ -55,15 +57,74 @@ import itest.cloud.scenario.error.WaitElementTimeoutError;
  * </ul>
  * </p>
  */
-public class BoardsPage extends CaMobileNavigablePage {
+public class BoardsPage extends ChartListPage {
 
-	private static final By CHARTS_GRID_ELEMENT_LOCATOR = By.xpath("//*[(@class='camobile-swipe-view') and (@aria-hidden='false')]//*[@class='camobile-grid-cells']");
 	private static final By NO_CHARTS_ELEMENT_LOCATOR = By.xpath("//*[@class='noPinsPlaceholder']//h5");
 	private static final By TOOLBAR_TITLE_ELEMENT_LOCAOR = By.xpath("//*[@class='camobile-toolbar-title']");
-	private static final By NO_BOARDS_ELEMENT_LOCATOR = By.xpath("//*[@class='noContentPlaceholder']//h5");
 
 public BoardsPage(final String url, final IbmConfig config, final User user) {
 	super(url, config, user);
+}
+
+/**
+ * Specifies whether boards exist.
+ *
+ * @return <code>true</code> if at least one board exists or <code>false</code> otherwise.
+ */
+public boolean boardsExist() {
+	try {
+		// The no boards message is presented in a WebView. Therefore, switch to the appropriate window.
+		switchToMobilePinboardWindow();
+
+		// Check if the tool bar title element or the no boards message is present.
+		BrowserElement[] existenceIndicatorElements =
+			waitForMultipleElements(TOOLBAR_TITLE_ELEMENT_LOCAOR, NO_CONTENT_ELEMENT_LOCATOR);
+		// Check if the no boards message is present.
+		return existenceIndicatorElements[0] != null;
+	}
+	finally {
+		// Switch back to the native application context.
+		switchToNativeAppContext();
+	}
+}
+
+/**
+ * Specifies whether a given chart exist in the currently opened board.
+ *
+ * @return <code>true</code> if the given chart exists in the currently opened board or <code>false</code> otherwise.
+ */
+public boolean chartExist(final String name) {
+	try {
+		// The no boards message is presented in a WebView. Therefore, switch to the appropriate window. existence
+		switchToMobilePinboardWindow();
+
+		return getChartElement(name, false /*fail*/) != null;
+	}
+	finally {
+		// Switch back to the native application context.
+		switchToNativeAppContext();
+	}
+}
+
+/**
+ * Specifies whether charts exist in the currently opened board.
+ *
+ * @return <code>true</code> if at least one chart exists in the currently opened board or <code>false</code> otherwise.
+ */
+private boolean chartsExist() {
+	try {
+		// The no boards message is presented in a WebView. Therefore, switch to the appropriate window. existence
+		switchToMobilePinboardWindow();
+
+		// Check if the charts grid element or the no charts message is present.
+		final BrowserElement[] existenceIndicatorElements =
+			waitForMultipleElements(CHARTS_GRID_ELEMENT_LOCATOR, NO_CHARTS_ELEMENT_LOCATOR);
+		return existenceIndicatorElements[0] != null;
+	}
+	finally {
+		// Switch back to the native application context.
+		switchToNativeAppContext();
+	}
 }
 
 /**
@@ -101,7 +162,7 @@ public void createBoard(final String name) {
 	}
 
 	// Ensure there are no charts exist in the newly created board.
-	if(doChartsExist()) {
+	if(chartsExist()) {
 		throw new InvalidOutcomeError("Charts were present in the newly created board with name '" + name + "'. No charts were expected in a newly created board.");
 	}
 }
@@ -117,7 +178,15 @@ public void deleteBoard() {
 	final BoardContextMenuElement contextMenuElement = getContextMenuElement();
 	contextMenuElement.deleteBoard();
 
+	// Wait for an alert to appear indicating that the deletion was successful or not.
+	final AlertElement alertElement = getAlertElement(getBoardsDeletionAlertPattern(boardName), true /*fail*/);
+	// Make sure the alert indicates that the deletion was successful.
+	if(alertElement.getStatus() != Success) throw new WaitElementTimeoutError("Deleting board '" + boardName + "' failed with the following message: " + alertElement.getMessage());
+	// Dismiss the alert.
+	alertElement.close();
+
 	// Wait for the deleted board to disappear from the Boards Page.
+	// TODO: What if the deleted was the only board in the application? Need to consider this situation in the following logic.
 	final long timeoutMillis = timeout() * 1000 + System.currentTimeMillis();
 	while (getBoardName().equals(boardName)) {
 		if (System.currentTimeMillis() > timeoutMillis) {
@@ -127,52 +196,9 @@ public void deleteBoard() {
 }
 
 /**
- * Specifies whether boards exist.
+ * Return the name of the currently opened board.
  *
- * @return <code>true</code> if at least one board exists or <code>false</code> otherwise.
- */
-public boolean doBoardsExist() {
-	try {
-		// The no boards message is presented in a WebView. Therefore, switch to the appropriate window.
-		switchToMobilePinboardWindow();
-
-		// Check if the tool bar title element or the no boards message is present.
-		BrowserElement[] existenceIndicatorElements =
-			waitForMultipleElements(TOOLBAR_TITLE_ELEMENT_LOCAOR, NO_BOARDS_ELEMENT_LOCATOR);
-		// Check if the no boards message is present.
-		return existenceIndicatorElements[0] != null;
-	}
-	finally {
-		// Switch back to the native application context.
-		switchToNativeAppContext();
-	}
-}
-
-/**
- * Specifies whether charts exist in the currently opened board.
- *
- * @return <code>true</code> if at least one chart exists in the currently opened board or <code>false</code> otherwise.
- */
-private boolean doChartsExist() {
-	try {
-		// The no boards message is presented in a WebView. Therefore, switch to the appropriate window. existence
-		switchToMobilePinboardWindow();
-
-		// Check if the charts grid element or the no charts message is present.
-		final BrowserElement[] existenceIndicatorElements =
-			waitForMultipleElements(CHARTS_GRID_ELEMENT_LOCATOR, NO_CHARTS_ELEMENT_LOCATOR);
-		return existenceIndicatorElements[0] != null;
-	}
-	finally {
-		// Switch back to the native application context.
-		switchToNativeAppContext();
-	}
-}
-
-/**
- * Return the name of the opened board.
- *
- * @return The name of the opened board as {@link String}.
+ * @return The name of the currently opened board as {@link String}.
  */
 public String getBoardName() {
 	try {
@@ -188,35 +214,18 @@ public String getBoardName() {
 }
 
 /**
- * Return the chart element with the name matching a given pattern.
- *
- * @param pattern The pattern matching the name of the chart element as {@link Pattern}.
- * @param fail Specify whether to fail if a matching chart element could not be found.
- *
- * @return The the desired chart element as {link ChartElement} or
- * <code>null</code> if a matching chart element could not be found and specified not to fail in such a situation.
- *
- * @throws WaitElementTimeoutError If a matching chart element could not be found and specified to fail in such a situation.
- */
-private ChartElement getChartElement(final Pattern pattern, final boolean fail) {
-	final List<ChartElement> chartElements = getChartElements(pattern, fail);
-
-	return (!chartElements.isEmpty()) ? chartElements.get(0 /*index*/) : null;
-}
-
-/**
  * Return the chart element with a given name.
  *
  * @param name The name of the chart element as {@link String}.
  * @param fail Specify whether to fail if a matching chart element could not be found.
  *
- * @return The the desired chart element as {link ChartElement} or
+ * @return The the desired chart element as {link BoardChartElement} or
  * <code>null</code> if a matching chart element could not be found and specified not to fail in such a situation.
  *
  * @throws WaitElementTimeoutError If a matching chart element could not be found and specified to fail in such a situation.
  */
-private ChartElement getChartElement(final String name, final boolean fail) {
-	return getChartElement(compile(quote(name)), true /*fail*/);
+private BoardChartElement getChartElement(final String name, final boolean fail) {
+	return getChartElement(compile(quote(name)), BoardChartElement.class, fail);
 }
 
 /**
@@ -225,36 +234,13 @@ private ChartElement getChartElement(final String name, final boolean fail) {
  * @param pattern The pattern matching the name of the chart elements as {@link Pattern}.
  * @param fail Specify whether to fail if a matching chart element could not be found.
  *
- * @return The the desired chart elements as a @ {@link List} of {link ChartElement} or
+ * @return The the desired chart elements as a @ {@link List} of {link BoardChartElement} or
  * <code>null</code> if a matching chart element could not be found and specified not to fail in such a situation.
  *
  * @throws WaitElementTimeoutError If a matching chart element could not be found and specified to fail in such a situation.
  */
-private List<ChartElement> getChartElements(final Pattern pattern, final boolean fail) {
-	final int timeout = fail ? timeout() : tinyTimeout();
-	final long timeoutMillis = timeout * 1000 + System.currentTimeMillis();
-
-	while (true) {
-		final List<ChartElement> chartElements = new ArrayList<ChartElement>();
-		final List<BrowserElement> chartWebElements = waitForElements(CHART_ELEMENT_LOCATOR_STRING, timeout, fail);
-
-		for (BrowserElement chartWebElement : chartWebElements) {
-			final BrowserElement chartTitleElement = chartWebElement.waitForElement(CHART_TITLE_ELEMENT_LOCATOR);
-			final String chartName = chartTitleElement.getText();
-
-			if((pattern == null) || pattern.matcher(chartName).matches()) {
-				chartElements.add(new ChartElement(this, chartWebElement, chartName));
-			}
-		}
-
-		if(!chartElements.isEmpty()) {
-			return chartElements;
-		}
-		else if (System.currentTimeMillis() > timeoutMillis) {
-			if(fail) throw new WaitElementTimeoutError("A chart element with name matching pattern '" + pattern + "' could not be found before timeout '" + timeout + "'s had reached.");
-			return chartElements;
-		}
-	}
+private List<BoardChartElement> getChartElements(final Pattern pattern, final boolean fail) {
+	return getChartElements(pattern, BoardChartElement.class, fail);
 }
 
 /**
@@ -263,7 +249,7 @@ private List<ChartElement> getChartElements(final Pattern pattern, final boolean
  * @return The context menu element as {@link BoardContextMenuElement}.
  */
 private BoardContextMenuElement getContextMenuElement() {
-	return new BoardContextMenuElement(this, null /*expansionElement*/, getBoardName()) {
+	return new BoardContextMenuElement(this, null /*expansionElement*/) {
 		@Override
 		protected void clickOnExpansionElement(final boolean expand) {
 			MobilePinboardWindowAction action = new MobilePinboardWindowAction() {
@@ -303,23 +289,90 @@ public BoardsManagementPage openBoardsManagementPage() {
 }
 
 /**
- * Open a given chart in a board.
+ * Open a given chart in the currently opened board.
  *
- * @param board The name of the board containing the desired chart as {@link String}.
- * @param chart The name of the chart as {@link String}.
+ * @param name The name of the chart as {@link String}.
  *
  * @return The opened Chart Page as {@link ChartPage}.
  */
-public ChartPage openChart(final String board, final String chart) {
+public ChartPage openChart(final String name) {
 	return openMobilePageUsingLink(ChartPage.class, new MobilePinboardWindowAction() {
 		@Override
 		public void performActionInMobilePinboardWindow(final Object... actionData) {
 			// Find the chart element.
-			final ChartElement chartElement = getChartElement(chart, true /*fail*/);
+			final BoardChartElement chartElement = getChartElement(name, true /*fail*/);
 			// Trigger the maximize action on the chart element.
 			chartElement.open();
 		}
-	}, board, chart);
+	}, getBoardName(), name);
+}
+
+/**
+ * Return the content menu element of a given chart.
+ *
+ * @return The context menu element of the chart as {@link CartContextMenuElement}.
+ */
+private CartContextMenuElement openContextMenuElementOfChart(final String chart) {
+	return new CartContextMenuElement(this, null /*expansionElement*/, chart) {
+		@Override
+		protected void clickOnExpansionElement(final boolean expand) {
+			MobilePinboardWindowAction action = new MobilePinboardWindowAction() {
+				@Override
+				public void performActionInMobilePinboardWindow(final Object... actionData) {
+					// Find the chart element.
+					final BoardChartElement chartElement = getChartElement(chart, true /*fail*/);
+					// Trigger the maximize action on the chart element.
+					chartElement.openContextMenu();
+				}
+			};
+			action.perform();
+		}
+	};
+}
+
+/**
+ * Rename the currently opened board to a given.
+ *
+ * @param newName The new name to be assigned to the board.
+ */
+public void renameBoard(final String newName) {
+	// Rename the board via the context menu of the board element.
+	final BoardContextMenuElement contextMenuElement = getContextMenuElement();
+	contextMenuElement.renameBoard(newName);
+
+	// Wait for the new name of the board to appear in the Boards Page.
+	final long timeoutMillis = timeout() * 1000 + System.currentTimeMillis();
+	while (!getBoardName().equals(newName)) {
+		if (System.currentTimeMillis() > timeoutMillis) {
+			throw new WaitElementTimeoutError("The new name '" + newName + "' of the board had not appeared in the Boards Page when timeout '" + timeout() + "'s was reached.");
+		}
+	}
+}
+
+/**
+ * Unpin the a given chart from the currently opened board.
+ *
+ * @param name The name of the chart as {@link String}.
+ */
+public void unpinChart(final String name) {
+	// Rename the board via the context menu of the board element.
+	final CartContextMenuElement contextMenuElement = openContextMenuElementOfChart(name);
+	contextMenuElement.unpinFromBoard();
+
+	// Wait for an alert to appear indicating that the unpinning was successful or not.
+	final AlertElement alertElement = getAlertElement(compile(quote("Pin was removed")), true /*fail*/);
+	// Make sure the alert indicates that the unpinning was successful.
+	if(alertElement.getStatus() != Success) throw new WaitElementTimeoutError("Unpinning chart '" + name + " from board '" + getBoardName() + "' failed with the following message: " + alertElement.getMessage());
+	// Dismiss the alert.
+	alertElement.close();
+
+	// Wait for the chart to disappear from the board.
+	final long timeoutMillis = timeout() * 1000 + System.currentTimeMillis();
+	while (chartExist(name)) {
+		if (System.currentTimeMillis() > timeoutMillis) {
+			throw new WaitElementTimeoutError("The unpinned chart '" + name + "' remained in the board until the timeout '" + timeout() + "'s had reached.");
+		}
+	}
 }
 
 @Override
@@ -333,7 +386,7 @@ public void waitForLoadingPageEnd() {
 
 		// Wait for the tool bar title element to load or the no boards message to appear.
 		BrowserElement[] loadingCompletionIndicatorElements =
-			waitForMultipleElements(TOOLBAR_TITLE_ELEMENT_LOCAOR, NO_BOARDS_ELEMENT_LOCATOR);
+			waitForMultipleElements(TOOLBAR_TITLE_ELEMENT_LOCAOR, NO_CONTENT_ELEMENT_LOCATOR);
 		// If the tool bar title exists, it implies that a board is currently present in the Boards Page.
 		// Therefore, wait for the chart elements grid or no charts message to appear in the currently opened board.
 		if(loadingCompletionIndicatorElements[0] != null) {
@@ -341,8 +394,8 @@ public void waitForLoadingPageEnd() {
 				waitForMultipleElements(CHARTS_GRID_ELEMENT_LOCATOR, NO_CHARTS_ELEMENT_LOCATOR);
 			// If the chart elements grid exists, wait for all its charts elements to load.
 			if(loadingCompletionIndicatorElements[0] != null) {
-				final List<ChartElement> chartElements = getChartElements(null /*pattern*/, true /*fail*/);
-				for (ChartElement chartElement : chartElements) {
+				final List<BoardChartElement> chartElements = getChartElements(null /*pattern*/, true /*fail*/);
+				for (BoardChartElement chartElement : chartElements) {
 					chartElement.waitForLoadingEnd();
 				}
 			}

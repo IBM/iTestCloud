@@ -36,6 +36,8 @@ public IOSDriver getDriver() {
 
 @Override
 void initDriver() {
+	super.initDriver();
+
 	// Specify the desired capabilities.
 	final DesiredCapabilities capabilities = getCapabilities(
 		"iPhone 16" /*deviceName*/, "iOS" /*platformName*/, "XCUITest" /*automationName*/);

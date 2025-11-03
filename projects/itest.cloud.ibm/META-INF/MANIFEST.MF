@@ -4,21 +4,24 @@ Bundle-Name: Acme Page Objects
 Bundle-SymbolicName: itest.cloud.ibm
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: IBM
-Bundle-RequiredExecutionEnvironment: JavaSE-19
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: itest.cloud;bundle-version="1.0.0";visibility:=reexport
 Automatic-Module-Name: itest.cloud.ibm
 Export-Package: itest.cloud.ibm.annotation.wxbi,
  itest.cloud.ibm.config,
+ itest.cloud.ibm.entity.mobile,
  itest.cloud.ibm.entity.wxbi,
  itest.cloud.ibm.entity.wxbi.conversation,
  itest.cloud.ibm.page,
  itest.cloud.ibm.page.ca,
+ itest.cloud.ibm.page.ca.contentnav,
  itest.cloud.ibm.page.ca.mobile,
  itest.cloud.ibm.page.dialog.wxbi,
  itest.cloud.ibm.page.dialog.wxbi.conversation,
  itest.cloud.ibm.page.dialog.wxbi.modeling,
  itest.cloud.ibm.page.element,
  itest.cloud.ibm.page.element.ca,
+ itest.cloud.ibm.page.element.ca.contentnav,
  itest.cloud.ibm.page.element.ca.mobile,
  itest.cloud.ibm.page.element.wxbi,
  itest.cloud.ibm.page.element.wxbi.conversation,

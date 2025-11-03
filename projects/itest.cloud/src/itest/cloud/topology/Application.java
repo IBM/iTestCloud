@@ -15,8 +15,7 @@ package itest.cloud.topology;
 
 import static itest.cloud.scenario.ScenarioUtil.*;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.util.StringTokenizer;
 
 import itest.cloud.config.User;
@@ -66,13 +65,14 @@ abstract public class Application {
 
 protected Application(final String url) {
 	try {
-		URL fullUrl = new URL(url);
+		URL fullUrl = URI.create(url).toURL();
 
 		String path = fullUrl.getPath();
 		if (path.length() > 0) {
 			StringTokenizer pathTokenizer = new StringTokenizer(path, "/");
 			this.contextRoot = pathTokenizer.nextToken();
-			this.appliUrl = new URL(fullUrl.getProtocol(), fullUrl.getHost(), fullUrl.getPort(), "/"+this.contextRoot);
+//			this.appliUrl = new URL(fullUrl.getProtocol(), fullUrl.getHost(), fullUrl.getPort(), "/"+this.contextRoot);
+			this.appliUrl = new URI(fullUrl.getProtocol(), null /*userInfo*/, fullUrl.getHost(), fullUrl.getPort(), "/"+this.contextRoot, null /*query*/, null /*fragment*/).toURL();
 			this.location = this.appliUrl.toExternalForm();
 			if (pathTokenizer.countTokens() > 0) {
 				debugPrintln("Info: path for application '"+this.location+"' contains several segments. Context root ("+this.contextRoot+") was initialized with first one.");
@@ -84,8 +84,8 @@ protected Application(final String url) {
 		}
 		this.server = this.appliUrl.getAuthority();
     }
-	catch (MalformedURLException e) {
-		throw new ScenarioFailedError(e.getMessage());
+	catch (MalformedURLException | URISyntaxException e) {
+		throw new ScenarioFailedError(e);
     }
 }
 

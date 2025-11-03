@@ -18,9 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import itest.cloud.ibm.page.ca.CaContentPage;
-import itest.cloud.ibm.page.element.ca.CaContentElement;
-import itest.cloud.ibm.page.element.ca.CaContentTabElement;
 import itest.cloud.ibm.test.scenario.IbmTestScenarioStepRunner;
 import itest.cloud.ibm.test.scenario.ca.CaTestScenarioStep;
 
@@ -37,8 +34,10 @@ import itest.cloud.ibm.test.scenario.ca.CaTestScenarioStep;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Step01_PrerequisitesTests extends CaTestScenarioStep {
 
+	private static final String REPORT_PATH = "Samples/By business function/Customer experience/Reports/Daily agent activity";
+
 /**
- * Open the home page.
+ * Open the Home page.
  */
 @Test
 public void test01_OpenHomePage() {
@@ -46,21 +45,34 @@ public void test01_OpenHomePage() {
 }
 
 /**
- * Log out.
+ * Open the Report.
  */
 @Test
-public void test02_AdhocTest() {
-	CaContentPage contentPage = openContentPage(getTestUser());
-	CaContentTabElement teamContentTab = contentPage.openTeamContentTab();
-	CaContentElement contentElement = teamContentTab.getContentElement("Jasna/Tornado", true /*fail*/);
-	contentElement.open();
+public void test02_OpenReport() {
+	openReport(REPORT_PATH, getTestUser());
 }
 
 /**
- * Log out.
+ * Open the Content page.
+ */
+@Test
+public void test03_OpenContentPage() {
+	openContentPage(getTestUser());
+}
+
+/**
+ * Open the Report.
+ */
+@Test
+public void test04_ReopenReportViaViewSwitcherMenu() {
+	openReport(REPORT_PATH, getTestUser());
+}
+
+/**
+ * Log out the user.
  */
 @Test
 public void test99_Logout() {
-	getCurrentPage().logout();
+	logout(getTestUser());
 }
 }

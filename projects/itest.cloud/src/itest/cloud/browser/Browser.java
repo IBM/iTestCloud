@@ -13,12 +13,15 @@
  *********************************************************************/
 package itest.cloud.browser;
 
+import static itest.cloud.config.Timeouts.DOWNLOAD_START_TIMEOUT;
 import static itest.cloud.entity.BrowserType.*;
 import static itest.cloud.page.element.BrowserElement.MAX_RECOVERY_ATTEMPTS;
 import static itest.cloud.performance.PerfManager.PERFORMANCE_ENABLED;
 import static itest.cloud.scenario.ScenarioUtil.*;
 import static itest.cloud.util.ByUtils.fixLocator;
 import static itest.cloud.util.FileUtil.createDir;
+import static itest.cloud.util.FileUtil.isTemporaryFile;
+import static org.openqa.selenium.Keys.TAB;
 
 import java.io.*;
 import java.net.*;
@@ -30,8 +33,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
+import org.openqa.selenium.interactions.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
@@ -785,6 +787,68 @@ public void doubleClick(final BrowserElement element) {
 }
 
 /**
+ * Trigger a file download by performing a given action.
+ * <p>
+ * This method is capable of handling a file download on the local host and in a Selenium Grid configuration.
+ * </p>
+ *
+ * @param triggerAction The action to perform to trigger the file download.
+ * @param timeout The maximum time in seconds to wait for the downloading to complete.
+ *
+ * @return The downloaded file as {@link File}.
+ *
+ * @throws ScenarioFailedError If an I/O error occurs while downloading the file from the remote computer (end node)
+ * to the download directory on the client computer in a Selenium Grid configuration.
+ */
+public File downloadFile(final Action triggerAction, final int timeout) {
+	long downloadTimeoutInMillis = -1; // Value -1 implies that this timeout needs to be set after the downloading has started.
+	long downloadStartTimeoutInMillis = DOWNLOAD_START_TIMEOUT * 1000 + System.currentTimeMillis();
+
+	// Record the contents of the download directory before initiating the download.
+	final List<String> initialDownloadDirContents = getDownloadDirContents();
+	// Perform the trigger action to initiate the download.
+	triggerAction.perform();
+	// Monitor the progress of the downloading.
+	while (true) {
+		// Obtained the new file appeared in the download directory.
+		final String newFileName = getNewlyDownloadedFile(initialDownloadDirContents);
+
+		// Check if the downloading has not started before reaching the corresponding timeout.
+		if((newFileName == null) && (System.currentTimeMillis() > downloadStartTimeoutInMillis)) {
+			throw new WaitElementTimeoutError("Downloading of file did not start before reaching timeout '" + DOWNLOAD_START_TIMEOUT + "' seconds.");
+		}
+
+		// Check if the downloading has started.
+		if (newFileName != null) {
+			// If so, set the download timeout if the downloading has just started.
+			if(downloadTimeoutInMillis < 0) {
+				downloadTimeoutInMillis = timeout * 60 * 1000 + System.currentTimeMillis();
+			}
+			// Check if the downloading has not completed before reaching the corresponding timeout.
+			else if(System.currentTimeMillis() > downloadTimeoutInMillis) {
+				throw new ScenarioFailedError("Downloading of file '" + newFileName + "' did not complete before reaching timeout '" + timeout + "' seconds.");
+			}
+		}
+		// The desired file can not be temporary or empty.
+		if((newFileName != null) && !isTemporaryFile(newFileName)) {
+			if(this.driver instanceof HasDownloads) {
+				// If reached here, it implies that the file download is occurring on the remote computer (end node) in a Selenium Grid configuration.
+				try {
+					// Download the file from the remote computer (end node) to the download directory on the client computer.
+					((HasDownloads) this.driver).downloadFile(newFileName, this.downloadDir.toPath());
+				}
+				catch (IOException e) {
+					throw new ScenarioFailedError(e);
+				}
+			}
+			final File newFile = new File(this.downloadDir, newFileName);
+			// An empty file implies that the downloading is in progress. Therefore, poll until the downloading is completed.
+			if (newFile.length() > 0) return newFile;
+		}
+	}
+}
+
+/**
  * Drag given sourceElement and drop it to targetElement.
  *
  * @param sourceElement The web element to be dragged
@@ -1154,16 +1218,6 @@ public Actions getActions() {
 	return this.actions;
 }
 
-/**
- * Get the current cookies
- *
- * @return The current cookies in web browser
- * @see Options#getCookies()
- */
-public Set<Cookie> getCookies() {
-	return this.driver.manage().getCookies();
-}
-
 ///**
 // * Get the web page content for the given web page.
 // * <p>
@@ -1180,6 +1234,32 @@ public Set<Cookie> getCookies() {
 //	this.page = newPage;
 //	get(newPage.location);
 //}
+
+/**
+ * Returns the element that currently has focus within the document currently "switched to"
+ * or the body element if no element with focus can be detected. This matches the semantics of calling
+ * "document.activeElement" in Javascript.
+ *
+ * <p>See <a href="https://w3c.github.io/webdriver/#get-active-element">W3C WebDriver
+ * specification</a> for more details.
+ *
+ * @return The element with focus or the body element if no element with focus can be detected as {@link BrowserElement}.
+ */
+public BrowserElement getActiveElement() {
+	final WebElement activeWebElement = this.driver.switchTo().activeElement();
+
+	return new BrowserElement(this, activeWebElement);
+}
+
+/**
+ * Get the current cookies
+ *
+ * @return The current cookies in web browser
+ * @see Options#getCookies()
+ */
+public Set<Cookie> getCookies() {
+	return this.driver.manage().getCookies();
+}
 
 /**
  * Return the current frame used by the browser.
@@ -1212,23 +1292,36 @@ public String getCurrentUrl() {
  * @return The path of the default download directory as a {@link File}
  */
 public File getDownloadDir(){
-    return this.downloadDir;
+	return this.downloadDir;
 }
 
 /**
- * Return a list of files in the download directory.
+ * Return a list of file names in the download directory.
+ * <p>
+ * This method is capable of handling a file download on the local host and in a Selenium Grid configuration.
+ * </p>
  *
- * @return A list of files in the download directory as {@link List}.
+ * @return A list of file names in the download directory as {@link String}.
+ * The returned list will be empty if the download directory is empty or nonexistence.
  */
-public List<File> getDownloadDirContents() {
-	File[] files = getDownloadDir().listFiles(new FileFilter() {
+private List<String> getDownloadDirContents() {
+	if(this.driver instanceof HasDownloads) {
+    	// If reached here, it implies that the this method is invoked in a Selenium Grid configuration.
+		// Therefore, return a list of downloaded files on the remote computer (end node).
+		final List<String> files = ((HasDownloads) this.driver).getDownloadableFiles();
+		return (files != null) ? files : new ArrayList<String>(0 /*initialCapacity*/);
+	}
+
+	// If reached here, it implies that the tests are executed on the local host.
+	// Therefore, return a list of downloaded files on the lost host.
+	final String[] files = this.downloadDir.list(new FilenameFilter() {
 		@Override
-		public boolean accept(final File pathname) {
-			return pathname.isFile();
+		public boolean accept(final File dir, final String name) {
+			return new File(dir, name).isFile();
 		}
 	});
 
-	return files != null ? Arrays.asList(files) : new ArrayList<File>(0 /*initialCapacity*/);
+	return (files != null) ? Arrays.asList(files) : new ArrayList<String>(0 /*initialCapacity*/);
 }
 
 /**
@@ -1262,30 +1355,19 @@ public String getName() {
 	return this.browserType.getName();
 }
 
-///**
-// * Return the page currently loaded in the browser.
-// *
-// * @return The loaded page as a {@link WebPage}.
-// */
-//public WebPage getCurrentPage() {
-//	return this.page;
-//}
-
 /**
- * Return a new file appeared in the download directory.
- * <p>
- * Such a file may appear as a result of a download.
- * </p>
+ * Return a newly downloaded file in the download directory.
  *
- * @param initialFiles A list of file existed in the download directory
- * prior for the new file to appear.
+ * @param initialDownloadDirContents A list of file names existed in the download directory
+ * prior to the new file from appearing.
  *
- * @return The new file appeared in the download directory as {@link File}.
+ * @return The name of the newly downloaded file in the download directory as {@link String} or
+ * <code>null</code> if a new file could not be found in the download directory.
  */
-public File getNewFileInDownloadDir(final List<File> initialFiles) {
-	List<File> currentFiles = getDownloadDirContents();
-	for (File currentFile : currentFiles) {
-		if(!initialFiles.contains(currentFile)) {
+private String getNewlyDownloadedFile(final List<String> initialDownloadDirContents) {
+	final List<String> currentDownloadDirContents = getDownloadDirContents();
+	for (String currentFile : currentDownloadDirContents) {
+		if(!initialDownloadDirContents.contains(currentFile)) {
 			return currentFile;
 		}
 	}
@@ -1301,6 +1383,15 @@ public File getNewFileInDownloadDir(final List<File> initialFiles) {
 public PerfManager getPerfManager() {
 	return this.perfManager;
 }
+
+///**
+// * Return the page currently loaded in the browser.
+// *
+// * @return The loaded page as a {@link WebPage}.
+// */
+//public WebPage getCurrentPage() {
+//	return this.page;
+//}
 
 /**
  * Return the version of the currently running browser.
@@ -1880,37 +1971,6 @@ public BrowserElement[] select(final BrowserElement listElement, final By entrie
 }
 
 /**
- * Set the current browser frame to a given web element.
- *
- * @param frameElement The frame element to be selected as {@link BrowserElement}.
- */
-public void selectFrame(final BrowserElement frameElement) {
-	this.driver.switchTo().frame(frameElement.getWebElement());
-}
-
-/**
- * Set the current browser frame to a given web element.
- *
- * @param parentElement The element from where the search must start.
- * If <code>null</code> then element is expected in the current page.
- * @param locator Locator to find the frame element in the current page.
- * @param timeout The time in seconds to wait before giving up the research.
- */
-public void selectFrame(final BrowserElement parentElement, final By locator, final int timeout) {
-	this.driver.switchTo().frame(waitForElement(parentElement, locator, timeout, true /*fail*/).getWebElement());
-}
-
-/**
- * Set the current browser frame to a given web element.
- *
- * @param locator Locator to find the frame element in the current page.
- * @param timeout The time in seconds to wait before giving up the research.
- */
-public void selectFrame(final By locator, final int timeout) {
-	this.driver.switchTo().frame(waitForElement(locator, timeout).getWebElement());
-}
-
-/**
  * Select a number of elements by clicking on each while holding down the shift key.
  *
  * @param elements elements to be selected.
@@ -2040,11 +2100,72 @@ public void setWindowSize(final int width, final int height) {
  */
 public void shiftClick(final BrowserElement destination) {
 	this.actions.keyDown(Keys.SHIFT)
-	    .moveToElement(destination.getWebElement())
-	    .click()
-	    .keyUp(Keys.SHIFT)
-	    .build()
-	    .perform();
+		.moveToElement(destination.getWebElement())
+		.click()
+		.keyUp(Keys.SHIFT)
+		.build()
+		.perform();
+}
+
+/**
+ * Switch the focus to a given element by repeatedly sending the Tab key.
+ *
+ * @param element The element to switch to focus.
+ * @param timeout The maximum time in seconds to wait while waiting for the focus to be on the given element.
+ */
+public void switchFocusToElement(final BrowserElement element, final int timeout) {
+	switchFocusToElement(element, TAB /*key*/, timeout);
+}
+
+/**
+ * Switch the focus to a given element by repeatedly sending the provided key.
+ *
+ * @param element The element to switch to focus.
+ * @param timeout The maximum time in seconds to wait while waiting for the focus to be on the given element.
+ */
+public void switchFocusToElement(final BrowserElement element, final Keys key, final int timeout) {
+	BrowserElement activeElement;
+	long timeoutMillis = timeout * 1000 + System.currentTimeMillis();
+
+	while (!(activeElement = getActiveElement()).equals(element)) {
+		if (System.currentTimeMillis() > timeoutMillis) {
+			throw new WaitElementTimeoutError("The focus was not switched to the given element while repeatedly sending Tab keys until the timeout '" + timeout + "'s had reached.");
+		}
+
+		// Send a Tab key to switch the focus to the next element if the currently active element is not the desired one.
+		activeElement.sendKeys(key);
+	}
+}
+
+/**
+ * Set the current browser frame to a given web element.
+ *
+ * @param frameElement The frame element to be selected as {@link BrowserElement}.
+ */
+public void switchToFrame(final BrowserElement frameElement) {
+	this.driver.switchTo().frame(frameElement.getWebElement());
+}
+
+/**
+ * Set the current browser frame to a given web element.
+ *
+ * @param parentElement The element from where the search must start.
+ * If <code>null</code> then element is expected in the current page.
+ * @param locator Locator to find the frame element in the current page.
+ * @param timeout The time in seconds to wait before giving up the research.
+ */
+public void switchToFrame(final BrowserElement parentElement, final By locator, final int timeout) {
+	this.driver.switchTo().frame(waitForElement(parentElement, locator, timeout, true /*fail*/).getWebElement());
+}
+
+/**
+ * Set the current browser frame to a given web element.
+ *
+ * @param locator Locator to find the frame element in the current page.
+ * @param timeout The time in seconds to wait before giving up the research.
+ */
+public void switchToFrame(final By locator, final int timeout) {
+	this.driver.switchTo().frame(waitForElement(locator, timeout).getWebElement());
 }
 
 /**

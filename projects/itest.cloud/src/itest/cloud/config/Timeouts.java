@@ -108,7 +108,7 @@ abstract public class Timeouts {
 	 * The value is 120 seconds (2 minutes).
 	 * </p>
 	 */
-	static final public int DOWNLOAD_START_TIMEOUT = getParameterIntValue("timeoutDownloadStart", 2 * 60 * PERFORMANCE.multiplier);
+	static final public int DOWNLOAD_START_TIMEOUT = getParameterIntValue("timeoutDownloadStart", DEFAULT_MAIN_TIMEOUT);
 
 	/**
 	 * Timeout used to a delay after having clicked on a link element.
@@ -124,5 +124,5 @@ abstract public class Timeouts {
 	 * Expressed in milli-seconds, default value is 1000.
 	 * </p>
 	 */
-	final public static int DELAY_BEFORE_CLICK_LINK_TIMEOUT = getParameterIntValue("delayBeforeClickLink", 1000 * PERFORMANCE.multiplier);
+	final public static int DELAY_BEFORE_CLICK_LINK_TIMEOUT = getParameterIntValue("delayBeforeClickLink", 0 * PERFORMANCE.multiplier);
 }

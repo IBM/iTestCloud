@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.*;
 
+import io.appium.java_client.AppiumBy.ByAccessibilityId;
 import itest.cloud.scenario.error.ScenarioFailedError;
 
 /**
@@ -133,6 +134,7 @@ public static String getNormalizedLocatorString(final By locator) {
 	if (locator instanceof ByLinkText) return "//a[text()='" + locatorString+ "']";
 	if (locator instanceof ByPartialLinkText) return "//a[contains[text(),'"+locatorString+"')]";
 	if (locator instanceof ByCssSelector) return "css=" + locator.toString();
+	if (locator instanceof ByAccessibilityId) return "//*[@content-desc='" + locatorString + "']";
 
 	throw new ScenarioFailedError("Locator type '" + locator.getClass().getSimpleName() + "' is not supported by this method.");
 }

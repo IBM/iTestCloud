@@ -22,7 +22,6 @@ import static itest.cloud.scenario.ScenarioUtil.*;
 import static itest.cloud.util.ObjectUtil.matches;
 import static org.openqa.selenium.Keys.TAB;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
@@ -61,8 +60,6 @@ import itest.cloud.topology.Topology;
  * This class provides the following basic functionalities:
  * <ul>
  * <li>{@link #get()}: get page content.</li>
- * <li>{@link #getPage(String)}: Get from the cache the page instance for the
- * given location.</li>
  * <li>{@link #startNewBrowserSession()}: Close the current browser session and
  * open a new one.</li>
  * </ul>
@@ -104,7 +101,6 @@ public abstract class Page implements IPage {
 		return createPage(location, config, user, pageClass, (String[]) null);
 	}
 	// TODO Move page creation and cache to WebBrowser
-	@SuppressWarnings("unchecked")
 	protected static <P extends Page> P createPage(final String location, final Config config, final User user, final Class<P> pageClass, final String... data) {
 		if (DEBUG) {
 			debugPrintln("		+ Create page "+location+ " for user "+user);
@@ -115,23 +111,8 @@ public abstract class Page implements IPage {
 
 		// Get the page from cache
 		String locationKey = location; // getLocationKey(location, pageClass);
-		P page = (P) searchPageInHistory(locationKey);
-
-		// If page does not exist create it
-		if (page == null) {
-			page = createPageInstance(location, config, user, pageClass, data);
-			if (DEBUG) debugPrintln("		  -> store page at "+locationKey+": "+page.getUrl());
-		} else {
-			if (DEBUG) debugPrintln("		  - > found page at "+locationKey+": "+page.getUrl());
-			// Update the data associated with the cached page in case the cached page is associated with
-			// a different set of data.
-			page.data = data;
-			// Check if the cached page is associated with a different user.
-			if (user != null && !user.equals(page.getUser())) {
-				if (DEBUG) debugPrintln("		  - > change page user from "+page.getUser().getId()+" to "+user.getId());
-				page.login(user);
-			}
-		}
+		P page = createPageInstance(location, config, user, pageClass, data);
+		if (DEBUG) debugPrintln("		  -> store page at "+locationKey+": "+page.getUrl());
 
 		// Return the page
 		return page;
@@ -216,35 +197,6 @@ public abstract class Page implements IPage {
 		return null;
 	}
 
-	/**
-	 * Get from the cache the page instance for the given location.
-	 *
-	 * @param location The page location
-	 * @return The instance of the class associate with the page or <code>null</code>
-	 * if this page hasn't been created yet.
-	 */
-	// TODO Move page creation and cache to WebBrowser
-	public static Page getPage(final String location) {
-		if (DEBUG) debugPrintln("		+ get page "+location);
-
-		// Get the page from cache
-		Page page = searchPageInHistory(location);
-
-		// The page should have been found
-		if (page == null) {
-			if (DEBUG) debugPrintln("		  -> not found.");
-			int index = location.indexOf('&');
-			if (index > 0) {
-				String locationKey = location.substring(0, index);
-				if (DEBUG) debugPrintln("		  -> try with key="+locationKey);
-				page = searchPageInHistory(locationKey);
-			}
-		}
-
-		// Return the found page
-		return page;
-	}
-
 	private static List<Page> getPagesHistory() {
 		return PAGES_HISTORY.get();
 	}
@@ -256,7 +208,6 @@ public abstract class Page implements IPage {
 	 * @return The instance of the class associate with the page or <code>null</code>
 	 * if no page location matching the browser url is found in the cache...
 	 */
-	@SuppressWarnings("unchecked")
 	public static <P extends Page> P getPageUsingBrowser(final Config config, final User user, final Class<P> pageClass, final String... data) {
 		if (DEBUG) debugPrintln("		+ Get page using browser...");
 
@@ -269,34 +220,13 @@ public abstract class Page implements IPage {
 		String pageUrl = application == null ? currentUrl : application.getPageUrl(currentUrl);
 		if (DEBUG) debugPrintln("		  -> page URL:"+pageUrl);
 
-		// Look for a page location matching the page url in the cache
-		P page = (P) searchPageInHistory(pageUrl);
-		if (page == null) {
-			// Open the page and for it being loaded
-			page = openPage(pageUrl, USER_ACTION_NOT_PROVIDED, config, user, pageClass, data);
-			page.waitForLoadingPageEnd();
-		}
-		else {
-			debugPrintln("		  -> page "+page+" was found.");
-		}
+		// Open the page and wait for it being loaded
+		P page = openPage(pageUrl, USER_ACTION_NOT_PROVIDED, config, user, pageClass, data);
+		page.waitForLoadingPageEnd();
+
 		return page;
 	}
 
-	// TODO Move page creation and cache to WebBrowser
-	public static Page openPage(final String location) {
-
-		// Get the page
-		Page page = getPage(location);
-		if (page == null) {
-			throw new ScenarioFailedError("The page with url '"+location+"' was not already created!");
-		}
-
-		// Get the page content
-		page.get();
-
-		// Return page
-		return page;
-	}
 	/**
 	 * Retrieve the existing page for the given location. Create it if it is the first time
 	 * the page is requested.
@@ -772,19 +702,13 @@ public <RH extends RichHoverElement<? extends Page>> RH checkRichHover(final Bro
  * <li>it will fail if either the parent or the element are not found before
  * {@link #timeout()} seconds</li>
  * </p>
- * @param parentElement The parent element where to start to search from,
- * if <code>null</code>, then search in the entire page content
- * @param findBy The mechanism to find the element in the current page
- * @return The web element (as a {@link BrowserElement}) found in the page
+ * @param element The element in the current page to place the click as {@link BrowserElement}.
  *
  * @see #waitForElement(BrowserElement, By)
  * @see BrowserElement#click()
  */
-public BrowserElement click(final BrowserElement parentElement, final By findBy) {
-	if (DEBUG) debugPrintln("		+ Click on "+parentElement+"//"+findBy);
-
-	// Wait for element
-	BrowserElement element = waitForElement(parentElement, findBy);
+public void click(final BrowserElement element) {
+	if (DEBUG) debugPrintln("		+ Click on " + element);
 
 	// Click on given element
 	// At times, the element may be obscured by another element and therefore, not be clickable.
@@ -803,8 +727,34 @@ public BrowserElement click(final BrowserElement parentElement, final By findBy)
 
 	// Add Performance result
 	if (PERFORMANCE_ENABLED) {
-		addPerfResult(RegressionType.CLIENT, "Action: " + findBy);
+		addPerfResult(RegressionType.CLIENT, "Action: " + element);
 	}
+}
+
+/**
+ * Click on the web element found using the given mechanism relatively to
+ * the given parent web element.
+ * <p>
+ * Note that:
+ * <ul>
+ * <li>it will fail if either the parent or the element are not found before
+ * {@link #timeout()} seconds</li>
+ * </p>
+ * @param parentElement The parent element where to start to search from,
+ * if <code>null</code>, then search in the entire page content
+ * @param findBy The mechanism to find the element in the current page
+ * @return The web element (as a {@link BrowserElement}) found in the page
+ *
+ * @see #waitForElement(BrowserElement, By)
+ * @see BrowserElement#click()
+ */
+public BrowserElement click(final BrowserElement parentElement, final By findBy) {
+	if (DEBUG) debugPrintln("		+ Click on " + parentElement + "//" + findBy);
+
+	// Wait for element
+	BrowserElement element = waitForElement(parentElement, findBy);
+
+	click(element);
 
 	// Return the found element
 	return element;
@@ -977,6 +927,44 @@ protected BrowserElement clickButton(final By buttonBy, final int time_out) {
 	return this.browser.clickButton(button, time_out, false);
 }
 
+/**
+ * Dismiss the alerts.
+ *
+ * @param fail Specifies whether to fail if an alert is not found.
+ *
+ * @return Return the text of each alert dismissed as a {@link List} of {@link String}.
+ */
+public List<String> dismissAlerts(final boolean fail) {
+	return dismissAlerts(fail, false /*verbose*/);
+}
+
+/**
+ * Dismiss the alerts.
+ *
+ * @param fail Specifies whether to fail if at least one alert is not found.
+ * @param verbose Specifies whether to print a message about each cleared alert in the console.
+ *
+ * @return Return the text of each alert dismissed as a {@link List} of {@link String}.
+ */
+public List<String> dismissAlerts(final boolean fail, final boolean verbose) {
+	List<AlertElement> alertElements = getAlertElements(null /*pattern*/, fail);
+	List<String> alerts = new ArrayList<String>(alertElements.size());
+
+	// Dismiss all alerts from the page.
+	for (AlertElement alertElement : alertElements) {
+		// Dismiss the alert from the page.
+		// Record the alert text first though.
+		String message = alertElement.getMessage();
+		// Dismiss the alert by clicking on the close icon.
+		alertElement.close(false /*fail*/);
+		// Preserve the alert information for reporting purposes.
+		alerts.add(message);
+		if(verbose) println("	  -> WARNING: Following alert was dismissed: " + message);
+	}
+
+	return alerts;
+}
+
 @Override
 public boolean equals(final Object o) {
 	if (o instanceof Page) {
@@ -1070,6 +1058,77 @@ public final Page get() {
 
    	return this;
 }
+
+/**
+ * Return an alert element.
+ *
+ * @param fail Specifies whether to fail if an alert is not found.
+ *
+ * @return The alert element as {@link AlertElement}.
+ */
+public AlertElement getAlertElement(final boolean fail) {
+	return getAlertElement(null /*pattern*/, fail);
+}
+
+/**
+ * Return an alert element for a given web element.
+ *
+ * @param alertWebElement The alert web element as {@link BrowserElement}.
+ *
+ * @return The alert element as {@link AlertElement}.
+ */
+protected abstract AlertElement getAlertElement(final BrowserElement alertWebElement);
+
+/**
+ * Return an alert element matching a given pattern.
+ *
+ * @param pattern The pattern matching the alert provided in the element.
+ * @param fail Specifies whether to fail if a matching alert is not found.
+ *
+ * @return The alert element matching the given pattern as {@link AlertElement}.
+ */
+public AlertElement getAlertElement(final Pattern pattern, final boolean fail) {
+	List<AlertElement> alertElements = getAlertElements(pattern, fail);
+
+	return !alertElements.isEmpty() ? alertElements.get(alertElements.size() - 1) : null; // Last alert element is the latest.
+}
+
+/**
+ * Return the alert elements matching a given pattern.
+ *
+ * @param pattern A pattern matching the alert message as {@link Pattern}.
+ * @param fail Specify whether to fail if a matching alert could not be found.
+ *
+ * @return The alert elements matching the given pattern as a {@link List} of {@link AlertElement}.
+ */
+protected List<AlertElement> getAlertElements(final Pattern pattern, final boolean fail) {
+	List<BrowserElement> alertWebElements = getAlertWebElements(pattern, fail);
+	ArrayList<AlertElement> alertElements = new ArrayList<AlertElement>();
+
+	for (BrowserElement alertWebElement : alertWebElements) {
+		AlertElement alertElement = getAlertElement(alertWebElement);
+
+		if((pattern == null) || pattern.matcher(alertElement.getMessage()).find()) {
+			alertElements.add(alertElement);
+		}
+	}
+
+	if(alertElements.isEmpty() && fail) {
+		throw new WaitElementTimeoutError("An alert element matching pattern '" + pattern + "' could not be found");
+	}
+
+	return alertElements;
+}
+
+/**
+ * Return the alert web elements matching a given pattern.
+ *
+ * @param pattern A pattern matching the alert message as {@link Pattern}.
+ * @param fail Specify whether to fail if a matching alert could not be found.
+ *
+ * @return The alert web elements matching the given pattern as a {@link List} of {@link BrowserElement}.
+ */
+protected abstract List<BrowserElement> getAlertWebElements(final Pattern pattern, final boolean fail);
 
 /**
  * Return the application associated with the current page.
@@ -1513,9 +1572,10 @@ protected void load() {
 }
 
 /**
- * Login the page from current user to the given user.
+ * Login a given user.
  * <p>
- * Nothing happen if the current user is already logged in.
+ * Nothing happen if the given user is already logged in.
+ * If a different user is logged in, it'll be logged out and the given user will then be logged in.
  * </p>
  * @param user The user to log in.
  */
@@ -1524,9 +1584,10 @@ public boolean login(final User user) {
 }
 
 /**
- * Login the page from current user to the given user.
+ * Login a given user.
  * <p>
- * Nothing happen if the current user is already logged in.
+ * Nothing happen if the given user is already logged in.
+ * If a different user is logged in, it'll be logged out and the given user will then be logged in.
  * </p>
  * @param user The user to log in.
  * @param force Force the user login, even if it's already logged
@@ -1574,7 +1635,7 @@ public boolean login(final User user, final boolean force) {
 }
 
 /**
- * Perform the logout operation.
+ * Logout the current user.
  */
 public void logout() {
 	performLogout();
@@ -1607,18 +1668,15 @@ protected boolean matchBrowserUrl() {
 
 	// Compare URL starts
 	try {
-		URL browserURL = new URL(URLDecoder.decode(url, "UTF-8"));
-		URL pageURL = new URL(URLDecoder.decode(this.location, "UTF-8"));
+		URL browserURL = URI.create(url).toURL();
+		URL pageURL = URI.create(this.location).toURL();
 		return browserURL.getProtocol().equals(pageURL.getProtocol()) &&
 		       browserURL.getHost().equals(pageURL.getHost()) &&
 		       browserURL.getPort() == pageURL.getPort() &&
 		       matchBrowserUrlPath(getNormalizedUrlPath(pageURL), getNormalizedUrlPath(browserURL));
 	}
-	catch (MalformedURLException mue) {
-		throw new ScenarioFailedError(mue);
-	}
-	catch (UnsupportedEncodingException uee) {
-		throw new ScenarioFailedError(uee);
+	catch (MalformedURLException e) {
+		throw new ScenarioFailedError(e);
 	}
 }
 
@@ -2880,7 +2938,7 @@ protected void verifyPageUser() throws ScenarioFailedError {
 	if (DEBUG) debugPrintln("		+ Verify page user "+getUser());
 
 	// Check whether the current page is on the expected user or not
-	BrowserElement loggedUserElement = getLoggedUserElement(false/*fail*/, timeout());
+	final BrowserElement loggedUserElement = getLoggedUserElement(false/*fail*/, timeout());
 	if ((loggedUserElement != null) && !matchDisplayedUser(getUser(), loggedUserElement)) {
 		this.browser.takeSnapshotInfo("VerifyPageUser");
 		println("INFO: User name '"+loggedUserElement.getText()+"' does not match expected one: '"+getUser().getName()+"'");
@@ -3222,7 +3280,7 @@ public BrowserElement waitForElement(final By locator, final int time_out) {
  *
  * @param locator Locator to find the element in the current page.
  * @param time_out The time to wait before giving up the research.
- * @param fail Tells whether to fail if none of the locators is find before timeout.
+ * @param fail Tells whether to fail if none of the locators is found before the timeout.
  *
  * @return The web element as {@link BrowserElement} or <code>null</code>
  * if no element was found before the timeout and asked not to fail.

@@ -13,8 +13,8 @@
  *********************************************************************/
 package itest.cloud.ibm.page.ca.mobile;
 
-import static itest.cloud.ibm.page.element.ca.mobile.ChartElement.CHART_LOADING_CONFIRMATION_ELEMENT_LOCATOR;
-import static itest.cloud.ibm.page.element.ca.mobile.ChartElement.CHART_TITLE_ELEMENT_LOCATOR;
+import static itest.cloud.ibm.scenario.ca.mobile.CaMobileScenarioConstants.CHART_LOADING_CONFIRMATION_ELEMENT_LOCATOR;
+import static itest.cloud.ibm.scenario.ca.mobile.CaMobileScenarioConstants.CHART_TITLE_ELEMENT_LOCATOR;
 import static java.util.regex.Pattern.compile;
 import static java.util.regex.Pattern.quote;
 
@@ -48,7 +48,7 @@ import itest.cloud.page.element.BrowserElement;
  * </ul>
  * </p>
  */
-public class ChartPage extends CaMobilePage implements CaMobileNonNavigablePage {
+public class ChartPage extends CaMobilePage implements CaMobilePageWithoutBottomTabList {
 
 public ChartPage(final String url, final IbmConfig config, final User user, final String... data) {
 	super(url, config, user, data);
@@ -70,7 +70,7 @@ public BoardsPage back() {
 }
 
 @Override
-public CaMobileNavigablePage close() {
+public CaMobilePageWithBottomTabList close() {
 	return back();
 }
 

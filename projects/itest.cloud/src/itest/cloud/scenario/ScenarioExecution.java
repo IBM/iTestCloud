@@ -610,7 +610,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	}
 	catch (StaleElementReferenceException sere) {
 		// Handle the StaleElementReferenceException as a BrowserError.
-		println(BrowserUrlUnchangedError.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
+		println(getClassSimpleName(sere.getClass()) + " occurred. As a result, it'll be handled as a " + getClassSimpleName(BrowserError.class) + " instead.");
 		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, sere);
 	}
 	catch (WebDriverException wde) {
@@ -654,7 +654,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	}
 	catch (IncorrectTitleError ite) {
 		// Handle the IncorrectTitleError as a BrowserError.
-		println(BrowserUrlUnchangedError.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
+		println(getClassSimpleName(ite.getClass()) + " occurred. As a result, it'll be handled as a " + getClassSimpleName(BrowserError.class) + " instead.");
 		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, ite);
 	}
 	catch (WaitElementTimeoutError wete) {
@@ -685,14 +685,14 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 			else {
 				// If the current web page is not in the context of the application, it implies that the current page can be
 				// some type of error page. Therefore, handle the WaitElementTimeoutError as a BrowserError.
-				println("Web page was out of scope/context of application after refreshing browser. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
+				println("Web page was out of scope/context of application after refreshing browser. As a result, it'll be handled as a " + getClassSimpleName(BrowserError.class) + " instead.");
 				handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, wete);
 			}
 		}
 		else {
 			// If the current web page is not in the context of the application, it implies that the current page can be
 			// some type of error page. Therefore, handle the WaitElementTimeoutError as a BrowserError.
-			println(WaitElementTimeoutError.class.getSimpleName() + " occurred since web page was out of scope/context of application. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
+			println(getClassSimpleName(wete.getClass()) + " occurred since web page was out of scope/context of application. As a result, it'll be handled as a " + getClassSimpleName(BrowserError.class) + " instead.");
 			handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, wete);
 		}
 	}
@@ -776,12 +776,12 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 	}
 	catch (BrowserUrlUnchangedError buue) {
 		// Handle the BrowserUrlUnchangedError as a BrowserError.
-		println(BrowserUrlUnchangedError.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
+		println(getClassSimpleName(buue.getClass()) + " occurred. As a result, it'll be handled as a " + getClassSimpleName(BrowserError.class) + " instead.");
 		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, buue);
 	}
 	catch (ClassCastException cce) {
 		// Handle the ClassCastException as a BrowserError.
-		println(ClassCastException.class.getSimpleName() + " occurred. As a result, it'll be handled as a " + BrowserError.class.getSimpleName() + " instead.");
+		println(getClassSimpleName(cce.getClass()) + " occurred. As a result, it'll be handled as a " + getClassSimpleName(BrowserError.class) + " instead.");
 		handleBrowserError(statement, frameworkMethod, target, isNotRerunnable, start, cce);
 	}
 	catch (BrowserError be) {
@@ -814,7 +814,7 @@ private void runTest(final Statement statement, final FrameworkMethod frameworkM
 }
 
 void setPackageName(final Object target) {
-	this.packageName = ScenarioUtil.getPackageName(target.getClass());
+	this.packageName = getPackageName(target.getClass());
 }
 
 ///**
@@ -839,7 +839,7 @@ public void setSingleStep(final boolean singleStep) {
 }
 
 void setStepName(final Object target, final boolean isNewStep) {
-	this.stepName = ScenarioUtil.getClassSimpleName(target.getClass());
+	this.stepName = getClassSimpleName(target.getClass());
 	// If it is a new step, print an appropriate message to the console.
 	if(isNewStep) {
 		printStepStart(this.stepName);

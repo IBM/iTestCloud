@@ -13,6 +13,7 @@
  *********************************************************************/
 package itest.cloud.ibm.page.element.ca.mobile;
 
+import itest.cloud.ibm.page.dialog.ca.mobile.RenameBoardDialog;
 import itest.cloud.page.Page;
 import itest.cloud.page.element.BrowserElement;
 
@@ -21,20 +22,19 @@ import itest.cloud.page.element.BrowserElement;
  * <p>
  * Following public features are accessible on this page:
  * <ul>
+ * <li>{@link #deleteBoard()}: Delete the board.</li>
+ * <li>{@link #renameBoard(String)}: Rename the board to a given.</li>
  * </ul>
  * </p><p>
  * Following private features are also defined or specialized by this page:
  * <ul>
- * <li>{@link #getOptionElementLabel(BrowserElement)}: Return the label associated with a given option element.</li>
- * <li>{@link #selectOptionElement(BrowserElement)}: Select a given option element.</li>
  * </ul>
  * </p>
  */
 public class BoardContextMenuElement extends CaMobileContextMenuElement {
 
-public BoardContextMenuElement(final Page page, final BrowserElement expansionElement, final String... data) {
+public BoardContextMenuElement(final Page page, final BrowserElement expansionElement) {
 	super(page, expansionElement);
-	this.data = data;
 }
 
 /**
@@ -45,10 +45,21 @@ public void deleteBoard() {
 	select("Delete");
 	// Confirm the deletion by accessing the appropriate alert.
 	getPage().acceptAlert("Confirm Deletion", true /*fail*/);
-	// Accept the alert confirming the deletion.
+	// TODO: Accept the alert confirming the deletion.
 }
 
-//private String getBoardName() {
-//	return this.data[0];
-//}
+/**
+ * Rename the board to a given.
+ * <p>
+ * This dialog will be automatically closed after renaming the board.
+ * </p>
+ *
+ * @param newName The new name to be assigned to the board.
+ */
+public void renameBoard(final String newName) {
+	// Select the 'Rename' option from the context menu by opening the 'Rename Board Dialog'.
+	final RenameBoardDialog renameBoardDialog = selectByOpeningDialog("Delete", RenameBoardDialog.class);
+	// Rename the board to the given.
+	renameBoardDialog.renameBoard(newName);
+}
 }

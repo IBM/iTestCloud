@@ -15,11 +15,25 @@ package itest.cloud.ibm.scenario.ca.mobile;
 
 import org.openqa.selenium.By;
 
+import io.appium.java_client.AppiumBy;
 import itest.cloud.ibm.scenario.IbmScenarioConstants;
 
 /**
  * Common constants for the Cognos Analytics Mobile Application.
  */
 public interface CaMobileScenarioConstants extends IbmScenarioConstants {
+
 	public static final By CONTEXT_MENU_EXPANSION_LOCATOR = By.xpath(".//*[contains(@class,'overflow')]");
+	public static final By BACK_BUTTON_LOCATOR = AppiumBy.accessibilityId("Back");
+	public static final By CLOSE_BUTTON_LOCATOR = AppiumBy.accessibilityId("Close");
+	public static final By SEARCH_BAR_LOCATOR = AppiumBy.accessibilityId("ca-textinput-search-bar");
+	public static final By CHART_LOADING_CONFIRMATION_ELEMENT_LOCATOR = By.xpath(".//*[starts-with(@class,'ariaLabelNode')]");
+	// Title element of a graph and KPI widget are given below respectively.
+	public static final By CHART_TITLE_ELEMENT_LOCATOR = By.xpath(
+		// The following is the locator for a chat with a visualization such as a pie chart.
+		".//*[contains(@class,'textArea') and not(contains(@class,'hidden'))]//*[contains(@id,'Title') and .//*] | " +
+		// The following is the locator for a chat with a KPI information.
+		".//*[contains(@class,'kpi-widget-base-value')]//*[contains(@class,'value-label')]//*[not(child::*)] | " +
+		// The following is the locator for a chat with a list of texts.
+		".//*[contains(@class, 'datawidget')]");
 }

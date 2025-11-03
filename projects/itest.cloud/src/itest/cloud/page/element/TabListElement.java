@@ -151,7 +151,7 @@ protected abstract boolean isOpen(final Pattern pattern);
  * Open a specific tab.
  *
  * @param pattern A pattern matching the name or label of the tab as {@link Pattern}.
- * @param tabClass A class representing the particular tab.
+ * @param tabClass A class representing the particular tab as a {@link TabElement}.
  * @param force Specifies whether to reopen the given tab if it is the currently opened tab.
  * If <code>true</code> is provided as the value of this parameter, the given tab will
  * be reopened if it is the currently opened tab.

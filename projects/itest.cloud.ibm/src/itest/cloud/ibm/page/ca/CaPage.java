@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2024 IBM Corporation and others.
+ * Copyright (c) 2024, 2025 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 package itest.cloud.ibm.page.ca;
 
 import static itest.cloud.ibm.entity.ApplicationType.CA;
+import static itest.cloud.ibm.page.element.ca.glass.CaViewSwitcherMenuElement.VIEW_SWITCHER_TITLE_LOCATOR;
 import static itest.cloud.scenario.ScenarioUtil.*;
 
 import java.util.regex.Pattern;
@@ -24,9 +25,9 @@ import itest.cloud.config.User;
 import itest.cloud.ibm.config.IbmConfig;
 import itest.cloud.ibm.config.IbmUser;
 import itest.cloud.ibm.page.IbmPage;
+import itest.cloud.ibm.page.ca.contentnav.CaHomePage;
 import itest.cloud.ibm.page.element.IbmDropdownlistElement;
-import itest.cloud.ibm.page.element.ca.CaProfileMenuElement;
-import itest.cloud.ibm.page.element.ca.CaSideMenuElement;
+import itest.cloud.ibm.page.element.ca.glass.*;
 import itest.cloud.ibm.page.wxbia.WxbiHomePage;
 import itest.cloud.ibm.scenario.IbmScenarioLoginError;
 import itest.cloud.page.element.BrowserElement;
@@ -37,6 +38,7 @@ import itest.cloud.scenario.error.BrowserError;
  * <p>
  * Following public features are accessible on this page:
  * <ul>
+ * <li>{@link #getViewSwitcherMenuElement()}: Return the View Switcher Menu element.</li>
  * <li>{@link #isInApplicationContext()}: Specifies whether the web page is in the context of the application.</li>
  * <li>{@link #openHomePage()}: Open the 'Overview' page by clicking on the IBM Data Portal link.</li>
  * <li>{@link #openSideMenu()}: Open the side menu.</li>
@@ -47,6 +49,7 @@ import itest.cloud.scenario.error.BrowserError;
  * <li>{@link #getApplicationTitleElementLocator()}: Return the locator of the element containing the title of the application..</li>
  * <li>{@link #getExpectedApplicationTitle()}: Returns the expected title of the application.</li>
  * <li>{@link #getLoggedUserElementLocator()}: Return the locator of the web element displaying the logged user name.</li>
+ * <li>{@link #getTitleElementLocator()}: Return the title element locator.</li>
  * <li>{@link #matchDisplayedUser(User, BrowserElement)}: Return whether the displayed user matches the user name or not.</li>
  * <li>{@link #performLogin(User)}: Perform login operation on the current page to be connected to the given user.</li>
  * <li>{@link #performLogout()}: Logout the page from current user to new user.</li>
@@ -55,8 +58,9 @@ import itest.cloud.scenario.error.BrowserError;
  */
 public abstract class CaPage extends IbmPage {
 
+	private static final By NAMESPACE_DROPDOWN_LOCATOR = By.id("CAMNamespace");
 	private static final By USER_NAME_TEXT_FIELD_LOCATOR = By.id("CAMUsername");
-	private static final By NAVIGATION_TITLE_LINK_LOCATOR = By.xpath("//a[contains(@class,'logoText')]");
+	private static final By NAVIGATION_TITLE_LINK_LOCATOR = By.xpath("//a[contains(@class,'header__name')]");
 
 public CaPage(final String url, final IbmConfig config, final User user) {
 	super(url, config, user);
@@ -82,14 +86,28 @@ protected By getLoggedUserElementLocator() {
 }
 
 @Override
+protected By getTitleElementLocator() {
+	return VIEW_SWITCHER_TITLE_LOCATOR;
+}
+
+/**
+ * Return the View Switcher Menu element.
+ *
+ * @return The View Switcher Menu element as {@link CaViewSwitcherMenuElement} or <code>null</code> if this menu is unavailable in the page.
+ */
+public CaViewSwitcherMenuElement getViewSwitcherMenuElement() {
+	return new CaViewSwitcherMenuElement(this);
+}
+
+@Override
 public boolean isInApplicationContext() {
 	return waitForElement(NAVIGATION_TITLE_LINK_LOCATOR, timeout(), false /*fail*/) != null;
 }
 
 @Override
 protected boolean matchDisplayedUser(final User user, final BrowserElement loggedUserElement) {
-	final String loggedUserInfo = loggedUserElement.getText();
-	return (loggedUserInfo != null) && loggedUserInfo.contains("\"defaultName\":\"" + user.getName() + "\"");
+	final String loggedUserInfo = loggedUserElement.getProperty("innerHTML");
+	return (loggedUserInfo != null) && loggedUserInfo.contains("\"userName\":\"" + user.getId() + "\"");
 }
 
 /**
@@ -100,6 +118,21 @@ protected boolean matchDisplayedUser(final User user, final BrowserElement logge
 public CaHomePage openHomePage() {
 	if (DEBUG) debugPrintln("		+ Goto home page using application title link.");
 	return openPageUsingLink(NAVIGATION_TITLE_LINK_LOCATOR, CaHomePage.class);
+}
+
+/**
+ * Open the Profile menu.
+ *
+ * @return The opened Profile menu as {@link CaProfileMenuElement}.
+ */
+private CaProfileMenuElement openProfileMenu() {
+	// Dismiss any existing alerts since they can overlap with the profile menu.
+	dismissAlerts(false /*fail*/);
+
+	final CaProfileMenuElement profileMenuElement = new CaProfileMenuElement(this);
+	profileMenuElement.expand();
+
+	return profileMenuElement;
 }
 
 /**
@@ -137,7 +170,7 @@ protected void performLogin(final User user) {
 	}
 
 	// Check if selecting a name space if required.
-	final BrowserElement[] loginFormRelatedElements = waitForMultipleElements(By.id("CAMNamespace"), USER_NAME_TEXT_FIELD_LOCATOR);
+	final BrowserElement[] loginFormRelatedElements = waitForMultipleElements(NAMESPACE_DROPDOWN_LOCATOR, USER_NAME_TEXT_FIELD_LOCATOR);
 	if(loginFormRelatedElements[0] != null) {
 		final BrowserElement namespaceDropdownElement = loginFormRelatedElements[0];
 		// If reached here, it implies that selecting a name space is required. Therefore, do so.
@@ -175,21 +208,6 @@ protected void performLogin(final User user) {
 }
 
 /**
- * Open the Profile menu.
- *
- * @return The opened Profile menu as {@link CaProfileMenuElement}.
- */
-private CaProfileMenuElement openProfileMenu() {
-	// Dismiss any existing alerts since they can overlap with the profile menu.
-	dismissAlerts(false /*fail*/);
-
-	CaProfileMenuElement profileMenuElement = new CaProfileMenuElement(this);
-	profileMenuElement.expand();
-
-	return profileMenuElement;
-}
-
-/**
  * {@inheritDoc}
  * <p>
  * In a distributed environment, a new browser session is opened for the new user
@@ -211,7 +229,7 @@ protected void performLogout() {
 
 	// Wait for login button to reappear.
 	// Sometimes a blank or error page is loaded due to various product defects.
-	if(waitForMultipleElements(timeout(), false /*fail*/, getLoggedUserElementLocator(), USER_NAME_TEXT_FIELD_LOCATOR) == null) {
+	if(waitForMultipleElements(timeout(), false /*fail*/, getLoggedUserElementLocator(), NAMESPACE_DROPDOWN_LOCATOR, USER_NAME_TEXT_FIELD_LOCATOR) == null) {
 		// A BrowserError must be raised in such a situation.
 		throw new BrowserError("Web page '" + getUrl() + "' does not contain sign-in elements");
 	}

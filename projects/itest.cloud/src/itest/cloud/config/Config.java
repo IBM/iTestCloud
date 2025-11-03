@@ -99,7 +99,7 @@ public int getDefaultTimeout() {
  */
 @Override
 public int getDownloadStartTimeout() {
-	return CLOSE_DIALOG_TIMEOUT;
+	return DOWNLOAD_START_TIMEOUT;
 }
 
 /**

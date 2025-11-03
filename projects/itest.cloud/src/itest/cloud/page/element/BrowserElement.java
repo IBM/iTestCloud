@@ -14,6 +14,7 @@
 package itest.cloud.page.element;
 
 import static itest.cloud.config.Timeouts.DEFAULT_TIMEOUT;
+import static itest.cloud.config.Timeouts.TINY_TIMEOUT;
 import static itest.cloud.performance.PerfManager.PERFORMANCE_ENABLED;
 import static itest.cloud.scenario.ScenarioUtil.*;
 import static itest.cloud.util.ByUtils.fixLocator;
@@ -254,6 +255,22 @@ protected BrowserElement(final Browser browser, final By by) {
  */
 public BrowserElement(final Browser browser, final SearchContext context, final By by) {
 	this(browser, browser.getCurrentFrame(), context, by, null, 0, -1);
+}
+
+/**
+ * Create a web browser element using the given locator.
+ * <p>
+ * The search of the corresponding {@link WebElement} is done through the entire
+ * browser page. The browser is stored to allow recovery.
+ * </p><p>
+ * Note that this constructor is typically used when search for a single element.
+ * </p>
+ * @param browser The browser where web element is displayed.
+ * @param element The element wrapped by the created instance. If this
+ * argument is used, then the search mechanism will be ignored.
+ */
+public BrowserElement(final Browser browser, final WebElement element) {
+	this(browser, browser.getCurrentFrame(), browser.getDriver(), null /*by*/, element, 0 /*size*/, -1 /*index*/);
 }
 
 /**
@@ -700,7 +717,6 @@ public boolean getAriaSelectedAttribute() {
  * </p>
  */
 @Override
-@SuppressWarnings("deprecation")
 public String getAttribute(final String name) {
 	return getAttributeOrProperty(name, true /*isAttribute*/, false /*fail*/);
 }
@@ -709,29 +725,25 @@ private String getAttributeOrProperty(final String name, final boolean isAttribu
 	final String classifier = isAttribute ? "attribute" : "property";
 	if (DEBUG) debugPrintln("			(getting " + classifier + " '" + name + "' for " + this + ", fail=" + fail + ")");
 
-	int count = 0;
+	// Wait for the pinned chart to appear in the board.
+	final int timeout = fail ? DEFAULT_TIMEOUT : TINY_TIMEOUT;
+	final long timeoutMillis = timeout * 1000 + System.currentTimeMillis();
 	while (true) {
 		try {
 			String attribute = isAttribute ? this.webElement.getDomAttribute(name) : this.webElement.getDomProperty(name);
 			if (DEBUG) debugPrintln("			 ( -> \"" + attribute + "\")");
-			if (attribute == null || attribute.isEmpty()) {
-				if(fail) {
-					throw new ScenarioFailedError("Cannot find " + classifier + " '" + name + "' in web element "+this);
-				}
-				return null;
+			if (attribute != null && !attribute.isEmpty()) {
+				return attribute;
 			}
-			return attribute;
 		}
-		// An UnsupportedCommandException can be thrown on a Mobile Emulator rather than returning null if the given attribute does not exist in the element.
-		catch (UnsupportedCommandException uce) {
-			// Proceed as the given attribute being unavailable in such a situation.
+		// Ignore all WebDriverException.
+		catch (WebDriverException e) {}
+
+		if (System.currentTimeMillis() > timeoutMillis) {
 			if(fail) {
-				throw new ScenarioFailedError("Cannot find " + classifier + " '" + name + "' in web element "+this);
+				throw new ScenarioFailedError("The " + classifier + " '" + name + "' count not be found in the following web element before the timeout '" + timeout + "'s had been reached: " + this);
 			}
 			return null;
-		}
-		catch (WebDriverException wde) {
-			catchWebDriverException(wde, "getting " + classifier + " '" + name + ")", count++, true);
 		}
 	}
 }
@@ -1077,7 +1089,7 @@ public String getTagName() {
  */
 @Override
 public String getText() {
-	return getText(true/*recovery*/);
+	return getText(true /*recovery*/);
 }
 
 /**
@@ -1179,6 +1191,15 @@ public WebElement getWebElement() {
 @Override
 public int hashCode() {
 	return this.webElement.hashCode();
+}
+
+/**
+ * Specifies whether the element is a <code>body</code> element.
+ *
+ * @return <code>true</code> if the element is a <code>body</code> element or <code>false</code> otherwise.
+ */
+public boolean isBodyElement() {
+	return getTagName().equalsIgnoreCase("body");
 }
 
 /**
@@ -1301,6 +1322,15 @@ public boolean isEnabled(final boolean recovery) {
 			}
 		}
 	}
+}
+
+/**
+ * Specifies whether the element is an <code>iframe</code> element.
+ *
+ * @return <code>true</code> if the element is an <code>iframe</code> element or <code>false</code> otherwise.
+ */
+public boolean isFrameElement() {
+	return getTagName().equalsIgnoreCase("iframe");
 }
 
 public boolean isInFrame() {

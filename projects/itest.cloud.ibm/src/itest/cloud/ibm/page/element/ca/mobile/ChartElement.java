@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2024 IBM Corporation and others.
+ * Copyright (c) 2024, 2025 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  *********************************************************************/
 package itest.cloud.ibm.page.element.ca.mobile;
 
+import static itest.cloud.ibm.scenario.ca.mobile.CaMobileScenarioConstants.CHART_LOADING_CONFIRMATION_ELEMENT_LOCATOR;
+import static itest.cloud.ibm.scenario.ca.mobile.CaMobileScenarioConstants.CHART_TITLE_ELEMENT_LOCATOR;
 import static java.util.regex.Pattern.compile;
 import static java.util.regex.Pattern.quote;
 
@@ -31,7 +33,6 @@ import itest.cloud.page.element.BrowserElement;
  * <ul>
  * <li>{@link #getChartName()}: Return the name of the chart..</li>
  * <li>{@link #open()}: Open the chart.</li>
- * <li>{@link #openContextMenu()}: Open the context menu.</li>
  * <li>{@link #waitForLoadingEnd()}: Wait for loading of the wrapped element to complete.</li>
  * </ul>
  * </p><p>
@@ -43,14 +44,7 @@ import itest.cloud.page.element.BrowserElement;
  * </ul>
  * </p>
  */
-public class ChartElement extends CaMobileElementWrapper {
-
-	public static final By CHART_ELEMENT_LOCATOR_STRING = By.xpath("//*[@class='camobile-chart-container']");
-	public static final By CHART_LOADING_CONFIRMATION_ELEMENT_LOCATOR = By.xpath(".//*[starts-with(@class,'ariaLabelNode')]");
-	// Title element of a graph and KPI widget are given below respectively.
-	public static final By CHART_TITLE_ELEMENT_LOCATOR = By.xpath(
-		".//*[contains(@id,'Title') and .//*] | " +
-		".//*[contains(@class,'kpi-widget-base-value')]//*[contains(@class,'value-label')]//*[not(child::*)]");
+public abstract class ChartElement extends CaMobileElementWrapper {
 
 public ChartElement(final Page page, final BrowserElement element, final String... data) {
 	super(page, element, data);
@@ -80,13 +74,6 @@ protected By getTitleElementLocator() {
  */
 public void open() {
 	this.element.click();
-}
-
-/**
- * Open the context menu.
- */
-public void openContextMenu() {
-	waitForElement(By.xpath(".//*[contains(@class,'overflow')]")).click();
 }
 
 @Override

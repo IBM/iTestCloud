@@ -13,12 +13,9 @@
  *********************************************************************/
 package itest.cloud.ibm.page;
 
-import static itest.cloud.ibm.page.element.IbmAlertElement.ALERT_ELEMENT_LOCATOR;
-import static itest.cloud.scenario.ScenarioUtil.println;
+import static itest.cloud.ibm.page.element.IbmAlertElement.WEB_ALERT_ELEMENT_LOCATOR;
 
-import java.io.UnsupportedEncodingException;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -31,6 +28,7 @@ import itest.cloud.ibm.page.element.IbmAlertElement;
 import itest.cloud.ibm.scenario.IbmScenarioUtil;
 import itest.cloud.ibm.topology.IbmTopology;
 import itest.cloud.page.Page;
+import itest.cloud.page.element.AlertElement;
 import itest.cloud.page.element.BrowserElement;
 import itest.cloud.scenario.error.ScenarioFailedError;
 import itest.cloud.scenario.error.WaitElementTimeoutError;
@@ -40,10 +38,6 @@ import itest.cloud.scenario.error.WaitElementTimeoutError;
  * <p>
  * Following public features are accessible on this page:
  * <ul>
- * <li>{@link #dismissAlerts(boolean)}: Dismiss the alerts.</li>
- * <li>{@link #dismissAlerts(boolean, boolean)}: Dismiss the alerts.</li>
- * <li>{@link #getAlertElement(boolean)}: get alert element from the page.</li>
- * <li>{@link #getAlertElement(Pattern,boolean)}: get alert element from the page via a pattern .</li>
  * <li>{@link #getConfig()}: Return the configuration associated with the current page.</li>
  * <li>{@link #getUser()}: Return the user used when the page was loaded.</li>
  * <li>{@link #isInApplicationContext()}: Specifies whether the web page is in the context of the application.</li>
@@ -53,7 +47,8 @@ import itest.cloud.scenario.error.WaitElementTimeoutError;
  * </p><p>
  * Following private features are also defined or specialized by this page:
  * <ul>
- * <li>{@link #getAlertElements(Pattern, boolean)}: Return the alert elements matching a given pattern.</li>
+ * <li>{@link #getAlertElement(BrowserElement)}: Return an alert element for a given web element.</li>
+ * <li>{@link #getAlertWebElements(Pattern, boolean)}: Return the alert web elements matching a given pattern.</li>
  * <li>{@link #getApplicationTitleElementLocator()}: Return the locator of the element containing the title of the application..</li>
  * <li>{@link #getBusyIndicatorElement()}: Return the element indicating that the page is undergoing an operation (busy).</li>
  * <li>{@link #getExpectedApplicationTitle()}: .</li>
@@ -74,100 +69,29 @@ public IbmPage(final String url, final IbmConfig config, final User user, final 
 	super(url, config, user, data);
 }
 
+/**
+ * Return an alert element for a given web element.
+ *
+ * @param alertWebElement The alert web element as {@link BrowserElement}.
+ *
+ * @return The alert element as {@link AlertElement}.
+ */
 @Override
-public IbmTopology getTopology() {
-	return (IbmTopology) super.getTopology();
+protected AlertElement getAlertElement(final BrowserElement alertWebElement) {
+	return new IbmAlertElement(this, alertWebElement);
 }
 
 /**
- * Dismiss the alerts.
- *
- * @param fail Specifies whether to fail if an alert is not found.
- *
- * @return Return the text of each alert dismissed as a {@link List} of {@link String}.
- */
-public List<String> dismissAlerts(final boolean fail) {
-	return dismissAlerts(fail, false /*verbose*/);
-}
-
-/**
- * Dismiss the alerts.
- *
- * @param fail Specifies whether to fail if at least one alert is not found.
- * @param verbose Specifies whether to print a message about each cleared alert in the console.
- *
- * @return Return the text of each alert dismissed as a {@link List} of {@link String}.
- */
-public List<String> dismissAlerts(final boolean fail, final boolean verbose) {
-	List<IbmAlertElement> alertElements = getAlertElements(null /*pattern*/, fail);
-	List<String> alerts = new ArrayList<String>(alertElements.size());
-
-	// Dismiss all alerts from the page.
-	for (IbmAlertElement alertElement : alertElements) {
-		// Dismiss the alert from the page.
-		// Record the alert text first though.
-		String alert = alertElement.getAlert();
-		// Dismiss the alert by clicking on the close icon.
-		alertElement.close(false /*fail*/);
-		// Preserve the alert information for reporting purposes.
-		alerts.add(alert);
-		if(verbose) println("	  -> WARNING: Following alert was dismissed: " + alert);
-	}
-
-	return alerts;
-}
-
-/**
- * Return an alert element.
- *
- * @param fail Specifies whether to fail if an alert is not found.
- *
- * @return The alert element as {@link IbmAlertElement}.
- */
-public IbmAlertElement getAlertElement(final boolean fail) {
-	return getAlertElement(null /*pattern*/, fail);
-}
-
-/**
- * Return an alert element matching a given pattern.
- *
- * @param pattern The pattern matching the alert provided in the element.
- * @param fail Specifies whether to fail if a matching alert is not found.
- *
- * @return The alert element matching the given pattern as {@link IbmAlertElement}.
- */
-public IbmAlertElement getAlertElement(final Pattern pattern, final boolean fail) {
-	List<IbmAlertElement> alertElements = getAlertElements(pattern, fail);
-
-	return !alertElements.isEmpty() ? alertElements.get(alertElements.size() - 1) : null; // Last alert element is the latest.
-}
-
-/**
- * Return the alert elements matching a given pattern.
+ * Return the alert web elements matching a given pattern.
  *
  * @param pattern A pattern matching the alert message as {@link Pattern}.
  * @param fail Specify whether to fail if a matching alert could not be found.
  *
- * @return The alert elements matching the given pattern as a {@link List} of {@link IbmAlertElement}.
+ * @return The alert web elements matching the given pattern as a {@link List} of {@link BrowserElement}.
  */
-protected List<IbmAlertElement> getAlertElements(final Pattern pattern, final boolean fail) {
-	List<BrowserElement> alertWebElements =
-		waitForElements(ALERT_ELEMENT_LOCATOR, (fail ? timeout() : tinyTimeout()), fail, true /*displayed*/);
-	ArrayList<IbmAlertElement> alertElements = new ArrayList<IbmAlertElement>();
-
-	for (BrowserElement alertWebElement : alertWebElements) {
-		IbmAlertElement alertElement = new IbmAlertElement(this, alertWebElement);
-
-		if((pattern == null) || pattern.matcher(alertElement.getAlert()).find()) {
-			alertElements.add(alertElement);
-		}
-	}
-
-	if(alertElements.isEmpty() && fail) {
-		throw new WaitElementTimeoutError("An alert element matching pattern '" + pattern + "' could not be found");
-	}
-
-	return alertElements;
+@Override
+protected List<BrowserElement> getAlertWebElements(final Pattern pattern, final boolean fail) {
+	return waitForElements(WEB_ALERT_ELEMENT_LOCATOR, (fail ? timeout() : tinyTimeout()), fail, true /*displayed*/);
 }
 
 /**
@@ -209,6 +133,11 @@ protected abstract Pattern getExpectedApplicationTitle();
 
 private String getNormalizedUrlPath(final URL url) {
 	return url.getPath().endsWith("/") ? url.getPath().substring(0 /*beginIndex*/, url.getPath().length()-1) : url.getPath();
+}
+
+@Override
+public IbmTopology getTopology() {
+	return (IbmTopology) super.getTopology();
 }
 
 /**
@@ -281,18 +210,15 @@ protected boolean matchBrowserUrl() {
 
 	// Compare URL starts
 	try {
-		URL browserURL = new URL(URLDecoder.decode(url, "UTF-8"));
-		URL pageURL = new URL(URLDecoder.decode(this.location, "UTF-8"));
+		URL browserURL = URI.create(url).toURL();
+		URL pageURL = URI.create(this.location).toURL();
 		return browserURL.getProtocol().equals(pageURL.getProtocol()) &&
 		       browserURL.getHost().equals(pageURL.getHost()) &&
 		       browserURL.getPort() == pageURL.getPort() &&
 		       matchBrowserUrlPath(getNormalizedUrlPath(pageURL), getNormalizedUrlPath(browserURL));
 	}
-	catch (MalformedURLException mue) {
-		throw new ScenarioFailedError(mue);
-	}
-	catch (UnsupportedEncodingException uee) {
-		throw new ScenarioFailedError(uee);
+	catch (MalformedURLException e) {
+		throw new ScenarioFailedError(e);
 	}
 }
 

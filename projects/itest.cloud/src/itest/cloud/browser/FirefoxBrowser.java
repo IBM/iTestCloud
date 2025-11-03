@@ -73,13 +73,17 @@ private void initDownloadDir() {
 
 @Override
 void initDriver() {
-	FirefoxOptions firefoxOptions = new FirefoxOptions();
+	final FirefoxOptions firefoxOptions = new FirefoxOptions();
 //	firefoxCapabilities.setCapability("unexpectedAlertBehaviour", UnexpectedAlertBehaviour.IGNORE);
 //	firefoxCapabilities.setCapability(ELEMENT_SCROLL_BEHAVIOR_ID, ELEMENT_SCROLL_BEHAVIOR_VALUE);
 
 	if(this.remoteAddress != null) {
-		// Create driver for executing tests via Selenium Grid.
+    	// Configure executing tests via a Selenium Grid.
+		// Allow downloading files from the remote computer (end-node) to the client computer.
+		firefoxOptions.setEnableDownloads(true /*enableDownloads*/);
+		// Create the driver.
 		this.driver = new RemoteWebDriver(this.remoteAddress, firefoxOptions);
+		// Allow uploading files from the client computer to the remote computer (end-node).
 		((RemoteWebDriver) this.driver).setFileDetector(new LocalFileDetector());
 	}
 	else {

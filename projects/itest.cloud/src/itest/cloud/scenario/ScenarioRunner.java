@@ -328,7 +328,7 @@ abstract protected void startExecution();
  * otherwise.
  */
 protected boolean stepShouldRun(final Description classDescription) {
-	String testClassSimpleName = getClassSimpleName(classDescription.getClassName());
+	String testClassSimpleName = getClassSimpleName(classDescription.getClass());
 	if (STEPS_LIST.size() == 0) {
 		if (this.firstStep == null && FIRST_STEP != null && FIRST_STEP.length() != 0) {
 			if (classDescription.getAnnotation(DependsOn.class) != null) {
@@ -350,7 +350,7 @@ protected boolean stepShouldRun(final Description classDescription) {
 					this.lastStep = classDescription;
 				}
 			}
-		} else if (!this.steps.contains(testClassSimpleName) && testClassSimpleName.compareTo(getClassSimpleName(this.lastStep.getClassName())) > 0) {
+		} else if (!this.steps.contains(testClassSimpleName) && testClassSimpleName.compareTo(getClassSimpleName(this.lastStep.getClass())) > 0) {
 			if (!this.filteredSteps.contains(classDescription)) {
 				println("Filtering "+classDescription+ " due to 'lastStep' argument set to \""+LAST_STEP+"\"");
 				this.filteredSteps.add(classDescription);

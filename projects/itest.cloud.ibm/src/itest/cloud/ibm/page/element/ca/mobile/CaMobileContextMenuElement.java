@@ -18,12 +18,14 @@ import org.openqa.selenium.By;
 import itest.cloud.ibm.page.element.IbmDynamicDropdownlistElement;
 import itest.cloud.page.Page;
 import itest.cloud.page.element.BrowserElement;
+import itest.cloud.scenario.error.WaitElementTimeoutError;
 
 /**
  * This class to represents a generic context menu element in the Cognos Analytics Mobile application where the element is only made available after clicking on the expansion element.
  * <p>
  * Following public features are accessible on this page:
  * <ul>
+ * <li>{@link #cancel()}: Cancel the context menu element by suppressing it.</li>
  * </ul>
  * </p><p>
  * Following private features are also defined or specialized by this page:
@@ -35,8 +37,25 @@ import itest.cloud.page.element.BrowserElement;
  */
 public class CaMobileContextMenuElement extends IbmDynamicDropdownlistElement {
 
+	private static final String CANCEL = "Cancel";
+
 public CaMobileContextMenuElement(final Page page, final BrowserElement expansionElement) {
-	super(page, By.xpath("//*[contains(name(),'ScrollView')]/*[contains(name(),'ViewGroup') and ./*[contains(name(),'Button')]]"), expansionElement, null /*selectionLocator*/, By.xpath(".//*[contains(@class,'TextView')]"));
+	super(page, By.xpath("//*[@content-desc='" + CANCEL + "']/.."), expansionElement, null /*selectionLocator*/, By.xpath(".//*[contains(@class,'TextView')]"));
+}
+
+/**
+ * Cancel the context menu element by suppressing it.
+ */
+public void cancel() {
+	// Select the 'Cancel' option from the context menu.
+	select(CANCEL);
+	// Wait for the context menu element to disappear.
+	long timeoutInMillis = timeout() * 1000 + System.currentTimeMillis();
+	while (!isExpanded()) {
+		if (System.currentTimeMillis() > timeoutInMillis) {
+			throw new WaitElementTimeoutError("Context menu remained visible after selecting 'Cancel' option when timeout '" + timeout() + "'s has been reached.");
+		}
+	}
 }
 
 @Override

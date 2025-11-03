@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2024 IBM Corporation and others.
+ * Copyright (c) 2024, 2025 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,11 @@ import static java.util.regex.Pattern.quote;
 
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.By;
-
 import itest.cloud.ibm.page.ca.mobile.BoardsPage;
-import itest.cloud.ibm.page.dialog.mobile.CaMobileNativeConfirmationDialog;
 import itest.cloud.page.Page;
 
 /**
- * This class represents the New Board dialog opened from {@link BoardsPage} all its common actions.
+ * This class represents the Rename Board dialog opened from {@link BoardsPage}.
  * <p>
  * Following public features are accessible on this page:
  * <ul>
@@ -39,7 +36,7 @@ import itest.cloud.page.Page;
  * </ul>
  * </p>
  */
-public class NewBoardDialog extends CaMobileNativeConfirmationDialog {
+public class NewBoardDialog extends CaMobileNativeConfirmationInputDialog {
 
 public NewBoardDialog(final Page page) {
 	super(page);
@@ -71,6 +68,6 @@ protected String getPrimaryButtonText() {
 }
 
 private void setName(final String name) {
-	typeText(By.xpath(".//*[@*='ca-textinput-modal-input']"), name);
+	setInput(name);
 }
 }

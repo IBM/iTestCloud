@@ -13,17 +13,20 @@
  *********************************************************************/
 package itest.cloud.ibm.page.ca.mobile;
 
-import static itest.cloud.ibm.page.element.IbmAlertElement.ALERT_ELEMENT_LOCATOR;
+import static itest.cloud.ibm.page.element.IbmAlertElement.WEB_ALERT_ELEMENT_LOCATOR;
+import static itest.cloud.ibm.page.element.ca.mobile.MobileAlertElement.NATIVE_ALERT_ELEMENT_LOCATOR;
 import static itest.cloud.performance.PerfManager.USER_ACTION_NOT_PROVIDED;
 import static itest.cloud.scenario.ScenarioUtil.*;
 import static java.util.regex.Pattern.compile;
 import static java.util.regex.Pattern.quote;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 
+import io.appium.java_client.AppiumBy;
 import itest.cloud.browser.MobileEmulator;
 import itest.cloud.config.User;
 import itest.cloud.ibm.config.IbmConfig;
@@ -31,8 +34,10 @@ import itest.cloud.ibm.config.IbmUser;
 import itest.cloud.ibm.page.IbmPage;
 import itest.cloud.ibm.page.element.IbmAlertElement;
 import itest.cloud.ibm.page.element.IbmDropdownlistElement;
+import itest.cloud.ibm.page.element.ca.mobile.MobileAlertElement;
 import itest.cloud.ibm.scenario.IbmScenarioLoginError;
 import itest.cloud.ibm.topology.*;
+import itest.cloud.page.element.AlertElement;
 import itest.cloud.page.element.BrowserElement;
 import itest.cloud.scenario.error.*;
 
@@ -56,10 +61,14 @@ import itest.cloud.scenario.error.*;
  * </p><p>
  * Following private features are also defined or specialized by this page:
  * <ul>
+ * <li>{@link #getAlertElement(BrowserElement)}: Return an alert element for a given web element.</li>
+ * <li>{@link #getAlertWebElements(Pattern, boolean)}: Return the alert web elements matching a given pattern.</li>
  * <li>{@link #getApplicationTitleElementLocator()}: Return the locator of the element containing the title of the application..</li>
  * <li>{@link #getEventTriggerKey()}: Return the key to press to trigger the 'keyEvent' after typing text into an input web element.</li>
  * <li>{@link #getExpectedApplicationTitle()}: Returns the expected title of the application.</li>
  * <li>{@link #getLoggedUserElementLocator()}: Return the locator of the web element displaying the logged user name.</li>
+ * <li>{@link #getTitle(BrowserElement)}: Return the title from a given title element.</li>
+ * <li>{@link #getTitleElementLocator()}: Return the title element locator.</li>
  * <li>{@link #matchDisplayedUser(User, BrowserElement)}: Return whether the displayed user matches the user name or not.</li>
  * <li>{@link #performLogin(User)}: Perform login operation on the current page to be connected to the given user.</li>
  * <li>{@link #performLogout()}: Logout the page from current user to new user.</li>
@@ -107,19 +116,34 @@ public abstract class CaMobilePage extends IbmPage {
 		public abstract void performActionInMobilePinboardWindow(Object... actionData);
 	}
 
-	private static final int USER_NAME_TEXT_FIELD_INDEX = 0;
+	private static final int CONTINUE_BUTTON_INDEX = 1;
+
+	private static final int LICENSE_AGREEMENT_BUTTON_INDEX = 2;
+	private static final int SKIP_INTRO_LINK_INDEX = 1;
+	private static final int MANUALLY_ENTER_SERVER_URL_BUTTON_INDEX = 0;
+
 	private static final int NAMESPACE_TEXT_FIELD_INDEX = 1;
+	private static final int USER_NAME_TEXT_FIELD_INDEX = 0;
 
-	private static final By USER_NAME_TEXT_FIELD_LOCATOR = By.id("CAMUsername");
-	private static final int MANUALLY_ENTER_SERVER_URL_BUTTON_INDEX = 1;
-
-	private static final int SKIP_INTRO_LINK_INDEX = 2;
+	private static final By BOTTOM_TAB_LIST_LOCATOR = By.xpath("//*[starts-with(@content-desc, 'bottom-tab-')]/..");
+	private static final By CONTINUE_BUTTON_LOCATOR = AppiumBy.accessibilityId("Continue Button");
+	private static final By LICENSE_AGREEMENT_BUTTON_LOCATOR = By.xpath("//*[@*='Agree']");
 	private static final By SKIP_INTRO_LINK_LOCATOR = By.xpath("//*[@*='ca-text-button-login']/*");
 	private static final By MANUALLY_ENTER_SERVER_URL_BUTTON_LOCATOR = By.xpath("//*[@*='ca-text-button-no-qrcode']");
 	private static final By SERVER_URL_TEXT_FIELD_LOCATOR = By.xpath("//*[@*='ca-textinput-server-url']");
-	protected static final String BOTTOM_TAB_LIST_OPEN_LINK_LOCATOR_STRING = "//*[starts-with(@content-desc, 'bottom-tab-')]";
+	private static final By USER_NAME_TEXT_FIELD_LOCATOR = By.id("CAMUsername");
 
-	protected static final By BOTTOM_TAB_LIST_LOCATOR = By.xpath(BOTTOM_TAB_LIST_OPEN_LINK_LOCATOR_STRING + "/..");
+	private static final String APPLICATION_TITLE = "IBM Cognos Analytics";
+	private static final Pattern APPLICATION_TITLE_PATTERN = Pattern.compile(Pattern.quote(APPLICATION_TITLE));
+	private static final Pattern APPLICATION_VERSION_PATTERN = Pattern.compile("Version .+\\..+\\..+");
+	private static final Pattern COPYRIGHT_MESSAGE_PATTERN = Pattern.compile("© Copyright IBM Corp\\. .*\\, .*");
+	private static final Pattern LICENSE_AGREEMENT_PATTERN = Pattern.compile(
+		"TERMS AND CONDITIONS .*This License is solely between you and IBM\\. IBM is solely responsible for the App\\. .*", Pattern.DOTALL);
+	private static final Pattern WELCOME_MESSAGE_PATTERN = Pattern.compile(Pattern.quote("Welcome to " + APPLICATION_TITLE + "."));
+	private static final Pattern WELCOME_DESCRIPTION_PATTERN = Pattern.compile(
+		"Track your .* visualizations and configure alerts for .* notifications\\.");
+	private static final Pattern COPYRIGHT_MESSAGE_PATTERN_IN_LOGIN_PAGE = Pattern.compile(Pattern.quote(
+		"Licensed Materials - Property of IBM Corp. © Copyright IBM Corporation and other(s)") + ".*");
 
 public CaMobilePage(final String url, final IbmConfig config, final User user) {
 	super(url, config, user);
@@ -127,6 +151,31 @@ public CaMobilePage(final String url, final IbmConfig config, final User user) {
 
 public CaMobilePage(final String url, final IbmConfig config, final User user, final String... data) {
 	super(url, config, user, data);
+}
+
+/**
+ * Return an alert element for a given web element.
+ *
+ * @param alertWebElement The alert web element as {@link BrowserElement}.
+ *
+ * @return The alert element as {@link AlertElement}.
+ */
+@Override
+protected AlertElement getAlertElement(final BrowserElement alertWebElement) {
+	return new MobileAlertElement(this, alertWebElement);
+}
+
+/**
+ * Return the alert web elements matching a given pattern.
+ *
+ * @param pattern A pattern matching the alert message as {@link Pattern}.
+ * @param fail Specify whether to fail if a matching alert could not be found.
+ *
+ * @return The alert web elements matching the given pattern as a {@link List} of {@link BrowserElement}.
+ */
+@Override
+protected List<BrowserElement> getAlertWebElements(final Pattern pattern, final boolean fail) {
+	return waitForElements(NATIVE_ALERT_ELEMENT_LOCATOR, (fail ? timeout() : tinyTimeout()), fail, true /*displayed*/);
 }
 
 @Override
@@ -182,6 +231,18 @@ protected By getLoggedUserElementLocator() {
 }
 
 @Override
+protected String getTitle(final BrowserElement titleElement) {
+	// The title of a mobile page can be given in the 'text' attribute or the text itself of the title element.
+	final String elementText = titleElement.getText();
+	return (elementText != null) && !elementText.equals(EMPTY_STRING) ? elementText : titleElement.getTextAttribute();
+}
+
+@Override
+protected By getTitleElementLocator() {
+	return AppiumBy.accessibilityId("Page Title");
+}
+
+@Override
 public boolean isInApplicationContext() {
 //	return waitForElement(NAVIGATION_TITLE_LINK_LOCATOR, timeout(), false /*fail*/) != null;
 	return true;
@@ -201,7 +262,7 @@ protected boolean matchDisplayedUser(final User user, final BrowserElement logge
  * @param openedPageClass The class associated with the opened page as a {@link CaMobilePage}.
  * @param pageData Additional information to store in the page when opening it as an array of {@link String}s.
  *
- * @return The web page as a {@link CaMobilePage} which is opened after having clicked on the link.
+ * @return The web page opened after clicking on the link as a {@link CaMobilePage}.
  */
 public <P extends CaMobilePage> P openMobilePageUsingLink(final BrowserElement linkElement, final Class<P> openedPageClass, final String... pageData) {
 	return openMobilePageUsingLink(openedPageClass, new Action() {
@@ -231,7 +292,7 @@ public <P extends CaMobilePage> P openMobilePageUsingLink(final BrowserElement l
  * @param openedPageClass The class associated with the opened page as a {@link CaMobilePage}.
  * @param pageData Additional information to store in the page when opening it as an array of {@link String}s.
  *
- * @return The web page as a {@link CaMobilePage} which is opened after having clicked on the link.
+ * @return The web page opened after clicking on the link as a {@link CaMobilePage}.
  */
 public <P extends CaMobilePage> P openMobilePageUsingLink(final By linkBy, final Class<P> openedPageClass, final String... pageData) {
 	return openMobilePageUsingLink(waitForElement(linkBy), openedPageClass, pageData);
@@ -244,7 +305,7 @@ public <P extends CaMobilePage> P openMobilePageUsingLink(final By linkBy, final
  * @param clickAction The action that performs the clicking of the link as a {@link Action}.
  * @param pageData Additional information to store in the page when opening it as an array of {@link String}s.
  *
- * @return The web page as a {@link CaMobilePage} which is opened after having clicked on the link.
+ * @return The web page opened after clicking on the link as a {@link CaMobilePage}.
  */
 public <P extends CaMobilePage> P openMobilePageUsingLink(final Class<P> openedPageClass, final Action clickAction, final String... pageData) {
 	// Perform the click action.
@@ -278,22 +339,80 @@ protected void performLogin(final User user) {
 	}
 
 	BrowserElement[] loginFormRelatedElements = waitForMultipleElements(
-		BOTTOM_TAB_LIST_LOCATOR, MANUALLY_ENTER_SERVER_URL_BUTTON_LOCATOR, SKIP_INTRO_LINK_LOCATOR);
+		BOTTOM_TAB_LIST_LOCATOR, CONTINUE_BUTTON_LOCATOR);
 
-	// Check if the user is prompted to skip the introduction.
-	if(loginFormRelatedElements[SKIP_INTRO_LINK_INDEX] != null) {
-		// If reached here, it implies that the user is prompted to skip the introduction.
-		// Choose to skip the introduction.
-		loginFormRelatedElements[SKIP_INTRO_LINK_INDEX].click();
+	// Check if the user is prompted with the Landing Page.
+	if(loginFormRelatedElements[CONTINUE_BUTTON_INDEX] != null) {
+		// If reached here, it implies that the user is prompted with the Landing Page.
+		// Validate the application title.
+		final String applicationTitle = waitForElement(AppiumBy.accessibilityId("IBM Title")).getTextAttribute();
+		if(!APPLICATION_TITLE_PATTERN.matcher(applicationTitle).matches()) {
+			throw new IncorrectTitleError("The application title '" + applicationTitle + "' did not match the expected pattern '" + APPLICATION_TITLE_PATTERN + "'.");
+		}
 
-		loginFormRelatedElements = waitForMultipleElements(BOTTOM_TAB_LIST_LOCATOR, MANUALLY_ENTER_SERVER_URL_BUTTON_LOCATOR);
-	}
+		// Validate the application version.
+		final String applicationVersion = waitForElement(AppiumBy.accessibilityId("App Version")).getTextAttribute();
+		if(!APPLICATION_VERSION_PATTERN.matcher(applicationVersion).matches()) {
+			throw new WaitElementTimeoutError("The application version '" + applicationVersion + "' did not match the expected pattern '" + APPLICATION_VERSION_PATTERN + "'.");
+		}
 
-	// Check if the user is prompted to choose whether to manually enter the server URL.
-	if(loginFormRelatedElements[MANUALLY_ENTER_SERVER_URL_BUTTON_INDEX] != null) {
+		// Validate the copyright.
+		final String copyrightMessage = waitForElement(AppiumBy.accessibilityId("Copyright")).getTextAttribute();
+		if(!COPYRIGHT_MESSAGE_PATTERN.matcher(copyrightMessage).matches()) {
+			throw new WaitElementTimeoutError("The copyright message '" + copyrightMessage + "' did not match the expected pattern '" + COPYRIGHT_MESSAGE_PATTERN + "'.");
+		}
+
+		// Validate the existence of a link to the privacy policy.
+		waitForElement(By.xpath("*//*[@*='Privacy Policy']"));
+
+		// Choose to continue.
+		click(loginFormRelatedElements[CONTINUE_BUTTON_INDEX]);
+
+		loginFormRelatedElements = waitForMultipleElements(
+			MANUALLY_ENTER_SERVER_URL_BUTTON_LOCATOR, SKIP_INTRO_LINK_LOCATOR, LICENSE_AGREEMENT_BUTTON_LOCATOR);
+
+		// Check if the user is prompted with the license agreement.
+		if(loginFormRelatedElements[LICENSE_AGREEMENT_BUTTON_INDEX] != null) {
+			// If reached here, it implies that the user is prompted with the license agreement.
+			// Validate the license agreement.
+			final String licenseAgreement = waitForElement(By.xpath("//*[@*='Terms and Conditions']//*[not(*)]")).getTextAttribute();
+			if(!LICENSE_AGREEMENT_PATTERN.matcher(licenseAgreement).matches()) {
+				throw new WaitElementTimeoutError("The license agreement '" + licenseAgreement + "' did not match the expected pattern '" + LICENSE_AGREEMENT_PATTERN + "'.");
+			}
+
+			// Agree to the license agreement.
+			click(loginFormRelatedElements[LICENSE_AGREEMENT_BUTTON_INDEX]);
+
+			loginFormRelatedElements = waitForMultipleElements(
+				MANUALLY_ENTER_SERVER_URL_BUTTON_LOCATOR, SKIP_INTRO_LINK_LOCATOR);
+		}
+
+		// Check if the user is prompted to skip the introduction.
+		if(loginFormRelatedElements[SKIP_INTRO_LINK_INDEX] != null) {
+			// If reached here, it implies that the user is prompted to skip the introduction.
+			// TODO Validate its 3 screens. Require dragging screen left to right.
+
+			// Validate the welcome message.
+			final String welcomeMessage = waitForElement(AppiumBy.accessibilityId("ca-text-onboarding-page-0-heading")).getTextAttribute();
+			if(!WELCOME_MESSAGE_PATTERN.matcher(welcomeMessage).matches()) {
+				throw new  WaitElementTimeoutError("The welcome message '" + welcomeMessage + "' did not match the expected pattern '" + WELCOME_MESSAGE_PATTERN + "'.");
+			}
+
+			// Validate the welcome description.
+			final String welcomeDescription = waitForElement(AppiumBy.accessibilityId("ca-text-onboarding-page-0-description")).getTextAttribute();
+			if(!WELCOME_DESCRIPTION_PATTERN.matcher(welcomeDescription).matches()) {
+				throw new  WaitElementTimeoutError("The welcome description '" + welcomeDescription + "' did not match the expected pattern '" + WELCOME_DESCRIPTION_PATTERN + "'.");
+			}
+
+			// Choose to skip the introduction.
+			click(loginFormRelatedElements[SKIP_INTRO_LINK_INDEX]);
+
+			loginFormRelatedElements = waitForMultipleElements(MANUALLY_ENTER_SERVER_URL_BUTTON_LOCATOR);
+		}
+
 		// If reached here, it implies that the user is prompted to choose whether to manually enter the server URL.
 		// Choose to manually enter the server URL.
-		loginFormRelatedElements[MANUALLY_ENTER_SERVER_URL_BUTTON_INDEX].click();
+		click(loginFormRelatedElements[MANUALLY_ENTER_SERVER_URL_BUTTON_INDEX]);
 
 		// Manually enter the server URL.
 		typeText(SERVER_URL_TEXT_FIELD_LOCATOR, getCaApplication().getBaseUrl());
@@ -306,6 +425,13 @@ protected void performLogin(final User user) {
 		try {
 			// The Login Form is presented in a WebView. Therefore, switch to the appropriate window.
 			switchToLoginWindow();
+
+			// Validate the copyright text.
+			final String copyrightMesageInLoginPage = waitForElement(By.id("legalText")).getText();
+			if(!COPYRIGHT_MESSAGE_PATTERN_IN_LOGIN_PAGE.matcher(copyrightMesageInLoginPage).matches()) {
+				throw new  WaitElementTimeoutError("The copyright message '" + copyrightMesageInLoginPage + "' in the Login Page did not match the expected pattern '" + COPYRIGHT_MESSAGE_PATTERN_IN_LOGIN_PAGE + "'.");
+			}
+
 			loginFormRelatedElements = waitForMultipleElements(USER_NAME_TEXT_FIELD_LOCATOR, By.id("CAMNamespace"));
 
 			// Check if the user is prompted to select a namespace.
@@ -329,17 +455,21 @@ protected void performLogin(final User user) {
 			// Look for login errors and take an appropriate action.
 			final long timeoutMillis = timeout() * 1000 + System.currentTimeMillis();
 			while (loginFormRelatedElements[USER_NAME_TEXT_FIELD_INDEX].isDisplayed()) {
-				final BrowserElement alertWebElement = waitForElement(ALERT_ELEMENT_LOCATOR, tinyTimeout(), false /*fail*/);
+				// The alert element on the login error appears in the web content (HTML). Therefore, try to find it here.
+				final BrowserElement alertWebElement = waitForElement(WEB_ALERT_ELEMENT_LOCATOR, tinyTimeout(), false /*fail*/);
 
 				if(alertWebElement != null) {
 					// If a login error occurs, throw an exception.
-					throw new IbmScenarioLoginError("The following error occurred during log in operation: " + new IbmAlertElement(this, alertWebElement).getAlert());
+					throw new IbmScenarioLoginError("The following error occurred during log in operation: " + (new IbmAlertElement(this, alertWebElement)).getMessage());
 				}
 
 				if (System.currentTimeMillis() > timeoutMillis) {
 					throw new WaitElementTimeoutError("The logging operation did not finish before the timeout '" + timeout() + "'s had reached.");
 				}
 			}
+
+			BrowserElement l = waitForElement(By.xpath("//*[contains(@id,'loading')]"));
+			l.waitWhileDisplayed(timeout());
 		}
 		finally {
 			// Switch back to the native application context.

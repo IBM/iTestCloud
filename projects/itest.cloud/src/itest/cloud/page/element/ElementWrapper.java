@@ -153,6 +153,11 @@ public BrowserElement clickButton(final By buttonBy) {
 	return this.page.clickButton(this.element, buttonBy);
 }
 
+@Override
+public boolean equals(final Object obj) {
+	return (obj instanceof ElementWrapper) && this.element.equals(((ElementWrapper)obj).element);
+}
+
 /**
  * Return the element indicating that the element is undergoing an operation (busy).
  * <p>
@@ -187,6 +192,7 @@ protected BrowserElement getBusyIndicatorElement() {
 protected By getBusyIndicatorElementLocator() {
 	return null;
 }
+
 /**
  * Return the wrapped web element.
  *
@@ -195,7 +201,6 @@ protected By getBusyIndicatorElementLocator() {
 public BrowserElement getElement() {
 	return this.element;
 }
-
 /**
  * Return a pattern matching the expected title for the current element.
  *
@@ -266,6 +271,11 @@ protected BrowserElement getTitleElement() {
  * @return The title element locator as a {@link By}.
  */
 protected abstract By getTitleElementLocator();
+
+@Override
+public int hashCode() {
+	return this.element.hashCode();
+}
 
 /**
  * Return whether the current wrapped element is displayed or not.
@@ -1244,7 +1254,7 @@ private void waitForExpectedTitle() {
 	final long timeoutMillis = openTimeout() * 1000 + System.currentTimeMillis();
 	while (!matchTitle()) {
 		if (System.currentTimeMillis() > timeoutMillis) {
-			throw new IncorrectTitleError("Current element title '" + getTitle() + "' does not match the expected one: '" + getExpectedTitle() + "' before timeout '" + openTimeout() + "' seconds");
+			throw new IncorrectTitleError("The title '" + getTitle() + "' did not match the expected pattern '" + getExpectedTitle() + "' before timeout '" + openTimeout() + "' had reached.");
 		}
 	}
 }

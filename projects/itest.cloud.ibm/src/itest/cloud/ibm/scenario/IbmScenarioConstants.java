@@ -21,9 +21,7 @@ import itest.cloud.scenario.ScenarioDataConstants;
  * Common utility methods.
  */
 public interface IbmScenarioConstants extends ScenarioDataConstants {
-
 	public final By DIALOG_CONTENT_ELEMENT_LOCATOR = By.xpath(".//div[contains(@class,'modal-content')]");
 	public final By DIALOG_LOCATOR = By.xpath("//*[@role='dialog']");
 	public final By DIALOG_TITLE_ELEMENT_LOCATOR = By.xpath(".//*[contains(@class,'heading')]");
-	public final By CONTEXT_MENU_EXPANSION_LOCATOR = By.xpath(".//*[contains(@class,'overflow')]");
 }

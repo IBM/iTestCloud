@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.chrome.ChromeDriverService.Builder;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -63,33 +64,40 @@ void initDriver() {
     }
 
     if(this.remoteAddress != null) {
-		// Create driver for executing tests via Selenium Grid.
+    	// Configure executing tests via a Selenium Grid.
+		// Allow downloading files from the remote computer (end-node) to the client computer.
+		this.options.setEnableDownloads(true /*enableDownloads*/);
+		// Create the driver.
 		this.driver = new RemoteWebDriver(this.remoteAddress, this.options);
+		// Allow uploading files from the client computer to the remote computer (end-node).
 		((RemoteWebDriver) this.driver).setFileDetector(new LocalFileDetector());
 	}
 	else {
-		// Create driver for executing tests on local host.
-		// Start service
-//		System.setProperty("webdriver.chrome.driver", this.driverPath);
-//		System.setProperty("webdriver.chrome.logfile", BROWSER_LOG_FILE);
-		this.service = new ChromeDriverService.Builder()
-	            .usingDriverExecutable(new File(this.driverPath))
-	            .usingAnyFreePort()
-	            .build();
+    	// Configure executing tests on the local host.
+		// Create the driver.
+		final Builder builder = new ChromeDriverService.Builder().usingAnyFreePort();
+		// Specify the path to the Chrome Driver if one is provided. Otherwise, Selenium will automatically
+		// download an appropriate version of the Chrome Driver based on the version of the browser in use.
+		if(this.driverPath != null) {
+			builder.usingDriverExecutable(new File(this.driverPath));
+		}
+
+		this.service = builder.build();
         try {
+    		// Start the service
         	this.service.start();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
         	throw new RuntimeException(e);
         }
 
         this.driver = new ChromeDriver(this.service, this.options);
 	}
-//	this.driver.manage().timeouts().implicitlyWait(ZERO.plusMillis(250));
 }
 
 private void initExperimentalOptions() {
 	// Set experimental options.
-	Map<String, Object> prefs = new HashMap<String, Object>();
+	final Map<String, Object> prefs = new HashMap<String, Object>();
 
 	// Init download dir if necessary.
 	if (this.downloadDir != null) {

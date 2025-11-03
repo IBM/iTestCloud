@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2012, 2022 IBM Corporation and others.
+ * Copyright (c) 2012, 2025 IBM Corporation and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -528,7 +528,7 @@ private static String formatDebugLine(final String line) {
 		// Get the Class.method() name
 		StackTraceElement[] stackElements = whoCallsMe();
 		if (stackElements.length > 0) {
-			String classMethod = getClassSimpleName(stackElements[0].getClassName()) + "." + stackElements[0].getMethodName() + "()";
+			String classMethod = getClassSimpleName(stackElements[0].getClass()) + "." + stackElements[0].getMethodName() + "()";
 			// Format the line
 			int index = line.indexOf('+');
 			return "		+ " + classMethod + ": "+line.substring(index+1).trim();
@@ -543,7 +543,7 @@ private static String formatDebugLine(final String line) {
  * @return the simple class name as a String.
  */
 public static String getClassSimpleName(final Class<?> clazz) {
-    return getClassSimpleName(clazz.getName());
+    return clazz.getSimpleName();
 }
 
 /**
@@ -1348,6 +1348,11 @@ public static String runCommand(final String[] cmdarray, final int[] returnCodes
 	}
 }
 
+public static void setDebugWriter() {
+	STR_WRITER = new StringWriter();
+	LOG_WRITER = new PrintWriter(STR_WRITER);
+}
+
 //public static void runCommandInBackground(final String[] cmdarray) throws InvalidCommandException {
 //	String silentCommand = "nohup " + command + " > /dev/null 2>&1 &";
 //
@@ -1356,11 +1361,6 @@ public static String runCommand(final String[] cmdarray, final int[] returnCodes
 //	// Wait a moment
 //	sleep(1 /*seconds*/);
 //}
-
-public static void setDebugWriter() {
-	STR_WRITER = new StringWriter();
-	LOG_WRITER = new PrintWriter(STR_WRITER);
-}
 
 /**
  * Sleep during the given seconds time.
@@ -1373,6 +1373,17 @@ public static void sleep(final int seconds) {
 	} catch (InterruptedException ie) {
 		// skip
 	}
+}
+
+/**
+ * Split a given path to an array of folders.
+ *
+ * @param path The path to split as {@link String}.
+ *
+ * @return The split path as an array of {@link String}.
+ */
+public static String[] splitPath(final String path) {
+	return path.split(PATH_SEPARATOR);
 }
 
 /**

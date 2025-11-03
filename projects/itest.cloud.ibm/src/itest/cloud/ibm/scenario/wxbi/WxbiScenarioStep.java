@@ -13,7 +13,7 @@
  *********************************************************************/
 package itest.cloud.ibm.scenario.wxbi;
 
-import static itest.cloud.ibm.entity.AlertStatus.Success;
+import static itest.cloud.entity.AlertStatus.Success;
 import static itest.cloud.scenario.ScenarioUtil.println;
 
 import java.util.List;
@@ -22,7 +22,6 @@ import itest.cloud.config.IUser;
 import itest.cloud.ibm.entity.wxbi.conversation.WxbiQuestionAnswer;
 import itest.cloud.ibm.entity.wxbi.conversation.WxbiVisualizationType;
 import itest.cloud.ibm.page.dialog.wxbi.WxbiKeyMetricDialog;
-import itest.cloud.ibm.page.element.IbmAlertElement;
 import itest.cloud.ibm.page.element.wxbi.WxbiLiveWidgetElement;
 import itest.cloud.ibm.page.element.wxbi.WxbiVisualizationElement;
 import itest.cloud.ibm.page.element.wxbi.conversation.*;
@@ -35,6 +34,7 @@ import itest.cloud.ibm.scenario.IbmScenarioStep;
 import itest.cloud.ibm.scenario.error.InvalidQuestionError;
 import itest.cloud.ibm.topology.IbmTopology;
 import itest.cloud.ibm.topology.WxbiApplication;
+import itest.cloud.page.element.AlertElement;
 import itest.cloud.scenario.error.ScenarioFailedError;
 import itest.cloud.scenario.error.WaitElementTimeoutError;
 
@@ -179,10 +179,10 @@ protected void deleteConversation(final String name, final IUser user) {
 	}
 
 	// Wait for an alert to appear indicating that the deletion was successful or not.
-	final IbmAlertElement alertElement = page.getAlertElement(false /*fail*/);
+	final AlertElement alertElement = page.getAlertElement(false /*fail*/);
 	// Make sure the alert indicates that the deletion was successful.
 	if(alertElement != null) {
-		if(alertElement.getStatus() != Success) throw new ScenarioFailedError("Deleting the conversation with the name '"+ name + "' failed with the following message: " + alertElement.getAlert());
+		if(alertElement.getStatus() != Success) throw new ScenarioFailedError("Deleting the conversation with the name '"+ name + "' failed with the following message: " + alertElement.getMessage());
 		// Dismiss the alert.
 		alertElement.close();
 	}
@@ -442,10 +442,10 @@ private WxbiConversationElement renameConversation(final WxbiConversationElement
 	}
 
 	// Wait for an alert to appear indicating that the renaming was successful or not.
-	final IbmAlertElement alertElement = page.getAlertElement(false /*fail*/);
+	final AlertElement alertElement = page.getAlertElement(false /*fail*/);
 	// Make sure the alert indicates that the renaming was successful.
 	if(alertElement != null) {
-		if(alertElement.getStatus() != Success) throw new WaitElementTimeoutError("Renaming the conversation to '" + newName + "' failed with the following message: " + alertElement.getAlert());
+		if(alertElement.getStatus() != Success) throw new WaitElementTimeoutError("Renaming the conversation to '" + newName + "' failed with the following message: " + alertElement.getMessage());
 		// Dismiss the alert.
 		alertElement.close();
 	}
